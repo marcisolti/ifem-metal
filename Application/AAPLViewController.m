@@ -6,13 +6,13 @@ Implementation of our cross-platform view controller
 */
 
 #import "AAPLViewController.h"
-#import "AAPLRenderer.h"
+#import "MetalKitView.h"
 
 @implementation AAPLViewController
 {
     MTKView *_view;
 
-    AAPLRenderer *_renderer;
+    MetalKitView *_renderer;
 }
 
 - (void)viewDidLoad
@@ -26,7 +26,7 @@ Implementation of our cross-platform view controller
     
     NSAssert(_view.device, @"Metal is not supported on this device");
     
-    _renderer = [[AAPLRenderer alloc] initWithMetalKitView:_view];
+    _renderer = [[MetalKitView alloc] initWithMetalKitView:_view];
     
     NSAssert(_renderer, @"Renderer failed initialization");
 

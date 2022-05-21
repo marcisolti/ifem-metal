@@ -8,14 +8,14 @@ Implementation of a platform independent renderer class, which performs Metal se
 @import simd;
 @import MetalKit;
 
-#import "AAPLRenderer.h"
+#import "MetalKitView.h"
 
 // Header shared between C code here, which executes Metal API commands, and .metal files, which
 // uses these types as inputs to the shaders.
 #import "AAPLShaderTypes.h"
 
 // Main class performing the rendering
-@implementation AAPLRenderer
+@implementation MetalKitView
 {
     id<MTLDevice> _device;
 
