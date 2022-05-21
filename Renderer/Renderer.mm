@@ -8,7 +8,7 @@
 
 #include "Renderer.h"
 
-#include "AAPLShaderTypes.h"
+#include "ShaderTypes.h"
 
 void Renderer::StartUp(MTKView* view)
 {
@@ -40,7 +40,7 @@ void Renderer::ShutDown()
 
 void Renderer::Draw(MTKView* view)
 {
-    static const AAPLVertex triangleVertices[] =
+    static const Vertex triangleVertices[] =
     {
         { {  250,  -250 }, { 1, 0, 0, 1 } },
         { { -250,  -250 }, { 0, 1, 0, 1 } },
@@ -64,11 +64,11 @@ void Renderer::Draw(MTKView* view)
 
         [renderEncoder setVertexBytes:triangleVertices
                                length:sizeof(triangleVertices)
-                              atIndex:AAPLVertexInputIndexVertices];
+                              atIndex:VertexInputIndexVertices];
 
         [renderEncoder setVertexBytes:&viewportSize
                                length:sizeof(viewportSize)
-                              atIndex:AAPLVertexInputIndexViewportSize];
+                              atIndex:VertexInputIndexViewportSize];
 
         [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
                           vertexStart:0

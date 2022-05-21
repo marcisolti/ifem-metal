@@ -10,7 +10,7 @@ Metal shaders used for this sample
 using namespace metal;
 
 // Include header shared between this Metal shader code and C code executing Metal API commands.
-#include "AAPLShaderTypes.h"
+#include "ShaderTypes.h"
 
 // Vertex shader outputs and fragment shader inputs
 struct RasterizerData
@@ -29,8 +29,8 @@ struct RasterizerData
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
-             constant AAPLVertex *vertices [[buffer(AAPLVertexInputIndexVertices)]],
-             constant vector_uint2 *viewportSizePointer [[buffer(AAPLVertexInputIndexViewportSize)]])
+             constant Vertex *vertices [[buffer(VertexInputIndexVertices)]],
+             constant vector_uint2 *viewportSizePointer [[buffer(VertexInputIndexViewportSize)]])
 {
     RasterizerData out;
 
