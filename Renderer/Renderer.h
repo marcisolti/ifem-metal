@@ -21,4 +21,12 @@ public:
     void ShutDown();
     void Draw(MTKView* view);
     void SetViewportSize(CGSize size);
+
+private:
+    id<MTLDevice> device;
+
+    id<MTLRenderPipelineState> pipelineState;
+    id<MTLCommandQueue> commandQueue;
+
+    vector_uint2 viewportSize;
 };
