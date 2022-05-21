@@ -5,8 +5,9 @@ Abstract:
 Implementation of a platform independent renderer class, which performs Metal setup and per frame rendering
 */
 
-@import simd;
-@import MetalKit;
+#import <simd/simd.h>
+#import <Metal/Metal.h>
+#import <MetalKit/MetalKit.h>
 
 #import "MetalKitView.h"
 
@@ -101,7 +102,7 @@ Implementation of a platform independent renderer class, which performs Metal se
         renderEncoder.label = @"MyRenderEncoder";
 
         // Set the region of the drawable to draw into.
-        [renderEncoder setViewport:(MTLViewport){0.0, 0.0, _viewportSize.x, _viewportSize.y, 0.0, 1.0 }];
+        [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(_viewportSize.x), double(_viewportSize.y), 0.0, 1.0 }];
         
         [renderEncoder setRenderPipelineState:_pipelineState];
 

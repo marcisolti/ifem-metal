@@ -5,7 +5,8 @@ Abstract:
 Header for a platform independent renderer class, which performs Metal setup and per frame rendering.
 */
 
-@import MetalKit;
+#import <Metal/Metal.h>
+#import <MetalKit/MetalKit.h>
 
 @interface MetalKitView : NSObject<MTKViewDelegate>
 
