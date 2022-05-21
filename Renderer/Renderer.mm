@@ -84,4 +84,6 @@ void Renderer::Draw(MTKView* view)
 
 void Renderer::SetViewportSize(CGSize size)
 {
+    viewportSize.x = size.width;
+    viewportSize.y = size.height;
 }
