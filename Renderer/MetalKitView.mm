@@ -1,9 +1,10 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-Implementation of a platform independent renderer class, which performs Metal setup and per frame rendering
-*/
+//
+//  MetalKitView.mm
+//  iFEM
+//
+//  Created by Marci Solti on 2022. 05. 21..
+//  Copyright © 2022. Apple. All rights reserved.
+//
 
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>

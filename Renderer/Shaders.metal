@@ -1,9 +1,10 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-Metal shaders used for this sample
-*/
+//
+//  Shaders.metal
+//  iFEM
+//
+//  Created by Marci Solti on 2022. 05. 21..
+//  Copyright © 2022. Apple. All rights reserved.
+//
 
 #include <metal_stdlib>
 
