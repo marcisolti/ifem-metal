@@ -8,8 +8,12 @@
 
 #pragma once
 
+#include "Entity.h"
+
 #include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>
+
+#include <string>
 
 class Renderer
 {
@@ -23,10 +27,21 @@ public:
     void SetViewportSize(CGSize size);
 
 private:
+    void LoadScene();
+    id<MTLRenderCommandEncoder> BeginFrame(MTKView* view);
+    void EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder);
+
     id<MTLDevice> device;
 
-    id<MTLRenderPipelineState> pipelineState;
     id<MTLCommandQueue> commandQueue;
+    id<MTLCommandBuffer> commandBuffer;
 
+    id<MTLRenderPipelineState> pipelineState;
+    id<MTLDepthStencilState> depthStencilState;
+
+    Entity staticGeometry;
+
+    simd_float4x4 viewProjectionMatrix;
     vector_uint2 viewportSize;
+
 };

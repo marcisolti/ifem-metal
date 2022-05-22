@@ -8,13 +8,14 @@
 
 #include "Renderer.h"
 
-#include "ShaderTypes.h"
+#include "Math.h"
 
 void Renderer::StartUp(MTKView* view)
 {
-    NSError *error;
-
     device = view.device;
+
+    view.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
+    view.clearDepth = 1.0;
 
     id<MTLLibrary> defaultLibrary = [device newDefaultLibrary];
 
@@ -26,64 +27,71 @@ void Renderer::StartUp(MTKView* view)
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
-
+    pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
+    
+    NSError *error;
     pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
                                                              error:&error];
     assert(pipelineState);
 
+    MTLDepthStencilDescriptor *depthDescriptor = [MTLDepthStencilDescriptor new];
+    depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
+    depthDescriptor.depthWriteEnabled = YES;
+    depthStencilState = [device newDepthStencilStateWithDescriptor:depthDescriptor];
+
     commandQueue = [device newCommandQueue];
+
+    LoadScene();
 }
 
 void Renderer::ShutDown()
 {
 }
 
-void Renderer::Draw(MTKView* view)
+void Renderer::LoadScene()
 {
-    static const Vertex triangleVertices[] =
-    {
-        { {  250,  -250 }, { 1, 0, 0, 1 } },
-        { { -250,  -250 }, { 0, 1, 0, 1 } },
-        { {    0,   250 }, { 0, 0, 1, 1 } },
-    };
+    staticGeometry.LoadGeometryFromFile(std::string{"suz.obj"}, device);
+}
 
-    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
+{
+    commandBuffer = [commandQueue commandBuffer];
     commandBuffer.label = @"MyCommand";
 
     MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
 
-    if(renderPassDescriptor != nil)
-    {
-        id<MTLRenderCommandEncoder> renderEncoder =
-        [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
-        renderEncoder.label = @"MyRenderEncoder";
+    assert(renderPassDescriptor != nil);
 
-        [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
+    id<MTLRenderCommandEncoder> renderEncoder =
+    [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    renderEncoder.label = @"MyRenderEncoder";
+    [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
+    [renderEncoder setRenderPipelineState:pipelineState];
+    [renderEncoder setDepthStencilState:depthStencilState];
 
-        [renderEncoder setRenderPipelineState:pipelineState];
+    return renderEncoder;
+}
 
-        [renderEncoder setVertexBytes:triangleVertices
-                               length:sizeof(triangleVertices)
-                              atIndex:VertexInputIndexVertices];
-
-        [renderEncoder setVertexBytes:&viewportSize
-                               length:sizeof(viewportSize)
-                              atIndex:VertexInputIndexViewportSize];
-
-        [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
-                          vertexStart:0
-                          vertexCount:3];
-
-        [renderEncoder endEncoding];
-
-        [commandBuffer presentDrawable:view.currentDrawable];
-    }
-
+void Renderer::EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder)
+{
+    [renderEncoder endEncoding];
+    [commandBuffer presentDrawable:view.currentDrawable];
     [commandBuffer commit];
+}
+
+void Renderer::Draw(MTKView* view)
+{
+    id<MTLRenderCommandEncoder> renderEncoder = BeginFrame(view);
+    staticGeometry.Draw(renderEncoder, viewProjectionMatrix);
+    EndFrame(view, renderEncoder);
 }
 
 void Renderer::SetViewportSize(CGSize size)
 {
     viewportSize.x = size.width;
     viewportSize.y = size.height;
+
+    const simd_float4x4 V = Matrix::View(simd_float3{0,0,4}, simd_float3{0,0,0}, simd_float3{0,1,0});
+    const simd_float4x4 P = Matrix::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
+    viewProjectionMatrix = matrix_multiply(P, V);
 }
