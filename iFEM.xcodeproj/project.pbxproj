@@ -22,6 +22,105 @@
 		24940F84283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F85283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F86283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
+		24940F8E283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
+		24940F8F283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
+		24940F90283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
+		24940F91283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
+		24940F92283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
+		24940F93283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
+		24940FE4283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */; };
+		24940FE5283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */; };
+		24940FE6283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */; };
+		24940FE7283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */; };
+		24940FE8283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */; };
+		24940FE9283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */; };
+		24940FEA283AA97400AED5FC /* cubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9C283AA97400AED5FC /* cubicMesh.cpp */; };
+		24940FEB283AA97400AED5FC /* cubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9C283AA97400AED5FC /* cubicMesh.cpp */; };
+		24940FEC283AA97400AED5FC /* cubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9C283AA97400AED5FC /* cubicMesh.cpp */; };
+		24940FED283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9F283AA97400AED5FC /* volumetricMeshENuMaterial.cpp */; };
+		24940FEE283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9F283AA97400AED5FC /* volumetricMeshENuMaterial.cpp */; };
+		24940FEF283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F9F283AA97400AED5FC /* volumetricMeshENuMaterial.cpp */; };
+		24940FF0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp */; };
+		24940FF1283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp */; };
+		24940FF2283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp */; };
+		24940FF3283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA1283AA97400AED5FC /* generateInterpolationMatrix.cpp */; };
+		24940FF4283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA1283AA97400AED5FC /* generateInterpolationMatrix.cpp */; };
+		24940FF5283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA1283AA97400AED5FC /* generateInterpolationMatrix.cpp */; };
+		24940FF6283AA97400AED5FC /* volumetricMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA2283AA97400AED5FC /* volumetricMesh.cpp */; };
+		24940FF7283AA97400AED5FC /* volumetricMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA2283AA97400AED5FC /* volumetricMesh.cpp */; };
+		24940FF8283AA97400AED5FC /* volumetricMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA2283AA97400AED5FC /* volumetricMesh.cpp */; };
+		24940FF9283AA97400AED5FC /* tetMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA3283AA97400AED5FC /* tetMesh.cpp */; };
+		24940FFA283AA97400AED5FC /* tetMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA3283AA97400AED5FC /* tetMesh.cpp */; };
+		24940FFB283AA97400AED5FC /* tetMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA3283AA97400AED5FC /* tetMesh.cpp */; };
+		24940FFC283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA9283AA97400AED5FC /* generateGradientMatrix.cpp */; };
+		24940FFD283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA9283AA97400AED5FC /* generateGradientMatrix.cpp */; };
+		24940FFE283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FA9283AA97400AED5FC /* generateGradientMatrix.cpp */; };
+		24940FFF283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAA283AA97400AED5FC /* volumetricMeshLoader.cpp */; };
+		24941000283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAA283AA97400AED5FC /* volumetricMeshLoader.cpp */; };
+		24941001283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAA283AA97400AED5FC /* volumetricMeshLoader.cpp */; };
+		24941002283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAB283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp */; };
+		24941003283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAB283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp */; };
+		24941004283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAB283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp */; };
+		24941005283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAC283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp */; };
+		24941006283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAC283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp */; };
+		24941007283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAC283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp */; };
+		24941008283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAE283AA97400AED5FC /* volumetricMeshParser.cpp */; };
+		24941009283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAE283AA97400AED5FC /* volumetricMeshParser.cpp */; };
+		2494100A283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FAE283AA97400AED5FC /* volumetricMeshParser.cpp */; };
+		2494100B283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB4283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp */; };
+		2494100C283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB4283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp */; };
+		2494100D283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB4283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp */; };
+		2494100E283AA97400AED5FC /* generateMeshGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB6283AA97400AED5FC /* generateMeshGraph.cpp */; };
+		2494100F283AA97400AED5FC /* generateMeshGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB6283AA97400AED5FC /* generateMeshGraph.cpp */; };
+		24941010283AA97400AED5FC /* generateMeshGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB6283AA97400AED5FC /* generateMeshGraph.cpp */; };
+		24941011283AA97400AED5FC /* generateMassMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB9283AA97400AED5FC /* generateMassMatrix.cpp */; };
+		24941012283AA97400AED5FC /* generateMassMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB9283AA97400AED5FC /* generateMassMatrix.cpp */; };
+		24941013283AA97400AED5FC /* generateMassMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FB9283AA97400AED5FC /* generateMassMatrix.cpp */; };
+		24941014283AA97400AED5FC /* vec3i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBB283AA97400AED5FC /* vec3i.cpp */; };
+		24941015283AA97400AED5FC /* vec3i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBB283AA97400AED5FC /* vec3i.cpp */; };
+		24941016283AA97400AED5FC /* vec3i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBB283AA97400AED5FC /* vec3i.cpp */; };
+		24941017283AA97400AED5FC /* eig3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBE283AA97400AED5FC /* eig3.cpp */; };
+		24941018283AA97400AED5FC /* eig3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBE283AA97400AED5FC /* eig3.cpp */; };
+		24941019283AA97400AED5FC /* eig3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FBE283AA97400AED5FC /* eig3.cpp */; };
+		2494101A283AA97400AED5FC /* vec4i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC0283AA97400AED5FC /* vec4i.cpp */; };
+		2494101B283AA97400AED5FC /* vec4i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC0283AA97400AED5FC /* vec4i.cpp */; };
+		2494101C283AA97400AED5FC /* vec4i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC0283AA97400AED5FC /* vec4i.cpp */; };
+		2494101D283AA97400AED5FC /* vec2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC6283AA97400AED5FC /* vec2d.cpp */; };
+		2494101E283AA97400AED5FC /* vec2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC6283AA97400AED5FC /* vec2d.cpp */; };
+		2494101F283AA97400AED5FC /* vec2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC6283AA97400AED5FC /* vec2d.cpp */; };
+		24941020283AA97400AED5FC /* mat3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC8283AA97400AED5FC /* mat3d.cpp */; };
+		24941021283AA97400AED5FC /* mat3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC8283AA97400AED5FC /* mat3d.cpp */; };
+		24941022283AA97400AED5FC /* mat3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC8283AA97400AED5FC /* mat3d.cpp */; };
+		24941023283AA97400AED5FC /* vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC9283AA97400AED5FC /* vec3.cpp */; };
+		24941024283AA97400AED5FC /* vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC9283AA97400AED5FC /* vec3.cpp */; };
+		24941025283AA97400AED5FC /* vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FC9283AA97400AED5FC /* vec3.cpp */; };
+		24941026283AA97400AED5FC /* vec3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCB283AA97400AED5FC /* vec3d.cpp */; };
+		24941027283AA97400AED5FC /* vec3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCB283AA97400AED5FC /* vec3d.cpp */; };
+		24941028283AA97400AED5FC /* vec3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCB283AA97400AED5FC /* vec3d.cpp */; };
+		24941029283AA97400AED5FC /* tribox3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCE283AA97400AED5FC /* tribox3.cpp */; };
+		2494102A283AA97400AED5FC /* tribox3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCE283AA97400AED5FC /* tribox3.cpp */; };
+		2494102B283AA97400AED5FC /* tribox3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FCE283AA97400AED5FC /* tribox3.cpp */; };
+		2494102C283AA97400AED5FC /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD4283AA97400AED5FC /* graph.cpp */; };
+		2494102D283AA97400AED5FC /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD4283AA97400AED5FC /* graph.cpp */; };
+		2494102E283AA97400AED5FC /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD4283AA97400AED5FC /* graph.cpp */; };
+		2494102F283AA97400AED5FC /* matrixIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD6283AA97400AED5FC /* matrixIO.cpp */; };
+		24941030283AA97400AED5FC /* matrixIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD6283AA97400AED5FC /* matrixIO.cpp */; };
+		24941031283AA97400AED5FC /* matrixIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD6283AA97400AED5FC /* matrixIO.cpp */; };
+		24941032283AA97400AED5FC /* sparseMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD9283AA97400AED5FC /* sparseMatrix.cpp */; };
+		24941033283AA97400AED5FC /* sparseMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD9283AA97400AED5FC /* sparseMatrix.cpp */; };
+		24941034283AA97400AED5FC /* sparseMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FD9283AA97400AED5FC /* sparseMatrix.cpp */; };
+		24941035283AA97400AED5FC /* boundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDB283AA97400AED5FC /* boundingBox.cpp */; };
+		24941036283AA97400AED5FC /* boundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDB283AA97400AED5FC /* boundingBox.cpp */; };
+		24941037283AA97400AED5FC /* boundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDB283AA97400AED5FC /* boundingBox.cpp */; };
+		24941038283AA97400AED5FC /* geometryQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDF283AA97400AED5FC /* geometryQuery.cpp */; };
+		24941039283AA97400AED5FC /* geometryQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDF283AA97400AED5FC /* geometryQuery.cpp */; };
+		2494103A283AA97400AED5FC /* geometryQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FDF283AA97400AED5FC /* geometryQuery.cpp */; };
+		2494103B283AA97400AED5FC /* triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE0283AA97400AED5FC /* triangle.cpp */; };
+		2494103C283AA97400AED5FC /* triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE0283AA97400AED5FC /* triangle.cpp */; };
+		2494103D283AA97400AED5FC /* triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE0283AA97400AED5FC /* triangle.cpp */; };
+		2494103E283AA97400AED5FC /* constrainedDOFs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE3283AA97400AED5FC /* constrainedDOFs.cpp */; };
+		2494103F283AA97400AED5FC /* constrainedDOFs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE3283AA97400AED5FC /* constrainedDOFs.cpp */; };
+		24941040283AA97400AED5FC /* constrainedDOFs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940FE3283AA97400AED5FC /* constrainedDOFs.cpp */; };
 		3A05CBE01F731ABB00CA21B1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1F1B411F0338CF001622B3 /* MetalKit.framework */; };
 		3A05CBE11F731AC000CA21B1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A05CBDE1F731AB800CA21B1 /* MetalKit.framework */; };
 		3A1F1B391F033765001622B3 /* AAPLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A35329C1E99974500C194AD /* AAPLViewController.m */; };
@@ -56,6 +155,84 @@
 		24940F7E283A8DDA00AED5FC /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		24940F7F283A950400AED5FC /* Entity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Entity.mm; sourceTree = "<group>"; };
 		24940F83283A95AC00AED5FC /* Mesh.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Mesh.mm; sourceTree = "<group>"; };
+		24940F88283AA53500AED5FC /* Simulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
+		24940F89283AA53500AED5FC /* Simulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
+		24940F8A283AA53500AED5FC /* Solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Solver.cpp; sourceTree = "<group>"; };
+		24940F8B283AA53500AED5FC /* Solver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Solver.h; sourceTree = "<group>"; };
+		24940F8D283AA53500AED5FC /* EnergyFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyFunction.h; sourceTree = "<group>"; };
+		24940F97283AA63700AED5FC /* json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshDeformationGradient.cpp; sourceTree = "<group>"; };
+		24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interpolationWeightsMultiLoad.cpp; sourceTree = "<group>"; };
+		24940F9C283AA97400AED5FC /* cubicMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cubicMesh.cpp; sourceTree = "<group>"; };
+		24940F9D283AA97400AED5FC /* generateGradientMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generateGradientMatrix.h; sourceTree = "<group>"; };
+		24940F9E283AA97400AED5FC /* cubicMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cubicMesh.h; sourceTree = "<group>"; };
+		24940F9F283AA97400AED5FC /* volumetricMeshENuMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshENuMaterial.cpp; sourceTree = "<group>"; };
+		24940FA0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = computeStiffnessMatrixNullspace.cpp; sourceTree = "<group>"; };
+		24940FA1283AA97400AED5FC /* generateInterpolationMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generateInterpolationMatrix.cpp; sourceTree = "<group>"; };
+		24940FA2283AA97400AED5FC /* volumetricMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMesh.cpp; sourceTree = "<group>"; };
+		24940FA3283AA97400AED5FC /* tetMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tetMesh.cpp; sourceTree = "<group>"; };
+		24940FA4283AA97400AED5FC /* generateInterpolationMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generateInterpolationMatrix.h; sourceTree = "<group>"; };
+		24940FA5283AA97400AED5FC /* generateMeshGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generateMeshGraph.h; sourceTree = "<group>"; };
+		24940FA6283AA97400AED5FC /* volumetricMeshENuMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshENuMaterial.h; sourceTree = "<group>"; };
+		24940FA7283AA97400AED5FC /* volumetricMeshLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshLoader.h; sourceTree = "<group>"; };
+		24940FA8283AA97400AED5FC /* tetMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tetMesh.h; sourceTree = "<group>"; };
+		24940FA9283AA97400AED5FC /* generateGradientMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generateGradientMatrix.cpp; sourceTree = "<group>"; };
+		24940FAA283AA97400AED5FC /* volumetricMeshLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshLoader.cpp; sourceTree = "<group>"; };
+		24940FAB283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generateTetMeshFromCubicMesh.cpp; sourceTree = "<group>"; };
+		24940FAC283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshOrthotropicMaterial.cpp; sourceTree = "<group>"; };
+		24940FAD283AA97400AED5FC /* generateMassMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generateMassMatrix.h; sourceTree = "<group>"; };
+		24940FAE283AA97400AED5FC /* volumetricMeshParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshParser.cpp; sourceTree = "<group>"; };
+		24940FAF283AA97400AED5FC /* volumetricMeshParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshParser.h; sourceTree = "<group>"; };
+		24940FB0283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshMooneyRivlinMaterial.h; sourceTree = "<group>"; };
+		24940FB1283AA97400AED5FC /* volumetricMeshDeformationGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshDeformationGradient.h; sourceTree = "<group>"; };
+		24940FB2283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMeshOrthotropicMaterial.h; sourceTree = "<group>"; };
+		24940FB3283AA97400AED5FC /* volumetricMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = volumetricMesh.h; sourceTree = "<group>"; };
+		24940FB4283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshMooneyRivlinMaterial.cpp; sourceTree = "<group>"; };
+		24940FB5283AA97400AED5FC /* interpolationWeightsMultiLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interpolationWeightsMultiLoad.h; sourceTree = "<group>"; };
+		24940FB6283AA97400AED5FC /* generateMeshGraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generateMeshGraph.cpp; sourceTree = "<group>"; };
+		24940FB7283AA97400AED5FC /* computeStiffnessMatrixNullspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = computeStiffnessMatrixNullspace.h; sourceTree = "<group>"; };
+		24940FB8283AA97400AED5FC /* generateTetMeshFromCubicMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generateTetMeshFromCubicMesh.h; sourceTree = "<group>"; };
+		24940FB9283AA97400AED5FC /* generateMassMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generateMassMatrix.cpp; sourceTree = "<group>"; };
+		24940FBB283AA97400AED5FC /* vec3i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vec3i.cpp; sourceTree = "<group>"; };
+		24940FBC283AA97400AED5FC /* vec2i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec2i.h; sourceTree = "<group>"; };
+		24940FBD283AA97400AED5FC /* vec3i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec3i.h; sourceTree = "<group>"; };
+		24940FBE283AA97400AED5FC /* eig3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = eig3.cpp; sourceTree = "<group>"; };
+		24940FBF283AA97400AED5FC /* vec2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec2d.h; sourceTree = "<group>"; };
+		24940FC0283AA97400AED5FC /* vec4i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vec4i.cpp; sourceTree = "<group>"; };
+		24940FC1283AA97400AED5FC /* vec3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec3d.h; sourceTree = "<group>"; };
+		24940FC2283AA97400AED5FC /* eig3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eig3.h; sourceTree = "<group>"; };
+		24940FC3283AA97400AED5FC /* minivector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minivector.h; sourceTree = "<group>"; };
+		24940FC4283AA97400AED5FC /* vec4d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec4d.h; sourceTree = "<group>"; };
+		24940FC5283AA97400AED5FC /* vec3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec3.h; sourceTree = "<group>"; };
+		24940FC6283AA97400AED5FC /* vec2d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vec2d.cpp; sourceTree = "<group>"; };
+		24940FC7283AA97400AED5FC /* vec4i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec4i.h; sourceTree = "<group>"; };
+		24940FC8283AA97400AED5FC /* mat3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mat3d.cpp; sourceTree = "<group>"; };
+		24940FC9283AA97400AED5FC /* vec3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vec3.cpp; sourceTree = "<group>"; };
+		24940FCA283AA97400AED5FC /* mat3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mat3d.h; sourceTree = "<group>"; };
+		24940FCB283AA97400AED5FC /* vec3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vec3d.cpp; sourceTree = "<group>"; };
+		24940FCD283AA97400AED5FC /* sparseMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sparseMatrix.h; sourceTree = "<group>"; };
+		24940FCE283AA97400AED5FC /* tribox3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tribox3.cpp; sourceTree = "<group>"; };
+		24940FCF283AA97400AED5FC /* matrixMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrixMacros.h; sourceTree = "<group>"; };
+		24940FD0283AA97400AED5FC /* range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = range.h; sourceTree = "<group>"; };
+		24940FD1283AA97400AED5FC /* matrixMultiplyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrixMultiplyMacros.h; sourceTree = "<group>"; };
+		24940FD2283AA97400AED5FC /* basicAlgorithms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basicAlgorithms.h; sourceTree = "<group>"; };
+		24940FD3283AA97400AED5FC /* boundingBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boundingBox.h; sourceTree = "<group>"; };
+		24940FD4283AA97400AED5FC /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
+		24940FD5283AA97400AED5FC /* tribox3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tribox3.h; sourceTree = "<group>"; };
+		24940FD6283AA97400AED5FC /* matrixIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrixIO.cpp; sourceTree = "<group>"; };
+		24940FD7283AA97400AED5FC /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
+		24940FD8283AA97400AED5FC /* triple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triple.h; sourceTree = "<group>"; };
+		24940FD9283AA97400AED5FC /* sparseMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sparseMatrix.cpp; sourceTree = "<group>"; };
+		24940FDA283AA97400AED5FC /* vegalong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vegalong.h; sourceTree = "<group>"; };
+		24940FDB283AA97400AED5FC /* boundingBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boundingBox.cpp; sourceTree = "<group>"; };
+		24940FDC283AA97400AED5FC /* constrainedDOFs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constrainedDOFs.h; sourceTree = "<group>"; };
+		24940FDD283AA97400AED5FC /* matrixIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrixIO.h; sourceTree = "<group>"; };
+		24940FDE283AA97400AED5FC /* valueIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = valueIndex.h; sourceTree = "<group>"; };
+		24940FDF283AA97400AED5FC /* geometryQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geometryQuery.cpp; sourceTree = "<group>"; };
+		24940FE0283AA97400AED5FC /* triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangle.cpp; sourceTree = "<group>"; };
+		24940FE1283AA97400AED5FC /* geometryQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometryQuery.h; sourceTree = "<group>"; };
+		24940FE2283AA97400AED5FC /* triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
+		24940FE3283AA97400AED5FC /* constrainedDOFs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = constrainedDOFs.cpp; sourceTree = "<group>"; };
 		3A05CBDE1F731AB800CA21B1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A1F1B411F0338CF001622B3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../AppleTVOS.platform/Developer/SDKs/AppleTVOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A3532841E99974500C194AD /* MetalKitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalKitView.h; sourceTree = "<group>"; };
@@ -108,6 +285,123 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24940F87283AA4A900AED5FC /* Simulator */ = {
+			isa = PBXGroup;
+			children = (
+				24940F97283AA63700AED5FC /* json.hpp */,
+				24940F8D283AA53500AED5FC /* EnergyFunction.h */,
+				24940F89283AA53500AED5FC /* Simulator.cpp */,
+				24940F88283AA53500AED5FC /* Simulator.h */,
+				24940F8A283AA53500AED5FC /* Solver.cpp */,
+				24940F8B283AA53500AED5FC /* Solver.h */,
+				24940F98283AA97400AED5FC /* vega */,
+			);
+			path = Simulator;
+			sourceTree = "<group>";
+		};
+		24940F98283AA97400AED5FC /* vega */ = {
+			isa = PBXGroup;
+			children = (
+				24940F99283AA97400AED5FC /* volumetricMesh */,
+				24940FBA283AA97400AED5FC /* minivector */,
+				24940FCC283AA97400AED5FC /* utility */,
+			);
+			path = vega;
+			sourceTree = "<group>";
+		};
+		24940F99283AA97400AED5FC /* volumetricMesh */ = {
+			isa = PBXGroup;
+			children = (
+				24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */,
+				24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */,
+				24940F9C283AA97400AED5FC /* cubicMesh.cpp */,
+				24940F9D283AA97400AED5FC /* generateGradientMatrix.h */,
+				24940F9E283AA97400AED5FC /* cubicMesh.h */,
+				24940F9F283AA97400AED5FC /* volumetricMeshENuMaterial.cpp */,
+				24940FA0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp */,
+				24940FA1283AA97400AED5FC /* generateInterpolationMatrix.cpp */,
+				24940FA2283AA97400AED5FC /* volumetricMesh.cpp */,
+				24940FA3283AA97400AED5FC /* tetMesh.cpp */,
+				24940FA4283AA97400AED5FC /* generateInterpolationMatrix.h */,
+				24940FA5283AA97400AED5FC /* generateMeshGraph.h */,
+				24940FA6283AA97400AED5FC /* volumetricMeshENuMaterial.h */,
+				24940FA7283AA97400AED5FC /* volumetricMeshLoader.h */,
+				24940FA8283AA97400AED5FC /* tetMesh.h */,
+				24940FA9283AA97400AED5FC /* generateGradientMatrix.cpp */,
+				24940FAA283AA97400AED5FC /* volumetricMeshLoader.cpp */,
+				24940FAB283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp */,
+				24940FAC283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp */,
+				24940FAD283AA97400AED5FC /* generateMassMatrix.h */,
+				24940FAE283AA97400AED5FC /* volumetricMeshParser.cpp */,
+				24940FAF283AA97400AED5FC /* volumetricMeshParser.h */,
+				24940FB0283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.h */,
+				24940FB1283AA97400AED5FC /* volumetricMeshDeformationGradient.h */,
+				24940FB2283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.h */,
+				24940FB3283AA97400AED5FC /* volumetricMesh.h */,
+				24940FB4283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp */,
+				24940FB5283AA97400AED5FC /* interpolationWeightsMultiLoad.h */,
+				24940FB6283AA97400AED5FC /* generateMeshGraph.cpp */,
+				24940FB7283AA97400AED5FC /* computeStiffnessMatrixNullspace.h */,
+				24940FB8283AA97400AED5FC /* generateTetMeshFromCubicMesh.h */,
+				24940FB9283AA97400AED5FC /* generateMassMatrix.cpp */,
+			);
+			path = volumetricMesh;
+			sourceTree = "<group>";
+		};
+		24940FBA283AA97400AED5FC /* minivector */ = {
+			isa = PBXGroup;
+			children = (
+				24940FBB283AA97400AED5FC /* vec3i.cpp */,
+				24940FBC283AA97400AED5FC /* vec2i.h */,
+				24940FBD283AA97400AED5FC /* vec3i.h */,
+				24940FBE283AA97400AED5FC /* eig3.cpp */,
+				24940FBF283AA97400AED5FC /* vec2d.h */,
+				24940FC0283AA97400AED5FC /* vec4i.cpp */,
+				24940FC1283AA97400AED5FC /* vec3d.h */,
+				24940FC2283AA97400AED5FC /* eig3.h */,
+				24940FC3283AA97400AED5FC /* minivector.h */,
+				24940FC4283AA97400AED5FC /* vec4d.h */,
+				24940FC5283AA97400AED5FC /* vec3.h */,
+				24940FC6283AA97400AED5FC /* vec2d.cpp */,
+				24940FC7283AA97400AED5FC /* vec4i.h */,
+				24940FC8283AA97400AED5FC /* mat3d.cpp */,
+				24940FC9283AA97400AED5FC /* vec3.cpp */,
+				24940FCA283AA97400AED5FC /* mat3d.h */,
+				24940FCB283AA97400AED5FC /* vec3d.cpp */,
+			);
+			path = minivector;
+			sourceTree = "<group>";
+		};
+		24940FCC283AA97400AED5FC /* utility */ = {
+			isa = PBXGroup;
+			children = (
+				24940FCD283AA97400AED5FC /* sparseMatrix.h */,
+				24940FCE283AA97400AED5FC /* tribox3.cpp */,
+				24940FCF283AA97400AED5FC /* matrixMacros.h */,
+				24940FD0283AA97400AED5FC /* range.h */,
+				24940FD1283AA97400AED5FC /* matrixMultiplyMacros.h */,
+				24940FD2283AA97400AED5FC /* basicAlgorithms.h */,
+				24940FD3283AA97400AED5FC /* boundingBox.h */,
+				24940FD4283AA97400AED5FC /* graph.cpp */,
+				24940FD5283AA97400AED5FC /* tribox3.h */,
+				24940FD6283AA97400AED5FC /* matrixIO.cpp */,
+				24940FD7283AA97400AED5FC /* graph.h */,
+				24940FD8283AA97400AED5FC /* triple.h */,
+				24940FD9283AA97400AED5FC /* sparseMatrix.cpp */,
+				24940FDA283AA97400AED5FC /* vegalong.h */,
+				24940FDB283AA97400AED5FC /* boundingBox.cpp */,
+				24940FDC283AA97400AED5FC /* constrainedDOFs.h */,
+				24940FDD283AA97400AED5FC /* matrixIO.h */,
+				24940FDE283AA97400AED5FC /* valueIndex.h */,
+				24940FDF283AA97400AED5FC /* geometryQuery.cpp */,
+				24940FE0283AA97400AED5FC /* triangle.cpp */,
+				24940FE1283AA97400AED5FC /* geometryQuery.h */,
+				24940FE2283AA97400AED5FC /* triangle.h */,
+				24940FE3283AA97400AED5FC /* constrainedDOFs.cpp */,
+			);
+			path = utility;
+			sourceTree = "<group>";
+		};
 		3A1F1B351F0336A8001622B3 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +435,7 @@
 			children = (
 				3ED283CC1EC2C6D200A23F58 /* README.md */,
 				24940F73283941AA00AED5FC /* suz.obj */,
+				24940F87283AA4A900AED5FC /* Simulator */,
 				3A3532831E99974500C194AD /* Renderer */,
 				3A3532911E99974500C194AD /* Application */,
 				3AE289861EEA0A9100DF4C9A /* Frameworks */,
@@ -349,13 +644,46 @@
 			buildActionMask = 2147483647;
 			files = (
 				24940F81283A950400AED5FC /* Entity.mm in Sources */,
+				24941012283AA97400AED5FC /* generateMassMatrix.cpp in Sources */,
+				24940FFD283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */,
+				24941006283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */,
+				24940FF4283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */,
+				2494103C283AA97400AED5FC /* triangle.cpp in Sources */,
+				2494100F283AA97400AED5FC /* generateMeshGraph.cpp in Sources */,
 				24940F6B28391DE000AED5FC /* Renderer.mm in Sources */,
+				24940FF1283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */,
+				24940F92283AA53500AED5FC /* Solver.cpp in Sources */,
+				24941003283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
+				24941000283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
+				24941027283AA97400AED5FC /* vec3d.cpp in Sources */,
+				2494102D283AA97400AED5FC /* graph.cpp in Sources */,
 				24940F7B283A324F00AED5FC /* Math.cpp in Sources */,
+				24941015283AA97400AED5FC /* vec3i.cpp in Sources */,
+				2494101B283AA97400AED5FC /* vec4i.cpp in Sources */,
+				2494100C283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */,
+				2494102A283AA97400AED5FC /* tribox3.cpp in Sources */,
 				63E77A181ED2059A00E1E542 /* Shaders.metal in Sources */,
 				3A35329D1E99974500C194AD /* AAPLViewController.m in Sources */,
+				24941039283AA97400AED5FC /* geometryQuery.cpp in Sources */,
 				24940F85283A95AC00AED5FC /* Mesh.mm in Sources */,
+				24941036283AA97400AED5FC /* boundingBox.cpp in Sources */,
+				24940FE8283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */,
+				24941021283AA97400AED5FC /* mat3d.cpp in Sources */,
+				24941024283AA97400AED5FC /* vec3.cpp in Sources */,
+				24941033283AA97400AED5FC /* sparseMatrix.cpp in Sources */,
+				24940FF7283AA97400AED5FC /* volumetricMesh.cpp in Sources */,
+				24940FE5283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */,
+				2494103F283AA97400AED5FC /* constrainedDOFs.cpp in Sources */,
+				24941030283AA97400AED5FC /* matrixIO.cpp in Sources */,
+				24940FFA283AA97400AED5FC /* tetMesh.cpp in Sources */,
+				24940FEB283AA97400AED5FC /* cubicMesh.cpp in Sources */,
+				24940FEE283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */,
 				3A3532941E99974500C194AD /* main.m in Sources */,
 				3A3532CE1E99974500C194AD /* MetalKitView.mm in Sources */,
+				24941009283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */,
+				24941018283AA97400AED5FC /* eig3.cpp in Sources */,
+				24940F8F283AA53500AED5FC /* Simulator.cpp in Sources */,
+				2494101E283AA97400AED5FC /* vec2d.cpp in Sources */,
 				3ACD21351EAE60D2000D1DED /* AAPLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,13 +693,46 @@
 			buildActionMask = 2147483647;
 			files = (
 				24940F82283A950400AED5FC /* Entity.mm in Sources */,
+				24941013283AA97400AED5FC /* generateMassMatrix.cpp in Sources */,
+				24940FFE283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */,
+				24941007283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */,
+				24940FF5283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */,
+				2494103D283AA97400AED5FC /* triangle.cpp in Sources */,
+				24941010283AA97400AED5FC /* generateMeshGraph.cpp in Sources */,
 				24940F6C28391DE000AED5FC /* Renderer.mm in Sources */,
+				24940FF2283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */,
+				24940F93283AA53500AED5FC /* Solver.cpp in Sources */,
+				24941004283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
+				24941001283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
+				24941028283AA97400AED5FC /* vec3d.cpp in Sources */,
+				2494102E283AA97400AED5FC /* graph.cpp in Sources */,
 				24940F7C283A324F00AED5FC /* Math.cpp in Sources */,
+				24941016283AA97400AED5FC /* vec3i.cpp in Sources */,
+				2494101C283AA97400AED5FC /* vec4i.cpp in Sources */,
+				2494100D283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */,
+				2494102B283AA97400AED5FC /* tribox3.cpp in Sources */,
 				63E77A191ED2059E00E1E542 /* Shaders.metal in Sources */,
 				3A3532CF1E99974500C194AD /* MetalKitView.mm in Sources */,
+				2494103A283AA97400AED5FC /* geometryQuery.cpp in Sources */,
 				24940F86283A95AC00AED5FC /* Mesh.mm in Sources */,
+				24941037283AA97400AED5FC /* boundingBox.cpp in Sources */,
+				24940FE9283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */,
+				24941022283AA97400AED5FC /* mat3d.cpp in Sources */,
+				24941025283AA97400AED5FC /* vec3.cpp in Sources */,
+				24941034283AA97400AED5FC /* sparseMatrix.cpp in Sources */,
+				24940FF8283AA97400AED5FC /* volumetricMesh.cpp in Sources */,
+				24940FE6283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */,
+				24941040283AA97400AED5FC /* constrainedDOFs.cpp in Sources */,
+				24941031283AA97400AED5FC /* matrixIO.cpp in Sources */,
+				24940FFB283AA97400AED5FC /* tetMesh.cpp in Sources */,
+				24940FEC283AA97400AED5FC /* cubicMesh.cpp in Sources */,
+				24940FEF283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */,
 				3A1F1B391F033765001622B3 /* AAPLViewController.m in Sources */,
 				3A1F1B3F1F033846001622B3 /* main.m in Sources */,
+				2494100A283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */,
+				24941019283AA97400AED5FC /* eig3.cpp in Sources */,
+				24940F90283AA53500AED5FC /* Simulator.cpp in Sources */,
+				2494101F283AA97400AED5FC /* vec2d.cpp in Sources */,
 				3A1F1B441F033EF3001622B3 /* AAPLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,14 +741,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2494101A283AA97400AED5FC /* vec4i.cpp in Sources */,
 				3A1F1B3D1F033827001622B3 /* AAPLViewController.m in Sources */,
+				24941032283AA97400AED5FC /* sparseMatrix.cpp in Sources */,
+				2494103B283AA97400AED5FC /* triangle.cpp in Sources */,
+				24941035283AA97400AED5FC /* boundingBox.cpp in Sources */,
 				24940F6A28391DE000AED5FC /* Renderer.mm in Sources */,
+				2494100E283AA97400AED5FC /* generateMeshGraph.cpp in Sources */,
+				24940FF0283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */,
+				2494103E283AA97400AED5FC /* constrainedDOFs.cpp in Sources */,
+				24941029283AA97400AED5FC /* tribox3.cpp in Sources */,
+				24941005283AA97400AED5FC /* volumetricMeshOrthotropicMaterial.cpp in Sources */,
 				24940F80283A950400AED5FC /* Entity.mm in Sources */,
+				24941038283AA97400AED5FC /* geometryQuery.cpp in Sources */,
 				63E77A1A1ED205A200E1E542 /* Shaders.metal in Sources */,
+				24941020283AA97400AED5FC /* mat3d.cpp in Sources */,
+				24940FED283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */,
+				24941023283AA97400AED5FC /* vec3.cpp in Sources */,
+				24941008283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */,
+				24941011283AA97400AED5FC /* generateMassMatrix.cpp in Sources */,
+				2494100B283AA97400AED5FC /* volumetricMeshMooneyRivlinMaterial.cpp in Sources */,
+				24940F91283AA53500AED5FC /* Solver.cpp in Sources */,
 				24940F7A283A324F00AED5FC /* Math.cpp in Sources */,
+				24941026283AA97400AED5FC /* vec3d.cpp in Sources */,
+				24941014283AA97400AED5FC /* vec3i.cpp in Sources */,
+				24940FF3283AA97400AED5FC /* generateInterpolationMatrix.cpp in Sources */,
+				24940FFC283AA97400AED5FC /* generateGradientMatrix.cpp in Sources */,
 				3A1F1B3E1F033846001622B3 /* main.m in Sources */,
 				24940F84283A95AC00AED5FC /* Mesh.mm in Sources */,
+				24940FE7283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp in Sources */,
+				24940FF6283AA97400AED5FC /* volumetricMesh.cpp in Sources */,
 				3A3532D01E99974500C194AD /* MetalKitView.mm in Sources */,
+				24941017283AA97400AED5FC /* eig3.cpp in Sources */,
+				2494102C283AA97400AED5FC /* graph.cpp in Sources */,
+				24940FFF283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
+				24940F8E283AA53500AED5FC /* Simulator.cpp in Sources */,
+				24940FE4283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */,
+				24940FF9283AA97400AED5FC /* tetMesh.cpp in Sources */,
+				24941002283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
+				2494101D283AA97400AED5FC /* vec2d.cpp in Sources */,
+				2494102F283AA97400AED5FC /* matrixIO.cpp in Sources */,
+				24940FEA283AA97400AED5FC /* cubicMesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +876,10 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-I",
+					/usr/local/include/eigen3/,
+				);
 				PRODUCT_NAME = HelloTriangle;
 			};
 			name = Debug;
@@ -532,6 +930,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = (
+					"-I",
+					/usr/local/include/eigen3/,
+				);
 				PRODUCT_NAME = HelloTriangle;
 			};
 			name = Release;
