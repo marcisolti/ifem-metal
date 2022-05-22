@@ -8,21 +8,12 @@
 
 #pragma once
 
-#include "ShaderTypes.h"
-
 #include <vector>
 
 template<typename VertexType,
          typename IndexType>
 struct Geometry
 {
-    Geometry() = default;
-
-    Geometry(std::vector<VertexType> vertices, std::vector<IndexType> indices = {})
-    : vertices{vertices}
-    , indices{indices}
-    { }
-
     std::vector<VertexType> vertices;
     std::vector<IndexType> indices;
 };
