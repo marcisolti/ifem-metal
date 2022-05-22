@@ -9,15 +9,19 @@
 #include "Mesh.h"
 
 template<>
-void Mesh<Geometry<Vertex, uint32_t>>::UploadGeometry(id<MTLDevice> device)
+void Mesh<Geometry<Vertex, uint32_t>>::CreateBuffers(id<MTLDevice> device)
 {
-    vertexBuffer = [device newBufferWithLength: geometry.VertexSize()
-                                        options:MTLResourceStorageModeShared];
-    indexBuffer = [device newBufferWithLength: geometry.IndexSize()
+    vertexBuffer = [device newBufferWithLength:sizeof(Vertex) * geometry.vertices.size()
                                        options:MTLResourceStorageModeShared];
+    indexBuffer = [device newBufferWithLength:sizeof(uint32_t) * geometry.indices.size()
+                                      options:MTLResourceStorageModeShared];
+}
 
-    memcpy(vertexBuffer.contents, geometry.VertexData(), geometry.VertexSize());
-    memcpy(indexBuffer.contents, geometry.IndexData(), geometry.IndexSize());
+template<>
+void Mesh<Geometry<Vertex, uint32_t>>::UploadGeometry()
+{
+    memcpy(vertexBuffer.contents, geometry.vertices.data(), sizeof(Vertex) * geometry.vertices.size());
+    memcpy(indexBuffer.contents, geometry.indices.data(), sizeof(uint32_t) * geometry.indices.size());
 }
 
 template<>
@@ -27,7 +31,7 @@ void Mesh<Geometry<Vertex, uint32_t>>::Draw(id<MTLRenderCommandEncoder> renderEn
                             offset:0
                            atIndex:VertexInputIndexVertices];
     [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
-                              indexCount:geometry.IndexCount()
+                              indexCount:geometry.indices.size()
                                indexType:MTLIndexTypeUInt32
                              indexBuffer:indexBuffer
                        indexBufferOffset:0];

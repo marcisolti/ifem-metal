@@ -22,7 +22,8 @@ public:
     ~Mesh() = default;
     Mesh(Geometry geometry) : geometry{geometry} {}
 
-    void UploadGeometry(id<MTLDevice> device);
+    void CreateBuffers(id<MTLDevice> device);
+    void UploadGeometry();
     void Draw(id<MTLRenderCommandEncoder> renderEncoder);
 private:
     id<MTLBuffer> vertexBuffer;

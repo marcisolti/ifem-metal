@@ -13,7 +13,8 @@
 void Entity::LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device)
 {
     mesh.geometry = LoadOBJ(filename);
-    mesh.UploadGeometry(device);
+    mesh.CreateBuffers(device);
+    mesh.UploadGeometry();
 }
 
 void Entity::Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix)
