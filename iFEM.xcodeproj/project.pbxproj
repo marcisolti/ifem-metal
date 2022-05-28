@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		248AEB8A283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
+		248AEB8B283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
+		248AEB8C283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
 		24940F6A28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6B28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6C28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
@@ -22,9 +25,6 @@
 		24940F84283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F85283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F86283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
-		24940F8E283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
-		24940F8F283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
-		24940F90283AA53500AED5FC /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F89283AA53500AED5FC /* Simulator.cpp */; };
 		24940F91283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
 		24940F92283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
 		24940F93283AA53500AED5FC /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F8A283AA53500AED5FC /* Solver.cpp */; };
@@ -144,6 +144,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		248AEB88283ED1CB00F9A298 /* Simulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
+		248AEB89283ED1CB00F9A298 /* Simulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
+		248AEB8D283ED51E00F9A298 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		24940F6828391DE000AED5FC /* Renderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
 		24940F6928391DE000AED5FC /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		24940F6E2839364700AED5FC /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
@@ -155,12 +158,9 @@
 		24940F7E283A8DDA00AED5FC /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		24940F7F283A950400AED5FC /* Entity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Entity.mm; sourceTree = "<group>"; };
 		24940F83283A95AC00AED5FC /* Mesh.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Mesh.mm; sourceTree = "<group>"; };
-		24940F88283AA53500AED5FC /* Simulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
-		24940F89283AA53500AED5FC /* Simulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
 		24940F8A283AA53500AED5FC /* Solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Solver.cpp; sourceTree = "<group>"; };
 		24940F8B283AA53500AED5FC /* Solver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Solver.h; sourceTree = "<group>"; };
 		24940F8D283AA53500AED5FC /* EnergyFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyFunction.h; sourceTree = "<group>"; };
-		24940F97283AA63700AED5FC /* json.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		24940F9A283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = volumetricMeshDeformationGradient.cpp; sourceTree = "<group>"; };
 		24940F9B283AA97400AED5FC /* interpolationWeightsMultiLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interpolationWeightsMultiLoad.cpp; sourceTree = "<group>"; };
 		24940F9C283AA97400AED5FC /* cubicMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cubicMesh.cpp; sourceTree = "<group>"; };
@@ -288,12 +288,12 @@
 		24940F87283AA4A900AED5FC /* Simulator */ = {
 			isa = PBXGroup;
 			children = (
-				24940F97283AA63700AED5FC /* json.hpp */,
-				24940F8D283AA53500AED5FC /* EnergyFunction.h */,
-				24940F89283AA53500AED5FC /* Simulator.cpp */,
-				24940F88283AA53500AED5FC /* Simulator.h */,
-				24940F8A283AA53500AED5FC /* Solver.cpp */,
+				248AEB8D283ED51E00F9A298 /* Config.h */,
+				248AEB89283ED1CB00F9A298 /* Simulator.h */,
+				248AEB88283ED1CB00F9A298 /* Simulator.cpp */,
 				24940F8B283AA53500AED5FC /* Solver.h */,
+				24940F8A283AA53500AED5FC /* Solver.cpp */,
+				24940F8D283AA53500AED5FC /* EnergyFunction.h */,
 				24940F98283AA97400AED5FC /* vega */,
 			);
 			path = Simulator;
@@ -679,10 +679,10 @@
 				24940FEB283AA97400AED5FC /* cubicMesh.cpp in Sources */,
 				24940FEE283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */,
 				3A3532941E99974500C194AD /* main.m in Sources */,
+				248AEB8B283ED1CB00F9A298 /* Simulator.cpp in Sources */,
 				3A3532CE1E99974500C194AD /* MetalKitView.mm in Sources */,
 				24941009283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */,
 				24941018283AA97400AED5FC /* eig3.cpp in Sources */,
-				24940F8F283AA53500AED5FC /* Simulator.cpp in Sources */,
 				2494101E283AA97400AED5FC /* vec2d.cpp in Sources */,
 				3ACD21351EAE60D2000D1DED /* AAPLAppDelegate.m in Sources */,
 			);
@@ -728,10 +728,10 @@
 				24940FEC283AA97400AED5FC /* cubicMesh.cpp in Sources */,
 				24940FEF283AA97400AED5FC /* volumetricMeshENuMaterial.cpp in Sources */,
 				3A1F1B391F033765001622B3 /* AAPLViewController.m in Sources */,
+				248AEB8C283ED1CB00F9A298 /* Simulator.cpp in Sources */,
 				3A1F1B3F1F033846001622B3 /* main.m in Sources */,
 				2494100A283AA97400AED5FC /* volumetricMeshParser.cpp in Sources */,
 				24941019283AA97400AED5FC /* eig3.cpp in Sources */,
-				24940F90283AA53500AED5FC /* Simulator.cpp in Sources */,
 				2494101F283AA97400AED5FC /* vec2d.cpp in Sources */,
 				3A1F1B441F033EF3001622B3 /* AAPLAppDelegate.m in Sources */,
 			);
@@ -743,6 +743,7 @@
 			files = (
 				2494101A283AA97400AED5FC /* vec4i.cpp in Sources */,
 				3A1F1B3D1F033827001622B3 /* AAPLViewController.m in Sources */,
+				248AEB8A283ED1CB00F9A298 /* Simulator.cpp in Sources */,
 				24941032283AA97400AED5FC /* sparseMatrix.cpp in Sources */,
 				2494103B283AA97400AED5FC /* triangle.cpp in Sources */,
 				24941035283AA97400AED5FC /* boundingBox.cpp in Sources */,
@@ -775,7 +776,6 @@
 				24941017283AA97400AED5FC /* eig3.cpp in Sources */,
 				2494102C283AA97400AED5FC /* graph.cpp in Sources */,
 				24940FFF283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
-				24940F8E283AA53500AED5FC /* Simulator.cpp in Sources */,
 				24940FE4283AA97400AED5FC /* volumetricMeshDeformationGradient.cpp in Sources */,
 				24940FF9283AA97400AED5FC /* tetMesh.cpp in Sources */,
 				24941002283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
@@ -840,7 +840,7 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -901,7 +901,7 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
