@@ -18,6 +18,12 @@ typedef enum VertexInputIndex
 
 typedef struct
 {
+    matrix_float4x4 modelMatrix, modelMatrixInv, viewProjMatrix;
+    vector_float3 eyePos;
+} FrameData;
+
+typedef struct
+{
     vector_float3 position;
     vector_float3 normal;
 } Vertex;

@@ -15,17 +15,27 @@ using namespace metal;
 struct RasterizerData
 {
     float4 position [[position]];
-    float4 color;
+    float3 worldPos;
+    float3 normal;
+    float3 eyePos;
 };
+
+// ---------------------------------------------
+// *                                           *
+// * Shaders                                   *
+// *                                           *
+// ---------------------------------------------
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
              constant Vertex *vertices [[buffer(VertexInputIndexVertices)]],
-             constant matrix_float4x4 *MVPPointer [[buffer(VertexInputIndexMVP)]])
+             constant FrameData *frameData [[buffer(VertexInputIndexMVP)]])
 {
     RasterizerData out;
-    out.position = *MVPPointer * vector_float4(vertices[vertexID].position, 1);
-    out.color = vector_float4(vertices[vertexID].normal, 1);
+    out.worldPos = (frameData->modelMatrix * float4(vertices[vertexID].position, 1)).xyz;
+    out.position = frameData->viewProjMatrix * float4(out.worldPos, 1);
+    out.normal = (vector_float4(vertices[vertexID].normal, 1) * frameData->modelMatrixInv).xyz;
+    out.eyePos = { 0,0,4 };
     return out;
 }
 
