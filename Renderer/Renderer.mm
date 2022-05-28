@@ -50,7 +50,7 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene(const Config& config)
 {
-    staticGeometry.LoadGeometryFromFile(std::string{"suz.obj"}, device);
+    deformable.LoadGeometryFromFile(config.simulator.modelName + ".obj", device);
 }
 
 id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
@@ -81,8 +81,10 @@ void Renderer::EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder
 
 void Renderer::Draw(MTKView* view, const State& state, const Result& result)
 {
+    deformable.SetDisplacement({});
+
     id<MTLRenderCommandEncoder> renderEncoder = BeginFrame(view);
-    staticGeometry.Draw(renderEncoder, viewProjectionMatrix);
+    deformable.Draw(renderEncoder, viewProjectionMatrix);
     EndFrame(view, renderEncoder);
 }
 
