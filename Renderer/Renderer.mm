@@ -28,7 +28,7 @@ void Renderer::StartUp(MTKView* view, const Config& config)
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
     pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
-    
+
     NSError *error;
     pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
                                                              error:&error];
@@ -59,7 +59,9 @@ id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
     commandBuffer.label = @"MyCommand";
 
     MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
-
+    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0);
     assert(renderPassDescriptor != nil);
 
     id<MTLRenderCommandEncoder> renderEncoder =
