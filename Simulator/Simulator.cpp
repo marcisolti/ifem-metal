@@ -4,6 +4,7 @@
 Solver solver;
 
 void Simulator::StartUp(json* config)
+void Simulator::StartUp(const Config& config)
 {
 	this->config = config;
 	stepNum = 0;
@@ -18,6 +19,7 @@ void Simulator::StartUp(json* config)
 	
 	posArray.push_back(initPos);
 	stepNum++;
+    gSolver.StartUp(config);
 }
 
 void Simulator::ShutDown()

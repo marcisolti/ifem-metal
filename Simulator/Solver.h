@@ -1,16 +1,24 @@
+#include "Config.h"
+
 #pragma once
 //#define NOMINMAX
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmismatched-tags"
+#pragma clang diagnostic ignored "-Wreorder"
+
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <Eigen/IterativeLinearSolvers>
+
+#pragma GCC diagnostic pop
 
 //#include <Eigen/PardisoSupport>
 
 #include "vega/volumetricMesh/volumetricMesh.h"
 
 #include "EnergyFunction.h"
-#include "json.hpp"
-using json = nlohmann::json;
+//#include "json.hpp"
+//using json = nlohmann::json;
 
 //#include "PerformanceCounter.h"
 
@@ -34,43 +42,43 @@ public:
 	Interpolator() = default;
 	~Interpolator() = default;
 	
-	void set(json* config)
-	{
-		vals.clear();
-		for (int i = 0; i < (*config)["sim"]["loadCases"]["loadSteps"].size(); ++i)
-		{
-			loadVal val;
-			val.t = (*config)["sim"]["loadCases"]["loadSteps"][i]["t"];
-			val.f = (*config)["sim"]["loadCases"]["loadSteps"][i]["f"];
-			vals.push_back(val);
-		}
-	}
-
-	double get(double T)
-	{
-		int i = 0;
-		//while (false) {
-		while (vals[ i + 1 ].t < T) {
-			if (i < vals.size())
-			{
-				i++;
-			}
-		}
-		double t0 = vals[ i ].t;
-		double f0 = vals[ i ].f;
-
-		double t1 = vals[ i + 1 ].t;
-		double f1 = vals[ i + 1 ].f;
-
-		return f0 + (T - t0) * ((f1 - f0) / (t1 - t0));
-	}
+//	void set(json* config)
+//	{
+//		vals.clear();
+//		for (int i = 0; i < (*config)["sim"]["loadCases"]["loadSteps"].size(); ++i)
+//		{
+//			loadVal val;
+//			val.t = (*config)["sim"]["loadCases"]["loadSteps"][i]["t"];
+//			val.f = (*config)["sim"]["loadCases"]["loadSteps"][i]["f"];
+//			vals.push_back(val);
+//		}
+//	}
+//
+//	double get(double T)
+//	{
+//		int i = 0;
+//		//while (false) {
+//		while (vals[ i + 1 ].t < T) {
+//			if (i < vals.size())
+//			{
+//				i++;
+//			}
+//		}
+//		double t0 = vals[ i ].t;
+//		double f0 = vals[ i ].f;
+//
+//		double t1 = vals[ i + 1 ].t;
+//		double f1 = vals[ i + 1 ].f;
+//
+//		return f0 + (T - t0) * ((f1 - f0) / (t1 - t0));
+//	}
 };
 
 enum Integrator { qStatic, bwEuler, Newmark };
 
 class Solver
 {
-	json* config;
+//	json* config;
 
 	VolumetricMesh* mesh;
 	uint32_t numDOFs, numElements, numVertices;
@@ -93,7 +101,7 @@ class Solver
 	double alpha, beta;
 
 	// boundary conditions
-	std::vector<int> loadedVerts, BCs;
+	std::vector<uint32_t> loadedVerts, BCs;
 	SpMat S;
 	
 	// matrices and vectors
@@ -120,7 +128,7 @@ public:
 	Solver() = default;
 	~Solver() = default;
 
-	Vec StartUp(json* config);
+	void StartUp(const Config& initialConfig);
 	void ShutDown();
 
 	Vec Step();

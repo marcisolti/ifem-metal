@@ -8,54 +8,49 @@
 
 Interpolator interpolator;
 
-Vec Solver::StartUp(json* config)
+void Solver::StartUp(const Config& initialConfig)
 {
-	this->config = config;
-
 	// read config
 	{
-		h				= (*config)["sim"]["stepSize"];
+		h				= 1.0 / 60;
 		h2				= h * h;
-		numSubsteps		= (*config)["sim"]["numSubsteps"];
-		alpha			= (*config)["sim"]["material"]["alpha"];
-		beta			= (*config)["sim"]["material"]["beta"];
-		magicConstant	= (*config)["sim"]["magicConstant"];
+		numSubsteps		= 1;
+		alpha			= 0.5;
+		beta			= 2.0;
+		magicConstant	= 1.0;
 
-		interactiveVert = (*config)["sim"]["interactiveVert"];
-		interactiveLoad	= (*config)["sim"]["interactiveLoad"];
+		interactiveVert = 666;
+		interactiveLoad	= 100.0;
 		interactiveVector << 0, 0, 0;
 
-		solver.setMaxIterations((*config)["sim"]["cgIterations"]);
+		solver.setMaxIterations(200);
 
-		interpolator.set(config);
-
-		// load mesh
+        // load mesh
 		{
-			std::string meshPath = "../Media/vega/" + std::string{ (*config)["sim"]["model"] } + ".veg";
+			std::string meshPath = "../Media/vega/" + initialConfig.simulator.modelName + ".veg";
 			std::cout << "loading mesh " << meshPath << '\n';
 
 			mesh = VolumetricMeshLoader::load(meshPath.c_str());
 
-			if (!mesh)
-			{
-				std::cout << "fail! terminating\n";
-				std::exit(420);
-			}
-			else
-			{
-				std::cout << "success! num elements: "
-					<< mesh->getNumElements()
-					<< ";  num vertices: "
-					<< mesh->getNumVertices() << ";\n";
-			}
+//			if (!mesh)
+//			{
+//				std::cout << "fail! terminating\n";
+//				std::exit(420);
+//			}
+//			else
+//			{
+//				std::cout << "success! num elements: "
+//					<< mesh->getNumElements()
+//					<< ";  num vertices: "
+//					<< mesh->getNumVertices() << ";\n";
+//			}
 		}
 
 		// set material
 		{
-			double E					 = ((*config)["sim"]["material"]["E"]);
-            E *= 1.e6;
-			double nu					 = (*config)["sim"]["material"]["nu"];
-			const std::string energyName = (*config)["sim"]["material"]["energyFunction"];
+			double E					 = 100.e6;
+			double nu					 = 0.7;
+			const std::string energyName = "ARAP";
 
 			if (energyName == "ARAP")
 			{
@@ -81,13 +76,10 @@ Vec Solver::StartUp(json* config)
 				std::exit(420);
 		}
 
-		for(int i = 0; i < (*config)["sim"]["BCs"].size(); ++i)
-			BCs.push_back((*config)["sim"]["BCs"][i]);
+        BCs = { 1,3,4 };
+        loadedVerts = { 2,6,8 };
 
-		for (int i = 0; i < (*config)["sim"]["loadCases"]["nodes"].size(); ++i)
-			loadedVerts.push_back((*config)["sim"]["loadCases"]["nodes"][i]);
-
-		std::string integratorName = (*config)["sim"]["integrator"];
+		std::string integratorName{ "qStatic" };
 		if (integratorName == "qStatic")
 			integrator = qStatic;
 		else if (integratorName == "bwEuler")
@@ -100,9 +92,9 @@ Vec Solver::StartUp(json* config)
 
 	}
 
-	numVertices = mesh->getNumVertices();
+    numVertices = 0xDAD69; //mesh->getNumVertices();
 	numDOFs = 3 * numVertices;
-	numElements = mesh->getNumElements();
+    numElements = 0b10100101; // mesh->getNumElements();
 
 	T = 0.0;
 
@@ -122,7 +114,7 @@ Vec Solver::StartUp(json* config)
 
 		M = SpMat(numDOFs, numDOFs);
 
-		double rho = (*config)["sim"]["material"]["rho"];
+		double rho = 0.8;
 		for (int i = 0; i < numElements; ++i)
 		{
 			if (i % 1000 == 0)
@@ -142,7 +134,7 @@ Vec Solver::StartUp(json* config)
 				double mass = rho * vol;
 				for (int v = 0; v < 4; ++v)
 				{
-					int index = mesh->getVertexIndex(i, v);
+                    int index = 1;//mesh->getVertexIndex(i, v);
 					//std::cout << i << ',' << v << ':' << index << '\n';
 					M.coeffRef(3 * index + 0, 3 * index + 0) += mass;
 					M.coeffRef(3 * index + 1, 3 * index + 1) += mass;
@@ -164,10 +156,10 @@ Vec Solver::StartUp(json* config)
 				std::cout << i << '\n';
 
 			{
-				indexArray.push_back(3 * mesh->getVertexIndex(i, 0));
-				indexArray.push_back(3 * mesh->getVertexIndex(i, 1));
-				indexArray.push_back(3 * mesh->getVertexIndex(i, 2));
-				indexArray.push_back(3 * mesh->getVertexIndex(i, 3));
+//				indexArray.push_back(3 * mesh->getVertexIndex(i, 0));
+//				indexArray.push_back(3 * mesh->getVertexIndex(i, 1));
+//				indexArray.push_back(3 * mesh->getVertexIndex(i, 2));
+//				indexArray.push_back(3 * mesh->getVertexIndex(i, 3));
 			}
 
 			Mat12 m;
@@ -186,10 +178,10 @@ Vec Solver::StartUp(json* config)
 	{
 		std::srand(std::time(nullptr)); // use current time as seed for random generator
 
-		std::string initConfig = (*config)["sim"]["initConfig"];
-		for (size_t i = 0; i < mesh->getNumVertices(); ++i)
+        std::string initConfig{'x'};
+		for (size_t i = 0; i < 10 /*mesh->getNumVertices()*/; ++i)
 		{
-			Vec3d v = mesh->getVertex(i);
+            Vec3d v = {}; //mesh->getVertex(i);
 			x(3 * i + 0) = v[0];
 			x(3 * i + 1) = v[1];
 			x(3 * i + 2) = v[2];
@@ -218,7 +210,7 @@ Vec Solver::StartUp(json* config)
 		{
 			for (size_t i = 0; i < mesh->getNumVertices(); ++i)
 			{
-				Vec3d v = mesh->getVertex(i);
+                Vec3d v = {};//mesh->getVertex(i);
 				x(3 * i + 0) = 0.0;
 				x(3 * i + 1) = 0.0;
 				x(3 * i + 2) = 0.0;
@@ -229,7 +221,7 @@ Vec Solver::StartUp(json* config)
 		{
 			for (size_t i = 0; i < mesh->getNumVertices(); ++i)
 			{
-				Vec3d v = mesh->getVertex(i);
+                Vec3d v = {}; //mesh->getVertex(i);
 				x(3 * i + 0) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
 				x(3 * i + 1) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
 				x(3 * i + 2) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
@@ -238,7 +230,7 @@ Vec Solver::StartUp(json* config)
 	}
 
 	x_0 = x;
-	return x;
+//	return x;
 }
 
 void Solver::ShutDown()
@@ -253,7 +245,8 @@ Vec Solver::Step()
 	int substep = 0;
 	T += h;
 
-	double loadValue = interpolator.get(T);
+//	double loadValue = interpolator.get(T);
+    double loadValue = 1.0;
 	fExt.setZero();
 
 	for (auto index : loadedVerts)
@@ -427,7 +420,7 @@ Vec Solver::Step()
 
 //	frame.StopCounter();
 //	double frameTime = frame.GetElapsedTime();
-	(*config)["solverTime"] = 0.0;
+//	(*config)["solverTime"] = 0.0;
 	return x;
 }
 
@@ -618,20 +611,20 @@ void Solver::FillKeff()
 
 void Solver::AddToKeff(const Mat12& dPdx, int elem)
 {
-	int* indices = &(indexArray[4*elem]);
-	for (int y = 0; y < 4; ++y)
-		for (int x = 0; x < 4; ++x)
-			for (int innerX = 0; innerX < 3; ++innerX)
-				for (int innerY = 0; innerY < 3; ++innerY)
-					Keff.coeffRef(indices[x] + innerX, indices[y] + innerY) += dPdx(3 * x + innerX, 3 * y + innerY);
+//	int* indices = &(indexArray[4*elem]);
+//	for (int y = 0; y < 4; ++y)
+//		for (int x = 0; x < 4; ++x)
+//			for (int innerX = 0; innerX < 3; ++innerX)
+//				for (int innerY = 0; innerY < 3; ++innerY)
+//					Keff.coeffRef(indices[x] + innerX, indices[y] + innerY) += dPdx(3 * x + innerX, 3 * y + innerY);
 }
 
 Mat3 Solver::ComputeDm(int i)
 {
-	Vec3d v0 = mesh->getVertex(i, 0);
-	Vec3d v1 = mesh->getVertex(i, 1);
-	Vec3d v2 = mesh->getVertex(i, 2);
-	Vec3d v3 = mesh->getVertex(i, 3);
+    Vec3d v0 = {}; //mesh->getVertex(i, 0);
+    Vec3d v1 = {}; //mesh->getVertex(i, 1);
+    Vec3d v2 = {}; //mesh->getVertex(i, 2);
+    Vec3d v3 = {}; //mesh->getVertex(i, 3);
 
 	Vec3d dm1 = v1 - v0;
 	Vec3d dm2 = v2 - v0;

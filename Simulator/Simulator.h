@@ -30,5 +30,7 @@ public:
 	void Update();
 
 //	void ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+private:
+    Solver gSolver;
 };
 
