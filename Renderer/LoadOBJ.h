@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Geometry.h"
+#include "ShaderTypes.h"
 
 #include <vector>
 #include <string>
