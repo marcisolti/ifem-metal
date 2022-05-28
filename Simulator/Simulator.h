@@ -1,36 +1,28 @@
+//
+//  Simulator.hpp
+//  iFEM
+//
+//  Created by Marci Solti on 2022. 05. 25..
+//  Copyright © 2022. Apple. All rights reserved.
+//
+
 #pragma once
-#define NOMINMAX
-
-//#include "Renderer.h"
-
-#include <string>
-#include "json.hpp"
-using json = nlohmann::json;
 
 #include "Solver.h"
 
+#include <simd/simd.h>
+
 class Simulator
 {
-//	GG::Geometry* surfaceGeo;
-
-	std::vector<Vec> posArray;
-
-	uint32_t numDOFs;
-	int stepNum;
-
-	json* config;
-
 public:
-	Simulator() = default;
-	~Simulator()= default;
+    Simulator() = default;
+    ~Simulator() = default;
 
-	void StartUp(json* config);
-	void ShutDown();
+    void StartUp(const Config& config);
+    void ShutDown();
 
-	void Update();
+    const Result& Step(const State& state);
 
-//	void ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 private:
     Solver gSolver;
 };
-

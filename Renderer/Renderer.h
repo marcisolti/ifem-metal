@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "../Simulator/Config.h"
 
 #include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>
@@ -21,13 +22,15 @@ public:
     Renderer() = default;
     ~Renderer() = default;
 
-    void StartUp(MTKView* view);
+    void StartUp(MTKView* view, const Config& config);
     void ShutDown();
-    void Draw(MTKView* view);
+
+    void Draw(MTKView* view, const State& state, const Result& result);
+
     void SetViewportSize(CGSize size);
 
 private:
-    void LoadScene();
+    void LoadScene(const Config& config);
     id<MTLRenderCommandEncoder> BeginFrame(MTKView* view);
     void EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder);
 
@@ -39,7 +42,7 @@ private:
     id<MTLRenderPipelineState> pipelineState;
     id<MTLDepthStencilState> depthStencilState;
 
-    Entity staticGeometry;
+    Entity deformable;
 
     simd_float4x4 viewProjectionMatrix;
     vector_uint2 viewportSize;

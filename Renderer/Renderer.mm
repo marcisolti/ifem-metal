@@ -10,7 +10,7 @@
 
 #include "Math.h"
 
-void Renderer::StartUp(MTKView* view)
+void Renderer::StartUp(MTKView* view, const Config& config)
 {
     device = view.device;
 
@@ -41,14 +41,14 @@ void Renderer::StartUp(MTKView* view)
 
     commandQueue = [device newCommandQueue];
 
-    LoadScene();
+    LoadScene(config);
 }
 
 void Renderer::ShutDown()
 {
 }
 
-void Renderer::LoadScene()
+void Renderer::LoadScene(const Config& config)
 {
     staticGeometry.LoadGeometryFromFile(std::string{"suz.obj"}, device);
 }
@@ -79,7 +79,7 @@ void Renderer::EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder
     [commandBuffer commit];
 }
 
-void Renderer::Draw(MTKView* view)
+void Renderer::Draw(MTKView* view, const State& state, const Result& result)
 {
     id<MTLRenderCommandEncoder> renderEncoder = BeginFrame(view);
     staticGeometry.Draw(renderEncoder, viewProjectionMatrix);
