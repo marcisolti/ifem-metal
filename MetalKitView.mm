@@ -29,14 +29,30 @@
     self = [super init];
     if(self)
     {
-        Config config = {
-            .simulator = {
-                .modelName = "suz"
+        NSString* bundlePath = [[NSBundle mainBundle] resourcePath];
+
+        Config currentConfig {
+            .bundlePath { [bundlePath UTF8String] },
+            .simulator {
+                .modelName { "turtle" },
+                .h = 0.005,
+                .magicConstant = 1.e-5,
+                .maxCGIteration = 200,
+
+                .loadStep = -500000.0,
+                .loadedVert = 296,
+                .BCs = { 1, 3, 6, 8, 11, 12, 13, 15, 17, 18, 26, 29, 42, 45, 47, 49, 58, 59, 60, 247, 248, 256, 265 },
+
+                .material {
+                    .E = 30,
+                    .nu = 0.35,
+                    .rho = 1000,
+                }
             }
         };
 
-        g_Simulator.StartUp(config);
-        g_Renderer.StartUp(mtkView, config);
+        g_Simulator.StartUp(currentConfig);
+        g_Renderer.StartUp(mtkView, currentConfig);
     }
 
     return self;

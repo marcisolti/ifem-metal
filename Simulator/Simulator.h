@@ -21,7 +21,7 @@ public:
     void StartUp(const Config& config);
     void ShutDown();
 
-    const Result& Step(const State& state);
+    Result Step(const State& state);
 
 private:
     Solver gSolver;

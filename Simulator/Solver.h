@@ -12,17 +12,9 @@
 
 #pragma GCC diagnostic pop
 
-//#include <Eigen/PardisoSupport>
-
 #include "vega/volumetricMesh/volumetricMesh.h"
 
 #include "EnergyFunction.h"
-//#include "json.hpp"
-//using json = nlohmann::json;
-
-//#include "PerformanceCounter.h"
-
-//#include <tbb/tbb.h> 
 
 #include <future>
 
@@ -34,74 +26,27 @@ struct loadVal
 	double t, f;
 };
 
-class Interpolator
-{
-	std::vector<loadVal> vals;
-
-public:
-	Interpolator() = default;
-	~Interpolator() = default;
-	
-//	void set(json* config)
-//	{
-//		vals.clear();
-//		for (int i = 0; i < (*config)["sim"]["loadCases"]["loadSteps"].size(); ++i)
-//		{
-//			loadVal val;
-//			val.t = (*config)["sim"]["loadCases"]["loadSteps"][i]["t"];
-//			val.f = (*config)["sim"]["loadCases"]["loadSteps"][i]["f"];
-//			vals.push_back(val);
-//		}
-//	}
-//
-//	double get(double T)
-//	{
-//		int i = 0;
-//		//while (false) {
-//		while (vals[ i + 1 ].t < T) {
-//			if (i < vals.size())
-//			{
-//				i++;
-//			}
-//		}
-//		double t0 = vals[ i ].t;
-//		double f0 = vals[ i ].f;
-//
-//		double t1 = vals[ i + 1 ].t;
-//		double f1 = vals[ i + 1 ].f;
-//
-//		return f0 + (T - t0) * ((f1 - f0) / (t1 - t0));
-//	}
-};
-
-enum Integrator { qStatic, bwEuler, Newmark };
 
 class Solver
 {
-//	json* config;
-
 	VolumetricMesh* mesh;
 	uint32_t numDOFs, numElements, numVertices;
 
-	int interactiveVert;
-	double interactiveLoad;
-	Vec3 interactiveVector;
+    EnergyFunction* energyFunction;
 
-	Integrator integrator;
-	EnergyFunction* energyFunction;
+    double lambda, mu;
 
-	double lambda, mu;
+    Mat3 Twist[3];
+    double sq2inv;
 
-	Mat3 Twist[3];
-	double sq2inv;
+    // time integration variables
+    double T, h, h2, magicConstant;
+    int numSubsteps;
 
-	// time integration variables
-	double T, h, h2, magicConstant;
-	int numSubsteps;
-	double alpha, beta;
-
-	// boundary conditions
-	std::vector<uint32_t> loadedVerts, BCs;
+    // boundary conditions
+    double loadStep;
+    std::vector<uint32_t> BCs;
+    int loadedVert;
 	SpMat S;
 	
 	// matrices and vectors
@@ -128,7 +73,7 @@ public:
 	Solver() = default;
 	~Solver() = default;
 
-	void StartUp(const Config& initialConfig);
+	void StartUp(const Config& config);
 	void ShutDown();
 
 	Vec Step();

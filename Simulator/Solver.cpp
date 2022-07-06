@@ -6,95 +6,68 @@
 #include <ctime>
 #include <iomanip>
 
-Interpolator interpolator;
 
-void Solver::StartUp(const Config& initialConfig)
+void Solver::StartUp(const Config& config)
 {
-	// read config
-	{
-		h				= 1.0 / 60;
+    const Config::Simulator& simConfig = config.simulator;
+    // read config
+    {
+		h				= simConfig.h;
 		h2				= h * h;
-		numSubsteps		= 1;
-		alpha			= 0.5;
-		beta			= 2.0;
-		magicConstant	= 1.0;
+        magicConstant   = simConfig.magicConstant;
+        loadStep        = simConfig.loadStep;
+        loadedVert      = simConfig.loadedVert;
 
-		interactiveVert = 666;
-		interactiveLoad	= 100.0;
-		interactiveVector << 0, 0, 0;
-
-		solver.setMaxIterations(200);
+		solver.setMaxIterations(simConfig.maxCGIteration);
 
         // load mesh
 		{
-			std::string meshPath = "../Media/vega/" + initialConfig.simulator.modelName + ".veg";
+			std::string meshPath = config.bundlePath + std::string{'/'} + config.simulator.modelName + ".veg";
 			std::cout << "loading mesh " << meshPath << '\n';
 
 			mesh = VolumetricMeshLoader::load(meshPath.c_str());
 
-//			if (!mesh)
-//			{
-//				std::cout << "fail! terminating\n";
-//				std::exit(420);
-//			}
-//			else
-//			{
-//				std::cout << "success! num elements: "
-//					<< mesh->getNumElements()
-//					<< ";  num vertices: "
-//					<< mesh->getNumVertices() << ";\n";
-//			}
+			if (!mesh)
+			{
+				std::cout << "fail! terminating\n";
+				std::exit(420);
+			}
+            std::cout << "success! num elements: "
+                << mesh->getNumElements()
+                << ";  num vertices: "
+                << mesh->getNumVertices() << ";\n";
 		}
 
 		// set material
 		{
-			double E					 = 100.e6;
-			double nu					 = 0.7;
-			const std::string energyName = "ARAP";
+			const double E = simConfig.material.E * 1.e6;
+			const double nu = simConfig.material.nu;
 
-			if (energyName == "ARAP")
-			{
-				energyFunction = new ARAP{ E, nu };
-				lambda = nu * E / ((1.0 + nu) * (1.0 - 2.0 * nu)); // from vega fem homogeneousNeoHookeanIsotropicMaterial.cpp
-				mu = E / (2.0 * (1.0 + nu));
+            energyFunction = new ARAP{ E, nu };
+            lambda = nu * E / ((1.0 + nu) * (1.0 - 2.0 * nu)); // from vega fem homogeneousNeoHookeanIsotropicMaterial.cpp
+            mu = E / (2.0 * (1.0 + nu));
 
-				Twist[0].setZero();
-				Twist[0](0, 1) = -1.0;
-				Twist[0](1, 0) = 1.0;
+            Twist[0].setZero();
+            Twist[0](0, 1) = -1.0;
+            Twist[0](1, 0) = 1.0;
 
-				Twist[1].setZero();
-				Twist[1](1, 2) = 1.0;
-				Twist[1](2, 1) = -1.0;
+            Twist[1].setZero();
+            Twist[1](1, 2) = 1.0;
+            Twist[1](2, 1) = -1.0;
 
-				Twist[2].setZero();
-				Twist[2](0, 2) = 1.0;
-				Twist[2](2, 0) = -1.0;
+            Twist[2].setZero();
+            Twist[2](0, 2) = 1.0;
+            Twist[2](2, 0) = -1.0;
 
-				sq2inv = 1.0 / std::sqrt(2.0);
-			}
-			else
-				std::exit(420);
+            sq2inv = 1.0 / std::sqrt(2.0);
 		}
 
-        BCs = { 1,3,4 };
-        loadedVerts = { 2,6,8 };
-
-		std::string integratorName{ "qStatic" };
-		if (integratorName == "qStatic")
-			integrator = qStatic;
-		else if (integratorName == "bwEuler")
-			integrator = bwEuler;
-		else if (integratorName == "Newmark")
-			integrator = Newmark;
-		else
-			std::exit(420);
-
-
+        BCs = simConfig.BCs;
 	}
 
-    numVertices = 0xDAD69; //mesh->getNumVertices();
+    numVertices = mesh->getNumVertices();
 	numDOFs = 3 * numVertices;
-    numElements = 0b10100101; // mesh->getNumElements();
+    numElements = mesh->getNumElements();
 
 	T = 0.0;
 
@@ -114,11 +87,9 @@ void Solver::StartUp(const Config& initialConfig)
 
 		M = SpMat(numDOFs, numDOFs);
 
-		double rho = 0.8;
+		const double rho = simConfig.material.rho;
 		for (int i = 0; i < numElements; ++i)
 		{
-			if (i % 1000 == 0)
-				std::cout << "at " << i << '\n';
 			Mat3 Dm = ComputeDm(i);
 
 			Mat3 DmInv = Dm.inverse();
@@ -134,8 +105,7 @@ void Solver::StartUp(const Config& initialConfig)
 				double mass = rho * vol;
 				for (int v = 0; v < 4; ++v)
 				{
-                    int index = 1;//mesh->getVertexIndex(i, v);
-					//std::cout << i << ',' << v << ':' << index << '\n';
+                    int index = mesh->getVertexIndex(i, v);
 					M.coeffRef(3 * index + 0, 3 * index + 0) += mass;
 					M.coeffRef(3 * index + 1, 3 * index + 1) += mass;
 					M.coeffRef(3 * index + 2, 3 * index + 2) += mass;
@@ -144,7 +114,6 @@ void Solver::StartUp(const Config& initialConfig)
 
 		}
 	}
-	std::cout << "Keff\n";
 
 	// create Keff, tbb arrays
 	{
@@ -152,14 +121,11 @@ void Solver::StartUp(const Config& initialConfig)
 
 		for (int i = 0; i < numElements; ++i)
 		{
-			if(i % 100 == 0)
-				std::cout << i << '\n';
-
 			{
-//				indexArray.push_back(3 * mesh->getVertexIndex(i, 0));
-//				indexArray.push_back(3 * mesh->getVertexIndex(i, 1));
-//				indexArray.push_back(3 * mesh->getVertexIndex(i, 2));
-//				indexArray.push_back(3 * mesh->getVertexIndex(i, 3));
+				indexArray.push_back(3 * mesh->getVertexIndex(i, 0));
+				indexArray.push_back(3 * mesh->getVertexIndex(i, 1));
+				indexArray.push_back(3 * mesh->getVertexIndex(i, 2));
+				indexArray.push_back(3 * mesh->getVertexIndex(i, 3));
 			}
 
 			Mat12 m;
@@ -170,67 +136,16 @@ void Solver::StartUp(const Config& initialConfig)
 
 		fIntArray = std::vector<Vec12>{ numElements, Vec12::Zero() };
 		KelArray  = std::vector<Mat12>{ numElements, Mat12::Zero() };
-
-	}
-	std::cout << "initPos\n";
-
-	// set init position
-	{
-		std::srand(std::time(nullptr)); // use current time as seed for random generator
-
-        std::string initConfig{'x'};
-		for (size_t i = 0; i < 10 /*mesh->getNumVertices()*/; ++i)
-		{
-            Vec3d v = {}; //mesh->getVertex(i);
-			x(3 * i + 0) = v[0];
-			x(3 * i + 1) = v[1];
-			x(3 * i + 2) = v[2];
-		}
-
-		if (initConfig.at(0) == 'p')
-		{
-			for (size_t i = 0; i < mesh->getNumVertices(); ++i)
-			{
-				switch (initConfig.at(1))
-				{
-				case 'x':
-					x(3 * i + 0) = 0.0;
-					break;
-				case 'y':
-					x(3 * i + 1) = 0.0;
-					break;
-				case 'z':
-					x(3 * i + 2) = 0.0;
-					break;
-				}
-			}
-		}
-
-		if (initConfig.at(0) == 'o')
-		{
-			for (size_t i = 0; i < mesh->getNumVertices(); ++i)
-			{
-                Vec3d v = {};//mesh->getVertex(i);
-				x(3 * i + 0) = 0.0;
-				x(3 * i + 1) = 0.0;
-				x(3 * i + 2) = 0.0;
-			}
-		}
-
-		if (initConfig.at(0) == 's')
-		{
-			for (size_t i = 0; i < mesh->getNumVertices(); ++i)
-			{
-                Vec3d v = {}; //mesh->getVertex(i);
-				x(3 * i + 0) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
-				x(3 * i + 1) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
-				x(3 * i + 2) = 2.0 * ( (float)rand() / (float)RAND_MAX ) - 1.0;
-			}
-		}
 	}
 
+    for (int i = 0; i < mesh->getNumVertices(); ++i)
+    {
+        Vec3d v = mesh->getVertex(i);
+        x(3 * i + 0) = v[0];
+        x(3 * i + 1) = v[1];
+        x(3 * i + 2) = v[2];
+    }
 	x_0 = x;
-//	return x;
 }
 
 void Solver::ShutDown()
@@ -240,188 +155,61 @@ void Solver::ShutDown()
 
 Vec Solver::Step()
 {
-//	PerformanceCounter frame;
-
-	int substep = 0;
 	T += h;
 
-//	double loadValue = interpolator.get(T);
-    double loadValue = 1.0;
 	fExt.setZero();
 
-	for (auto index : loadedVerts)
-	{
-		fExt(index) += loadValue;
-	}
+    static float load = 0;
+        load += loadStep;
+    if (load < -2000000)
+        load = 1500000;
 
-	fExt(3 * interactiveVert + 0) += interactiveVector(0);
-	fExt(3 * interactiveVert + 1) += interactiveVector(1);
-	fExt(3 * interactiveVert + 2) += interactiveVector(2);
+	fExt(3 * loadedVert + 1) += load;
 
+    // clear Keff to 0.0
+    for (int k = 0; k < Keff.outerSize(); ++k)
+        for (Eigen::SparseMatrix<double>::InnerIterator it(Keff, k); it; ++it)
+            it.valueRef() = 0.0;
 
-	for (;;)
-	{
-		// clear Keff to 0.0
-		for (int k = 0; k < Keff.outerSize(); ++k)
-			for (Eigen::SparseMatrix<double>::InnerIterator it(Keff, k); it; ++it)
-				it.valueRef() = 0.0;
+    fInt.setZero(numDOFs);
 
-		fInt.setZero(numDOFs);
+    // build Keff
+    FTime = PTime = dPdxTime = 0.0;
 
-		// build Keff
-		FTime = PTime = dPdxTime = 0.0;
-//		PerformanceCounter jacobian;
+    for (int i = 0; i < numElements; i++)
+        ComputeElementJacobianAndHessian(i);
 
-		for (int i = 0; i < numElements; i++)
-			ComputeElementJacobianAndHessian(i);
+    // accumulating Keff and fInt
+    {
+        std::thread KeffThread{ &Solver::FillKeff, this };
+        std::thread FintThread{ &Solver::FillFint, this };
 
-//		tbb::parallel_for(
-//			tbb::blocked_range<size_t>(0, numElements),
-//			[=](const tbb::blocked_range<size_t>& r)
-//			{
-//				for (size_t i = r.begin(); i != r.end(); ++i)
-//					ComputeElementJacobianAndHessian(i);
-//			}
-//		);
+        FintThread.join();
+        KeffThread.join();
 
-//		jacobian.StopCounter();
+    }
 
-		// accumulating Keff and fInt
-		{
-			std::thread KeffThread{ &Solver::FillKeff, this };
-			std::thread FintThread{ &Solver::FillFint, this };
+    Vec SystemVec =  -fInt + fExt;
 
-			FintThread.join();
-			KeffThread.join();
+    for (const auto& bc : BCs)
+    {
+        const int index = 3 * bc;
+        Keff.coeffRef(index + 0, index + 0) = 1.0;
+        Keff.coeffRef(index + 1, index + 1) = 1.0;
+        Keff.coeffRef(index + 2, index + 2) = 1.0;
 
-			/*
-			FillFint();
-			FillKeff();
-			*/
-		}
+        SystemVec(index + 0) = 0.0;
+        SystemVec(index + 1) = 0.0;
+        SystemVec(index + 2) = 0.0;
+    }
 
-		//std::cout << " K:" << jacobian.GetElapsedTime()
-		//	<< "; a:" << accu.GetElapsedTime()
-		//	<< "; F:" << FTime
-		//	<< "; P:" << PTime
-		//	<< "; dP:" << dPdxTime << "  ";
-		//std::cout << " K:" << jacobian.GetElapsedTime() << "; F:" << FTime << "; P:" << PTime << "; dPdx:" << dPdxTime << ' ';
+    solver.compute(Keff);
+    Vec u = solver.solve(SystemVec);
 
-		switch (integrator)
-		{
-		case qStatic:
-		{
-			Vec SystemVec =  -fInt + fExt;
+    const double constant = magicConstant * h;
+    x.noalias() += constant * u;
 
-			for (auto bc : BCs)
-			{
-				int index = 3 * bc;
-				Keff.coeffRef(index + 0, index + 0) = 1.0;
-				Keff.coeffRef(index + 1, index + 1) = 1.0;
-				Keff.coeffRef(index + 2, index + 2) = 1.0;
-
-				SystemVec(index + 0) = 0.0;
-				SystemVec(index + 1) = 0.0;
-				SystemVec(index + 2) = 0.0;
-			}
-
-//			PerformanceCounter solution;
-			solver.compute(Keff);
-			Vec u = solver.solve(SystemVec);
-
-			double constant = h * magicConstant;
-			x.noalias() += constant * u;
-//			solution.StopCounter();
-
-			//std::cout << "solved in " << solution.GetElapsedTime() << "; p:" << proj.GetElapsedTime() << '\n';
-
-		}
-		break;
-		case bwEuler:
-		{
-			// backward euler
-			// [ M - h * alpha * K - h^2 * K ] * dv = h * f + h^2 * K * v
-
-			// h* f + h ^ 2 * K * v
-			Vec RHS = h * ((fInt + fExt) + h * Keff * v);
-
-			//M - h * alpha * K - h ^ 2 * K
-			const double halpha = h * alpha;
-			const double hbeta = h * beta;
-			SpMat EffectiveMatrix = M - halpha * Keff + hbeta * M - h2 * Keff;
-
-			//// project constaints
-			//Vec SystemVec = S * RHS;
-			//SpMat SystemMatrix = S * EffectiveMatrix * S + spI - S;
-
-			for (auto bc : BCs)
-			{
-				int index = 3 * bc;
-				EffectiveMatrix.coeffRef(index + 0, index + 0) = 1.0;
-				EffectiveMatrix.coeffRef(index + 1, index + 1) = 1.0;
-				EffectiveMatrix.coeffRef(index + 2, index + 2) = 1.0;
-
-				RHS(index + 0) = 0.0;
-				RHS(index + 1) = 0.0;
-				RHS(index + 2) = 0.0;
-			}
-
-			solver.compute(EffectiveMatrix);
-			Vec dv = solver.solve(RHS);
-
-			v.noalias() += magicConstant * dv;
-			x.noalias() += h * v;
-		}
-		break;
-		case Newmark:
-		{
-			double h2Inv = 1.0 / (h * h);
-			double hInv = 1.0 / h;
-
-			SpMat C = alpha * Keff + beta * M;
-			Vec RHS = fInt + fExt + M * (a + 4.0 * hInv * v + 4.0 * h2Inv * u) + C * (v + 2.0 * hInv * u);
-
-			SpMat EffectiveMatrix = 4.0 * h2Inv * M + 2.0 * hInv * C + Keff;
-
-			// project constaints
-			//Vec SystemVec = S * RHS;
-			//SpMat SystemMatrix = S * EffectiveMatrix * S + spI - S;
-
-			for (auto bc : BCs)
-			{
-				int index = 3 * bc;
-				EffectiveMatrix.coeffRef(index + 0, index + 0) = 1.0;
-				EffectiveMatrix.coeffRef(index + 1, index + 1) = 1.0;
-				EffectiveMatrix.coeffRef(index + 2, index + 2) = 1.0;
-
-				RHS(index + 0) = 0.0;
-				RHS(index + 1) = 0.0;
-				RHS(index + 2) = 0.0;
-			}
-
-			solver.compute(EffectiveMatrix);
-			Vec u_1 = solver.solve(RHS);
-
-			Vec v_1 = 2.0 * hInv * (u_1 - u) - v;
-			Vec a_1 = 4.0 * h2Inv * (u_1 - u) - 4.0 * hInv * v - a;
-
-			u = u_1;
-			v = v_1;
-			a = a_1;
-
-			x = x_0 + magicConstant * u;
-		}
-		break;
-		}
-
-		if(++substep >= numSubsteps)
-			break;
-	}
-
-//	frame.StopCounter();
-//	double frameTime = frame.GetElapsedTime();
-//	(*config)["solverTime"] = 0.0;
-	return x;
+    return x;
 }
 
 void Solver::ComputeElementJacobianAndHessian(int i)
@@ -466,33 +254,6 @@ void Solver::ComputeElementJacobianAndHessian(int i)
 		P = mu * (F - R);
 	}
 
-	//Neo-Hookean
-	/*
-	Vec3 f0, f1, f2;
-	Mat3 dJdF;
-	double J;
-	{
-
-		J = F.determinant();
-
-		f0 << F(0, 0), F(0, 1), F(0, 2);
-		f1 << F(1, 0), F(1, 1), F(1, 2);
-		f2 << F(2, 0), F(2, 1), F(2, 2);
-
-		Vec3 dJdF_0 = f1.cross(f2);
-		Vec3 dJdF_1 = f2.cross(f0);
-		Vec3 dJdF_2 = f0.cross(f1);
-
-		dJdF <<
-			dJdF_0(0), dJdF_1(0), dJdF_2(0),
-			dJdF_0(1), dJdF_1(1), dJdF_2(1),
-			dJdF_0(2), dJdF_1(2), dJdF_2(2);
-
-		P = mu * (F - 1.0 / J * dJdF) + ((lambda * std::log(J)) / J) * dJdF;
-	}
-	*/
-
-
 	const Mat9x12 dFdx = dFdxs[i];
 	const Mat12x9 minusTetVolxdFdxT = -tetVols[i] * dFdx.transpose();
 	// calculate forces
@@ -515,7 +276,6 @@ void Solver::ComputeElementJacobianAndHessian(int i)
 		double lambda[3];
 		for (int i = 0; i < 3; ++i)
 			(I[i] >= 2.0) ? lambda[i] = 2.0 / I[i] : lambda[i] = 1.0;
-			//(true) ? lambda[i] = 2.0 / I[i] : lambda[i] = 1.0;
 
 		dPdF.setIdentity();
 		for (int el = 0; el < 3; ++el)
@@ -535,50 +295,6 @@ void Solver::ComputeElementJacobianAndHessian(int i)
 
 	KelArray[i] = dPdx;
 
-	//Neo-Hookean
-	/*
-	{
-		Vec9 gJ = Flatten(dJdF);
-
-		Mat9 gJgJT = gJ * gJ.transpose();
-
-		Mat3 f0Hat, f1Hat, f2Hat;
-		f0Hat <<
-			0.0, -f0(2), f0(1),
-			f0(2), 0.0, -f0(0),
-			-f0(1), f0(0), 0.0;
-
-		f1Hat <<
-			0.0, -f1(2), f1(1),
-			f1(2), 0.0, -f1(0),
-			-f1(1), f1(0), 0.0;
-
-		f2Hat <<
-			0.0, -f2(2), f2(1),
-			f2(2), 0.0, -f2(0),
-			-f2(1), f2(0), 0.0;
-
-		Mat9 HJ;
-		HJ <<
-			0.0, 0.0, 0.0, -f2Hat(0, 0), -f2Hat(0, 1), -f2Hat(0, 2), f1Hat(0, 0), f1Hat(0, 1), f1Hat(0, 2),
-			0.0, 0.0, 0.0, -f2Hat(1, 0), -f2Hat(1, 1), -f2Hat(1, 2), f1Hat(1, 0), f1Hat(1, 1), f1Hat(1, 2),
-			0.0, 0.0, 0.0, -f2Hat(2, 0), -f2Hat(2, 1), -f2Hat(2, 2), f1Hat(2, 0), f1Hat(2, 1), f1Hat(2, 2),
-
-			f2Hat(0, 0), f2Hat(0, 1), f2Hat(0, 2), 0.0, 0.0, 0.0, -f0Hat(0, 0), -f0Hat(0, 1), -f0Hat(0, 2),
-			f2Hat(1, 0), f2Hat(1, 1), f2Hat(1, 2), 0.0, 0.0, 0.0, -f0Hat(1, 0), -f0Hat(1, 1), -f0Hat(1, 2),
-			f2Hat(2, 0), f2Hat(2, 1), f2Hat(2, 2), 0.0, 0.0, 0.0, -f0Hat(2, 0), -f0Hat(2, 1), -f0Hat(2, 2),
-
-			-f1Hat(0, 0), -f1Hat(0, 1), -f1Hat(0, 2), f0Hat(0, 0), f0Hat(0, 1), f0Hat(0, 2), 0.0, 0.0, 0.0,
-			-f1Hat(1, 0), -f1Hat(1, 1), -f1Hat(1, 2), f0Hat(1, 0), f0Hat(1, 1), f0Hat(1, 2), 0.0, 0.0, 0.0,
-			-f1Hat(2, 0), -f1Hat(2, 1), -f1Hat(2, 2), f0Hat(2, 0), f0Hat(2, 1), f0Hat(2, 2), 0.0, 0.0, 0.0;
-
-		dPdF =
-			mu * Mat9::Identity() +
-			((mu + lambda * (1.0 - std::log(J))) / (J * J)) * gJgJT +
-			((lambda * std::log(J) - mu) / J) * HJ;
-
-	}
-	*/
 }
 
 void Solver::FillFint()
@@ -590,7 +306,6 @@ void Solver::FillFint()
 		for (int el = 0; el < 4; ++el)
 			for (int incr = 0; incr < 3; ++incr)
 				fInt(indices[el] + incr) += fIntArray[i](3 * el + incr);
-
 	}
 }
 
@@ -611,20 +326,20 @@ void Solver::FillKeff()
 
 void Solver::AddToKeff(const Mat12& dPdx, int elem)
 {
-//	int* indices = &(indexArray[4*elem]);
-//	for (int y = 0; y < 4; ++y)
-//		for (int x = 0; x < 4; ++x)
-//			for (int innerX = 0; innerX < 3; ++innerX)
-//				for (int innerY = 0; innerY < 3; ++innerY)
-//					Keff.coeffRef(indices[x] + innerX, indices[y] + innerY) += dPdx(3 * x + innerX, 3 * y + innerY);
+	int* indices = &(indexArray[4*elem]);
+	for (int y = 0; y < 4; ++y)
+		for (int x = 0; x < 4; ++x)
+			for (int innerX = 0; innerX < 3; ++innerX)
+				for (int innerY = 0; innerY < 3; ++innerY)
+					Keff.coeffRef(indices[x] + innerX, indices[y] + innerY) += dPdx(3 * x + innerX, 3 * y + innerY);
 }
 
 Mat3 Solver::ComputeDm(int i)
 {
-    Vec3d v0 = {}; //mesh->getVertex(i, 0);
-    Vec3d v1 = {}; //mesh->getVertex(i, 1);
-    Vec3d v2 = {}; //mesh->getVertex(i, 2);
-    Vec3d v3 = {}; //mesh->getVertex(i, 3);
+    Vec3d v0 = mesh->getVertex(i, 0);
+    Vec3d v1 = mesh->getVertex(i, 1);
+    Vec3d v2 = mesh->getVertex(i, 2);
+    Vec3d v3 = mesh->getVertex(i, 3);
 
 	Vec3d dm1 = v1 - v0;
 	Vec3d dm2 = v2 - v0;
@@ -698,30 +413,3 @@ Mat9x12 Solver::ComputedFdx(Mat3 DmInv)
 
 	return dFdx;
 }
-
-//void Solver::ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-//{
-//	if (uMsg == WM_KEYDOWN)
-//	{
-//		if (wParam == VK_UP)
-//		{
-//			interactiveVector = Vec3(0, -interactiveLoad, 0);
-//		}
-//		else if (wParam == VK_DOWN)
-//		{
-//			interactiveVector = Vec3(0, interactiveLoad, 0);
-//		}
-//		else if (wParam == VK_LEFT)
-//		{
-//			interactiveVector = Vec3(0,0,interactiveLoad);
-//		}
-//		else if (wParam == VK_RIGHT)
-//		{
-//			interactiveVector = Vec3(0,0,-interactiveLoad);
-//		}
-//	}
-//	if (uMsg == WM_KEYUP)
-//	{
-//		interactiveVector = Vec3(0, 0, 0);
-//	}
-//}

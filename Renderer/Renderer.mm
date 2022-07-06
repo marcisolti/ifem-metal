@@ -50,7 +50,7 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene(const Config& config)
 {
-    deformable.LoadGeometryFromFile(config.simulator.modelName + ".obj", device);
+    deformable.LoadGeometryFromFile(config.bundlePath + std::string{'/'} + config.simulator.modelName + ".veg.obj", device);
 }
 
 id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
@@ -83,7 +83,7 @@ void Renderer::EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder
 
 void Renderer::Draw(MTKView* view, const State& state, const Result& result)
 {
-    deformable.SetDisplacement({});
+    deformable.SetDisplacement(result.u);
 
     id<MTLRenderCommandEncoder> renderEncoder = BeginFrame(view);
     deformable.Draw(renderEncoder, viewProjectionMatrix);

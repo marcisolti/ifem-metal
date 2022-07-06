@@ -14,9 +14,22 @@
 
 struct Config
 {
+    std::string bundlePath;
+    
     struct Simulator
     {
         std::string modelName;
+        double h;
+        double magicConstant;
+        int maxCGIteration;
+
+        struct Material {
+            double E, nu, rho;
+        } material;
+
+        double loadStep;
+        uint32_t loadedVert;
+        std::vector<uint32_t> BCs;
     } simulator;
 
     struct Renderer

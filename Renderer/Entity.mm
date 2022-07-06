@@ -13,23 +13,20 @@
 
 #include <cmath>
 
-void Entity::LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device)
+void Entity::LoadGeometryFromFile(const std::string& fullPath, id<MTLDevice> device)
 {
-    mesh.geometry = LoadOBJ(filename);
+    mesh.geometry = LoadOBJ(fullPath);
     initGeometry = mesh.geometry;
     mesh.CreateBuffers(device);
     mesh.UploadGeometry();
 }
 
-void Entity::SetDisplacement(const std::vector<simd_float3>&)
+void Entity::SetDisplacement(const std::vector<simd_float3>& u)
 {
     static float T = 0.f;
     T += 0.05;
     for (size_t i = 0; i < mesh.geometry.vertices.size(); ++i)
-    {
-        auto& v = mesh.geometry.vertices[i].position;
-        v.x = initGeometry.vertices[i].position.x + std::sin(T + v.y * 3)/2;
-    }
+        mesh.geometry.vertices[i].position = u[i];
 
     // normal computation
     const auto& vertices = mesh.geometry.vertices;
@@ -65,10 +62,11 @@ void Entity::SetDisplacement(const std::vector<simd_float3>&)
 
 void Entity::Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix)
 {
-    static float T = 0.f;
-    T += 0.01f;
-    modelMatrix = matrix_multiply(Matrix::Rotation(T), Matrix::Scaling(0.8f));
-
+    modelMatrix =
+    matrix_multiply(Matrix::Translation(0, -1, 0),
+                    matrix_multiply(Matrix::Rotation((0.f / 180) * M_PI),
+                                    Matrix::Scaling(0.25f)));
+    
     FrameData frameData {
         modelMatrix, simd_inverse(modelMatrix), viewProjectionMatrix
     };

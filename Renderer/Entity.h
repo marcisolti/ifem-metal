@@ -20,7 +20,7 @@ public:
     simd_float4x4 modelMatrix;
 
     void SetDisplacement(const std::vector<simd_float3>& u);
-    void LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device);
+    void LoadGeometryFromFile(const std::string& fullPath, id<MTLDevice> device);
     void Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix);
 private:
     Mesh<Geometry<Vertex, uint32_t>> mesh;

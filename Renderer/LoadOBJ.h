@@ -19,14 +19,14 @@
 
 struct Index { uint32_t v[3], n[3], uv[3]; };
 
-Geometry<Vertex, uint32_t> LoadOBJ(const std::string& path)
+Geometry<Vertex, uint32_t> LoadOBJ(const std::string& fullPath)
 {
-    // open file
-    NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
-    std::ifstream f(std::string{[bundlePath UTF8String]} + std::string{'/'} + path);
-
+    std::ifstream f(fullPath);
     if (!f.is_open())
+    {
+        std::cout << "Failed to open " << fullPath << '\n';
         std::exit(420);
+    }
 
     // parse OBJ
     std::vector<std::string> lines;
