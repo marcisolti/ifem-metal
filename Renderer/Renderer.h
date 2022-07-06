@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "../Simulator/Config.h"
+#include "../State.h"
 
 #include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>

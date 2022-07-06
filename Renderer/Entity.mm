@@ -67,7 +67,7 @@ void Entity::Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4
 {
     static float T = 0.f;
     T += 0.01f;
-    modelMatrix = Matrix::Rotation(T);
+    modelMatrix = matrix_multiply(Matrix::Rotation(T), Matrix::Scaling(0.8f));
 
     FrameData frameData {
         modelMatrix, simd_inverse(modelMatrix), viewProjectionMatrix

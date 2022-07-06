@@ -11,9 +11,9 @@
 
 #import "MetalKitView.h"
 
-#import "Renderer.h"
-#include "../Simulator/Simulator.h"
-#include "../Simulator/Config.h"
+#include "Renderer/Renderer.h"
+#include "Simulator/Simulator.h"
+#include "State.h"
 
 #include <chrono>
 #include <iostream>
@@ -29,7 +29,7 @@
     self = [super init];
     if(self)
     {
-        Config config {
+        Config config = {
             .simulator = {
                 .modelName = "suz"
             }
