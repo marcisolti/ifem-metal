@@ -76,7 +76,7 @@ public:
 	void StartUp(const Config& config);
 	void ShutDown();
 
-	Vec Step();
+	Vec Step(uint32_t selectedVert);
 
 //	void ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

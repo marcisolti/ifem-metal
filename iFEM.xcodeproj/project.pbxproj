@@ -7,21 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		24389A162875D901006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A142875D901006D4ACA /* turtle.veg.obj */; };
-		24389A172875D901006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A142875D901006D4ACA /* turtle.veg.obj */; };
-		24389A182875D901006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A142875D901006D4ACA /* turtle.veg.obj */; };
-		24389A192875D901006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A152875D901006D4ACA /* turtle.veg */; };
-		24389A1A2875D901006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A152875D901006D4ACA /* turtle.veg */; };
-		24389A1B2875D901006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A152875D901006D4ACA /* turtle.veg */; };
+		24389A1D2875DE09006D4ACA /* IndexShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 24389A1C2875DE09006D4ACA /* IndexShaders.metal */; };
+		24389A1E2875DE09006D4ACA /* IndexShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 24389A1C2875DE09006D4ACA /* IndexShaders.metal */; };
+		24389A1F2875DE09006D4ACA /* IndexShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 24389A1C2875DE09006D4ACA /* IndexShaders.metal */; };
+		24389A332875E169006D4ACA /* turtle.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A2F2875E169006D4ACA /* turtle.obj */; };
+		24389A342875E169006D4ACA /* turtle.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A2F2875E169006D4ACA /* turtle.obj */; };
+		24389A352875E169006D4ACA /* turtle.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A2F2875E169006D4ACA /* turtle.obj */; };
+		24389A362875E169006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A302875E169006D4ACA /* turtle.veg */; };
+		24389A372875E169006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A302875E169006D4ACA /* turtle.veg */; };
+		24389A382875E169006D4ACA /* turtle.veg in Resources */ = {isa = PBXBuildFile; fileRef = 24389A302875E169006D4ACA /* turtle.veg */; };
+		24389A392875E169006D4ACA /* turtle.interp in Resources */ = {isa = PBXBuildFile; fileRef = 24389A312875E169006D4ACA /* turtle.interp */; };
+		24389A3A2875E169006D4ACA /* turtle.interp in Resources */ = {isa = PBXBuildFile; fileRef = 24389A312875E169006D4ACA /* turtle.interp */; };
+		24389A3B2875E169006D4ACA /* turtle.interp in Resources */ = {isa = PBXBuildFile; fileRef = 24389A312875E169006D4ACA /* turtle.interp */; };
+		24389A3C2875E169006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A322875E169006D4ACA /* turtle.veg.obj */; };
+		24389A3D2875E169006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A322875E169006D4ACA /* turtle.veg.obj */; };
+		24389A3E2875E169006D4ACA /* turtle.veg.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24389A322875E169006D4ACA /* turtle.veg.obj */; };
 		248AEB8A283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
 		248AEB8B283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
 		248AEB8C283ED1CB00F9A298 /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 248AEB88283ED1CB00F9A298 /* Simulator.cpp */; };
 		24940F6A28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6B28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6C28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
-		24940F74283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
-		24940F75283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
-		24940F76283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
 		24940F7A283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7B283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7C283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
@@ -150,8 +156,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		24389A142875D901006D4ACA /* turtle.veg.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.veg.obj; sourceTree = "<group>"; };
-		24389A152875D901006D4ACA /* turtle.veg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.veg; sourceTree = "<group>"; };
+		24389A1C2875DE09006D4ACA /* IndexShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = IndexShaders.metal; sourceTree = "<group>"; };
+		24389A2F2875E169006D4ACA /* turtle.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.obj; sourceTree = "<group>"; };
+		24389A302875E169006D4ACA /* turtle.veg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.veg; sourceTree = "<group>"; };
+		24389A312875E169006D4ACA /* turtle.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.interp; sourceTree = "<group>"; };
+		24389A322875E169006D4ACA /* turtle.veg.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = turtle.veg.obj; sourceTree = "<group>"; };
 		248AEB88283ED1CB00F9A298 /* Simulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
 		248AEB89283ED1CB00F9A298 /* Simulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
 		248AEB8D283ED51E00F9A298 /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
@@ -159,7 +168,6 @@
 		24940F6928391DE000AED5FC /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		24940F6E2839364700AED5FC /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		24940F7228393DF300AED5FC /* LoadOBJ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadOBJ.h; sourceTree = "<group>"; };
-		24940F73283941AA00AED5FC /* suz.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = suz.obj; sourceTree = "<group>"; };
 		24940F78283A324F00AED5FC /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		24940F79283A324F00AED5FC /* Math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
 		24940F7D283A89B400AED5FC /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
@@ -294,6 +302,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24389A2D2875E169006D4ACA /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				24389A2E2875E169006D4ACA /* Turtle */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		24389A2E2875E169006D4ACA /* Turtle */ = {
+			isa = PBXGroup;
+			children = (
+				24389A2F2875E169006D4ACA /* turtle.obj */,
+				24389A302875E169006D4ACA /* turtle.veg */,
+				24389A312875E169006D4ACA /* turtle.interp */,
+				24389A322875E169006D4ACA /* turtle.veg.obj */,
+			);
+			path = Turtle;
+			sourceTree = "<group>";
+		};
 		24940F87283AA4A900AED5FC /* Simulator */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,9 +469,7 @@
 			isa = PBXGroup;
 			children = (
 				3ED283CC1EC2C6D200A23F58 /* README.md */,
-				24940F73283941AA00AED5FC /* suz.obj */,
-				24389A142875D901006D4ACA /* turtle.veg.obj */,
-				24389A152875D901006D4ACA /* turtle.veg */,
+				24389A2D2875E169006D4ACA /* Assets */,
 				248AEB8D283ED51E00F9A298 /* State.h */,
 				3A3532841E99974500C194AD /* MetalKitView.h */,
 				3A3532851E99974500C194AD /* MetalKitView.mm */,
@@ -471,6 +496,7 @@
 				24940F7E283A8DDA00AED5FC /* Entity.h */,
 				24940F7F283A950400AED5FC /* Entity.mm */,
 				3A3532871E99974500C194AD /* Shaders.metal */,
+				24389A1C2875DE09006D4ACA /* IndexShaders.metal */,
 				3A3532861E99974500C194AD /* ShaderTypes.h */,
 				24FC02FA2842761C009E0BEA /* BRDF.h */,
 			);
@@ -624,11 +650,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F75283941AA00AED5FC /* suz.obj in Resources */,
-				24389A1A2875D901006D4ACA /* turtle.veg in Resources */,
+				24389A342875E169006D4ACA /* turtle.obj in Resources */,
+				24389A3D2875E169006D4ACA /* turtle.veg.obj in Resources */,
+				24389A3A2875E169006D4ACA /* turtle.interp in Resources */,
 				3A3532A01E99974500C194AD /* Main.storyboard in Resources */,
+				24389A372875E169006D4ACA /* turtle.veg in Resources */,
 				3A3532A31E99974500C194AD /* LaunchScreen.storyboard in Resources */,
-				24389A172875D901006D4ACA /* turtle.veg.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,10 +663,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F76283941AA00AED5FC /* suz.obj in Resources */,
-				24389A182875D901006D4ACA /* turtle.veg.obj in Resources */,
-				24389A1B2875D901006D4ACA /* turtle.veg in Resources */,
 				3A3532B91E99974500C194AD /* Main.storyboard in Resources */,
+				24389A3B2875E169006D4ACA /* turtle.interp in Resources */,
+				24389A352875E169006D4ACA /* turtle.obj in Resources */,
+				24389A3E2875E169006D4ACA /* turtle.veg.obj in Resources */,
+				24389A382875E169006D4ACA /* turtle.veg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,10 +675,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F74283941AA00AED5FC /* suz.obj in Resources */,
-				24389A162875D901006D4ACA /* turtle.veg.obj in Resources */,
-				24389A192875D901006D4ACA /* turtle.veg in Resources */,
 				3A3532CC1E99974500C194AD /* Main.storyboard in Resources */,
+				24389A392875E169006D4ACA /* turtle.interp in Resources */,
+				24389A332875E169006D4ACA /* turtle.obj in Resources */,
+				24389A3C2875E169006D4ACA /* turtle.veg.obj in Resources */,
+				24389A362875E169006D4ACA /* turtle.veg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,6 +699,7 @@
 				2494100F283AA97400AED5FC /* generateMeshGraph.cpp in Sources */,
 				24940F6B28391DE000AED5FC /* Renderer.mm in Sources */,
 				24940FF1283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */,
+				24389A1E2875DE09006D4ACA /* IndexShaders.metal in Sources */,
 				24940F92283AA53500AED5FC /* Solver.cpp in Sources */,
 				24941003283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
 				24941000283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
@@ -719,6 +749,7 @@
 				24941010283AA97400AED5FC /* generateMeshGraph.cpp in Sources */,
 				24940F6C28391DE000AED5FC /* Renderer.mm in Sources */,
 				24940FF2283AA97400AED5FC /* computeStiffnessMatrixNullspace.cpp in Sources */,
+				24389A1F2875DE09006D4ACA /* IndexShaders.metal in Sources */,
 				24940F93283AA53500AED5FC /* Solver.cpp in Sources */,
 				24941004283AA97400AED5FC /* generateTetMeshFromCubicMesh.cpp in Sources */,
 				24941001283AA97400AED5FC /* volumetricMeshLoader.cpp in Sources */,
@@ -762,6 +793,7 @@
 				2494101A283AA97400AED5FC /* vec4i.cpp in Sources */,
 				3A1F1B3D1F033827001622B3 /* AAPLViewController.m in Sources */,
 				248AEB8A283ED1CB00F9A298 /* Simulator.cpp in Sources */,
+				24389A1D2875DE09006D4ACA /* IndexShaders.metal in Sources */,
 				24941032283AA97400AED5FC /* sparseMatrix.cpp in Sources */,
 				2494103B283AA97400AED5FC /* triangle.cpp in Sources */,
 				24941035283AA97400AED5FC /* boundingBox.cpp in Sources */,

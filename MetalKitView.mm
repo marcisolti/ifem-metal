@@ -37,9 +37,9 @@
                 .modelName { "turtle" },
                 .h = 0.005,
                 .magicConstant = 1.e-5,
-                .maxCGIteration = 200,
+                .maxCGIteration = 150,
 
-                .loadStep = -500000.0,
+                .loadStep = -50000.0,
                 .loadedVert = 296,
                 .BCs = { 1, 3, 6, 8, 11, 12, 13, 15, 17, 18, 26, 29, 42, 45, 47, 49, 58, 59, 60, 247, 248, 256, 265 },
 
@@ -62,17 +62,23 @@
 {
     auto start = std::chrono::steady_clock::now();
 
-    const State currentState = {}; // get it from app
+    const State currentState = { g_Renderer.GetSelectedVert() }; // get it from app
     const Result& result = g_Simulator.Step(currentState);
     g_Renderer.Draw(view, currentState, result);
 
     auto end = std::chrono::steady_clock::now();
     std::cout << "frame time: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << " µs\n";
+
 }
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size
 {
     g_Renderer.SetViewportSize(size);
+}
+
+- (void) touchesBeganAt:(CGPoint)touchPos
+{
+    g_Renderer.SetReadPos(touchPos);
 }
 
 @end

@@ -153,18 +153,21 @@ void Solver::ShutDown()
 	delete mesh;
 }
 
-Vec Solver::Step()
+Vec Solver::Step(uint32_t selectedVert)
 {
 	T += h;
 
 	fExt.setZero();
 
-    static float load = 0;
-        load += loadStep;
-    if (load < -2000000)
-        load = 1500000;
+    if (selectedVert != 0xFFFFFFFF)
+    {
+        static float currentLoad = 0.f;
+        if (std::abs(currentLoad) < std::abs(20.f * loadStep))
+            currentLoad += loadStep;
 
-	fExt(3 * loadedVert + 1) += load;
+        fExt(3 * selectedVert + 1) = currentLoad;
+    }
+
 
     // clear Keff to 0.0
     for (int k = 0; k < Keff.outerSize(); ++k)
@@ -204,12 +207,15 @@ Vec Solver::Step()
     }
 
     solver.compute(Keff);
-    Vec u = solver.solve(SystemVec);
+    Vec du = solver.solve(SystemVec);
 
     const double constant = magicConstant * h;
-    x.noalias() += constant * u;
+    du *= constant;
 
-    return x;
+    u.noalias() += du;
+    x.noalias() += du;
+
+    return u;
 }
 
 void Solver::ComputeElementJacobianAndHessian(int i)

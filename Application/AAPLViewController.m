@@ -36,4 +36,15 @@ Implementation of our cross-platform view controller
     _view.delegate = _renderer;
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *anyTouch = event.allTouches.anyObject;
+    CGFloat scale = [self.view contentScaleFactor];
+    CGPoint touchPos = [anyTouch locationInView:self.view];
+    [_renderer touchesBeganAt:CGPointMake(scale * touchPos.x, scale * touchPos.y)];
+}
+//-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event      { [self updateIOWithTouchEvent:event]; }
+//-(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event  { [self updateIOWithTouchEvent:event]; }
+//-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event      { [self updateIOWithTouchEvent:event]; }
+
 @end

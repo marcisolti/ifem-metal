@@ -20,4 +20,9 @@ Header for our our cross-platform view controller
 // Our view controller
 @interface AAPLViewController : PlatformViewController
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
+-(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
+
 @end

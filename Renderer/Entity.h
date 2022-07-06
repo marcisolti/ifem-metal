@@ -22,7 +22,15 @@ public:
     void SetDisplacement(const std::vector<simd_float3>& u);
     void LoadGeometryFromFile(const std::string& fullPath, id<MTLDevice> device);
     void Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix);
+
+    void LoadInterpolationWeights(const std::string& filename);
 private:
+    struct Interpolator {
+        int numElementVertices;
+        int* vertices;
+        double* weights;
+    } interpolator;
+
     Mesh<Geometry<Vertex, uint32_t>> mesh;
     Geometry<Vertex, uint32_t> initGeometry;
 };

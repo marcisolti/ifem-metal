@@ -15,7 +15,7 @@
 struct Config
 {
     std::string bundlePath;
-    
+
     struct Simulator
     {
         std::string modelName;
@@ -41,7 +41,7 @@ struct Config
 
 struct State
 {
-
+    uint32_t selectedVert;
 };
 
 struct Result

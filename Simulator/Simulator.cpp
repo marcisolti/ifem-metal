@@ -19,7 +19,7 @@ void Simulator::ShutDown()
 
 Result Simulator::Step(const State& state)
 {
-    const Vec& u = gSolver.Step();
+    const Vec& u = gSolver.Step(state.selectedVert);
     Result res;
     res.u.reserve(u.size() / 3);
     for (size_t i = 0; i < u.size() / 3; ++i)

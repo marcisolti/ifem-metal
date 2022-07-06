@@ -12,5 +12,6 @@
 @interface MetalKitView : NSObject<MTKViewDelegate>
 
 - (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView;
+- (void) touchesBeganAt:(CGPoint)touchPos;
 
 @end
