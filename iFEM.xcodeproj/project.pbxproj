@@ -22,6 +22,27 @@
 		24940F84283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F85283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F86283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
+		24DBB9EE28BB648200B4927A /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E228BB648200B4927A /* imgui_widgets.cpp */; };
+		24DBB9EF28BB648200B4927A /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E228BB648200B4927A /* imgui_widgets.cpp */; };
+		24DBB9F028BB648200B4927A /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E228BB648200B4927A /* imgui_widgets.cpp */; };
+		24DBB9F128BB648200B4927A /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E428BB648200B4927A /* imgui_demo.cpp */; };
+		24DBB9F228BB648200B4927A /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E428BB648200B4927A /* imgui_demo.cpp */; };
+		24DBB9F328BB648200B4927A /* imgui_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E428BB648200B4927A /* imgui_demo.cpp */; };
+		24DBB9F428BB648200B4927A /* imgui_impl_osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E528BB648200B4927A /* imgui_impl_osx.mm */; };
+		24DBB9F528BB648200B4927A /* imgui_impl_osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E528BB648200B4927A /* imgui_impl_osx.mm */; };
+		24DBB9F628BB648200B4927A /* imgui_impl_osx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E528BB648200B4927A /* imgui_impl_osx.mm */; };
+		24DBB9F728BB648200B4927A /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E628BB648200B4927A /* imgui_tables.cpp */; };
+		24DBB9F828BB648200B4927A /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E628BB648200B4927A /* imgui_tables.cpp */; };
+		24DBB9F928BB648200B4927A /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E628BB648200B4927A /* imgui_tables.cpp */; };
+		24DBB9FA28BB648200B4927A /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E928BB648200B4927A /* imgui.cpp */; };
+		24DBB9FB28BB648200B4927A /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E928BB648200B4927A /* imgui.cpp */; };
+		24DBB9FC28BB648200B4927A /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9E928BB648200B4927A /* imgui.cpp */; };
+		24DBB9FD28BB648200B4927A /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9EA28BB648200B4927A /* imgui_draw.cpp */; };
+		24DBB9FE28BB648200B4927A /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9EA28BB648200B4927A /* imgui_draw.cpp */; };
+		24DBB9FF28BB648200B4927A /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9EA28BB648200B4927A /* imgui_draw.cpp */; };
+		24DBBA0028BB648200B4927A /* imgui_impl_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9ED28BB648200B4927A /* imgui_impl_metal.mm */; };
+		24DBBA0128BB648200B4927A /* imgui_impl_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9ED28BB648200B4927A /* imgui_impl_metal.mm */; };
+		24DBBA0228BB648200B4927A /* imgui_impl_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DBB9ED28BB648200B4927A /* imgui_impl_metal.mm */; };
 		3A05CBE01F731ABB00CA21B1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1F1B411F0338CF001622B3 /* MetalKit.framework */; };
 		3A05CBE11F731AC000CA21B1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A05CBDE1F731AB800CA21B1 /* MetalKit.framework */; };
 		3A1F1B391F033765001622B3 /* AAPLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A35329C1E99974500C194AD /* AAPLViewController.m */; };
@@ -57,6 +78,21 @@
 		24940F7F283A950400AED5FC /* Entity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Entity.mm; sourceTree = "<group>"; };
 		24940F83283A95AC00AED5FC /* Mesh.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Mesh.mm; sourceTree = "<group>"; };
 		24B1521728A5976700AE34A2 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		24DBB9DF28BB648200B4927A /* imgui_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_internal.h; sourceTree = "<group>"; };
+		24DBB9E028BB648200B4927A /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
+		24DBB9E128BB648200B4927A /* imstb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imstb_truetype.h; sourceTree = "<group>"; };
+		24DBB9E228BB648200B4927A /* imgui_widgets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_widgets.cpp; sourceTree = "<group>"; };
+		24DBB9E328BB648200B4927A /* imstb_rectpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imstb_rectpack.h; sourceTree = "<group>"; };
+		24DBB9E428BB648200B4927A /* imgui_demo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_demo.cpp; sourceTree = "<group>"; };
+		24DBB9E528BB648200B4927A /* imgui_impl_osx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imgui_impl_osx.mm; sourceTree = "<group>"; };
+		24DBB9E628BB648200B4927A /* imgui_tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_tables.cpp; sourceTree = "<group>"; };
+		24DBB9E728BB648200B4927A /* imgui_impl_osx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_impl_osx.h; sourceTree = "<group>"; };
+		24DBB9E828BB648200B4927A /* imgui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui.h; sourceTree = "<group>"; };
+		24DBB9E928BB648200B4927A /* imgui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui.cpp; sourceTree = "<group>"; };
+		24DBB9EA28BB648200B4927A /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
+		24DBB9EB28BB648200B4927A /* imgui_impl_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_impl_metal.h; sourceTree = "<group>"; };
+		24DBB9EC28BB648200B4927A /* imstb_textedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imstb_textedit.h; sourceTree = "<group>"; };
+		24DBB9ED28BB648200B4927A /* imgui_impl_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = imgui_impl_metal.mm; sourceTree = "<group>"; };
 		3A05CBDE1F731AB800CA21B1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A1F1B411F0338CF001622B3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../AppleTVOS.platform/Developer/SDKs/AppleTVOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A3532841E99974500C194AD /* MetalKitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalKitView.h; sourceTree = "<group>"; };
@@ -168,6 +204,21 @@
 				24940F7E283A8DDA00AED5FC /* Entity.h */,
 				24940F7F283A950400AED5FC /* Entity.mm */,
 				24B1521728A5976700AE34A2 /* Scene.h */,
+				24DBB9E028BB648200B4927A /* imconfig.h */,
+				24DBB9E428BB648200B4927A /* imgui_demo.cpp */,
+				24DBB9EA28BB648200B4927A /* imgui_draw.cpp */,
+				24DBB9EB28BB648200B4927A /* imgui_impl_metal.h */,
+				24DBB9ED28BB648200B4927A /* imgui_impl_metal.mm */,
+				24DBB9E728BB648200B4927A /* imgui_impl_osx.h */,
+				24DBB9E528BB648200B4927A /* imgui_impl_osx.mm */,
+				24DBB9DF28BB648200B4927A /* imgui_internal.h */,
+				24DBB9E628BB648200B4927A /* imgui_tables.cpp */,
+				24DBB9E228BB648200B4927A /* imgui_widgets.cpp */,
+				24DBB9E928BB648200B4927A /* imgui.cpp */,
+				24DBB9E828BB648200B4927A /* imgui.h */,
+				24DBB9E328BB648200B4927A /* imstb_rectpack.h */,
+				24DBB9EC28BB648200B4927A /* imstb_textedit.h */,
+				24DBB9E128BB648200B4927A /* imstb_truetype.h */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -351,13 +402,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				24940F81283A950400AED5FC /* Entity.mm in Sources */,
+				24DBB9F828BB648200B4927A /* imgui_tables.cpp in Sources */,
 				24940F6B28391DE000AED5FC /* Renderer.mm in Sources */,
+				24DBB9FE28BB648200B4927A /* imgui_draw.cpp in Sources */,
 				24940F7B283A324F00AED5FC /* Math.cpp in Sources */,
+				24DBB9EF28BB648200B4927A /* imgui_widgets.cpp in Sources */,
+				24DBB9FB28BB648200B4927A /* imgui.cpp in Sources */,
 				63E77A181ED2059A00E1E542 /* Shaders.metal in Sources */,
+				24DBB9F228BB648200B4927A /* imgui_demo.cpp in Sources */,
+				24DBBA0128BB648200B4927A /* imgui_impl_metal.mm in Sources */,
 				3A35329D1E99974500C194AD /* AAPLViewController.m in Sources */,
 				24940F85283A95AC00AED5FC /* Mesh.mm in Sources */,
 				3A3532941E99974500C194AD /* main.m in Sources */,
 				3A3532CE1E99974500C194AD /* MetalKitView.mm in Sources */,
+				24DBB9F528BB648200B4927A /* imgui_impl_osx.mm in Sources */,
 				3ACD21351EAE60D2000D1DED /* AAPLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,13 +425,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				24940F82283A950400AED5FC /* Entity.mm in Sources */,
+				24DBB9F928BB648200B4927A /* imgui_tables.cpp in Sources */,
 				24940F6C28391DE000AED5FC /* Renderer.mm in Sources */,
+				24DBB9FF28BB648200B4927A /* imgui_draw.cpp in Sources */,
 				24940F7C283A324F00AED5FC /* Math.cpp in Sources */,
+				24DBB9F028BB648200B4927A /* imgui_widgets.cpp in Sources */,
+				24DBB9FC28BB648200B4927A /* imgui.cpp in Sources */,
 				63E77A191ED2059E00E1E542 /* Shaders.metal in Sources */,
+				24DBB9F328BB648200B4927A /* imgui_demo.cpp in Sources */,
+				24DBBA0228BB648200B4927A /* imgui_impl_metal.mm in Sources */,
 				3A3532CF1E99974500C194AD /* MetalKitView.mm in Sources */,
 				24940F86283A95AC00AED5FC /* Mesh.mm in Sources */,
 				3A1F1B391F033765001622B3 /* AAPLViewController.m in Sources */,
 				3A1F1B3F1F033846001622B3 /* main.m in Sources */,
+				24DBB9F628BB648200B4927A /* imgui_impl_osx.mm in Sources */,
 				3A1F1B441F033EF3001622B3 /* AAPLAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,12 +448,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A1F1B3D1F033827001622B3 /* AAPLViewController.m in Sources */,
+				24DBBA0028BB648200B4927A /* imgui_impl_metal.mm in Sources */,
+				24DBB9FD28BB648200B4927A /* imgui_draw.cpp in Sources */,
+				24DBB9FA28BB648200B4927A /* imgui.cpp in Sources */,
+				24DBB9F428BB648200B4927A /* imgui_impl_osx.mm in Sources */,
 				24940F6A28391DE000AED5FC /* Renderer.mm in Sources */,
 				24940F80283A950400AED5FC /* Entity.mm in Sources */,
 				63E77A1A1ED205A200E1E542 /* Shaders.metal in Sources */,
 				24940F7A283A324F00AED5FC /* Math.cpp in Sources */,
 				3A1F1B3E1F033846001622B3 /* main.m in Sources */,
 				24940F84283A95AC00AED5FC /* Mesh.mm in Sources */,
+				24DBB9EE28BB648200B4927A /* imgui_widgets.cpp in Sources */,
+				24DBB9F128BB648200B4927A /* imgui_demo.cpp in Sources */,
+				24DBB9F728BB648200B4927A /* imgui_tables.cpp in Sources */,
 				3A3532D01E99974500C194AD /* MetalKitView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

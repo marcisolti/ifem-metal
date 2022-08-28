@@ -53,8 +53,10 @@ void Renderer::LoadScene()
     staticGeometry.LoadGeometryFromFile(std::string{"suz.obj"}, device);
 }
 
-id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
+void Renderer::BeginFrame(MTKView* view)
 {
+    this->view = view;
+
     commandBuffer = [commandQueue commandBuffer];
     commandBuffer.label = @"MyCommand";
 
@@ -62,28 +64,23 @@ id<MTLRenderCommandEncoder> Renderer::BeginFrame(MTKView* view)
 
     assert(renderPassDescriptor != nil);
 
-    id<MTLRenderCommandEncoder> renderEncoder =
-    [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     renderEncoder.label = @"MyRenderEncoder";
     [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
     [renderEncoder setRenderPipelineState:pipelineState];
     [renderEncoder setDepthStencilState:depthStencilState];
-
-    return renderEncoder;
 }
 
-void Renderer::EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder)
+void Renderer::EndFrame()
 {
     [renderEncoder endEncoding];
     [commandBuffer presentDrawable:view.currentDrawable];
     [commandBuffer commit];
 }
 
-void Renderer::Draw(MTKView* view)
+void Renderer::Draw()
 {
-    id<MTLRenderCommandEncoder> renderEncoder = BeginFrame(view);
     staticGeometry.Draw(renderEncoder, viewProjectionMatrix);
-    EndFrame(view, renderEncoder);
 }
 
 void Renderer::SetViewportSize(CGSize size)

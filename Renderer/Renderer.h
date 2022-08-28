@@ -23,18 +23,27 @@ public:
 
     void StartUp(MTKView* view);
     void ShutDown();
-    void Draw(MTKView* view);
+
+    void BeginFrame(MTKView* view);
+    void EndFrame();
+
+    void Draw();
     void SetViewportSize(CGSize size);
+
+    id<MTLRenderCommandEncoder> GetRenderEncoder() const { return renderEncoder; }
+    id<MTLCommandBuffer> GetCommandBuffer() const { return commandBuffer; }
 
 private:
     void LoadScene();
-    id<MTLRenderCommandEncoder> BeginFrame(MTKView* view);
-    void EndFrame(MTKView* view, id<MTLRenderCommandEncoder> renderEncoder);
 
     id<MTLDevice> device;
 
+    MTKView* view;
+
     id<MTLCommandQueue> commandQueue;
     id<MTLCommandBuffer> commandBuffer;
+
+    id<MTLRenderCommandEncoder> renderEncoder;
 
     id<MTLRenderPipelineState> pipelineState;
     id<MTLDepthStencilState> depthStencilState;
