@@ -56,6 +56,7 @@
 		24940F7E283A8DDA00AED5FC /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		24940F7F283A950400AED5FC /* Entity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Entity.mm; sourceTree = "<group>"; };
 		24940F83283A95AC00AED5FC /* Mesh.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Mesh.mm; sourceTree = "<group>"; };
+		24B1521728A5976700AE34A2 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		3A05CBDE1F731AB800CA21B1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A1F1B411F0338CF001622B3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = ../../../../AppleTVOS.platform/Developer/SDKs/AppleTVOS11.0.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		3A3532841E99974500C194AD /* MetalKitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalKitView.h; sourceTree = "<group>"; };
@@ -166,6 +167,7 @@
 				24940F83283A95AC00AED5FC /* Mesh.mm */,
 				24940F7E283A8DDA00AED5FC /* Entity.h */,
 				24940F7F283A950400AED5FC /* Entity.mm */,
+				24B1521728A5976700AE34A2 /* Scene.h */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
