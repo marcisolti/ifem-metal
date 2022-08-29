@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2457FFE228BCDA96004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
+		2457FFE328BCDA96004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
+		2457FFE428BCDA97004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
 		24940F6A28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6B28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6C28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
@@ -66,6 +69,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2457FFE028BCDA7E004DD4A3 /* Editor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Editor.mm; sourceTree = "<group>"; };
+		2457FFE128BCDA7E004DD4A3 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		24940F6828391DE000AED5FC /* Renderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
 		24940F6928391DE000AED5FC /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		24940F6E2839364700AED5FC /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
@@ -195,6 +200,8 @@
 				3A3532871E99974500C194AD /* Shaders.metal */,
 				24940F6928391DE000AED5FC /* Renderer.h */,
 				24940F6828391DE000AED5FC /* Renderer.mm */,
+				2457FFE128BCDA7E004DD4A3 /* Editor.h */,
+				2457FFE028BCDA7E004DD4A3 /* Editor.mm */,
 				24940F6E2839364700AED5FC /* Geometry.h */,
 				24940F7228393DF300AED5FC /* LoadOBJ.h */,
 				24940F79283A324F00AED5FC /* Math.h */,
@@ -409,6 +416,7 @@
 				24DBB9EF28BB648200B4927A /* imgui_widgets.cpp in Sources */,
 				24DBB9FB28BB648200B4927A /* imgui.cpp in Sources */,
 				63E77A181ED2059A00E1E542 /* Shaders.metal in Sources */,
+				2457FFE328BCDA96004DD4A3 /* Editor.mm in Sources */,
 				24DBB9F228BB648200B4927A /* imgui_demo.cpp in Sources */,
 				24DBBA0128BB648200B4927A /* imgui_impl_metal.mm in Sources */,
 				3A35329D1E99974500C194AD /* AAPLViewController.m in Sources */,
@@ -432,6 +440,7 @@
 				24DBB9F028BB648200B4927A /* imgui_widgets.cpp in Sources */,
 				24DBB9FC28BB648200B4927A /* imgui.cpp in Sources */,
 				63E77A191ED2059E00E1E542 /* Shaders.metal in Sources */,
+				2457FFE428BCDA97004DD4A3 /* Editor.mm in Sources */,
 				24DBB9F328BB648200B4927A /* imgui_demo.cpp in Sources */,
 				24DBBA0228BB648200B4927A /* imgui_impl_metal.mm in Sources */,
 				3A3532CF1E99974500C194AD /* MetalKitView.mm in Sources */,
@@ -455,6 +464,7 @@
 				24940F6A28391DE000AED5FC /* Renderer.mm in Sources */,
 				24940F80283A950400AED5FC /* Entity.mm in Sources */,
 				63E77A1A1ED205A200E1E542 /* Shaders.metal in Sources */,
+				2457FFE228BCDA96004DD4A3 /* Editor.mm in Sources */,
 				24940F7A283A324F00AED5FC /* Math.cpp in Sources */,
 				3A1F1B3E1F033846001622B3 /* main.m in Sources */,
 				24940F84283A95AC00AED5FC /* Mesh.mm in Sources */,

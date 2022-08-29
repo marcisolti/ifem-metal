@@ -60,11 +60,10 @@ void Renderer::BeginFrame(MTKView* view)
     commandBuffer = [commandQueue commandBuffer];
     commandBuffer.label = @"MyCommand";
 
-    MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
+    currentPassDescriptor = view.currentRenderPassDescriptor;
+    assert(currentPassDescriptor != nil);
 
-    assert(renderPassDescriptor != nil);
-
-    renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:currentPassDescriptor];
     renderEncoder.label = @"MyRenderEncoder";
     [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
     [renderEncoder setRenderPipelineState:pipelineState];

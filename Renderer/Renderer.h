@@ -31,7 +31,9 @@ public:
     void SetViewportSize(CGSize size);
 
     id<MTLRenderCommandEncoder> GetRenderEncoder() const { return renderEncoder; }
-    id<MTLCommandBuffer> GetCommandBuffer() const { return commandBuffer; }
+    id<MTLCommandBuffer>        GetCommandBuffer() const { return commandBuffer; }
+    id<MTLDevice>               GetDevice() const { return device; }
+    MTLRenderPassDescriptor*    GetCurrentPassDescriptor() const { return currentPassDescriptor; }
 
 private:
     void LoadScene();
@@ -45,6 +47,7 @@ private:
 
     id<MTLRenderCommandEncoder> renderEncoder;
 
+    MTLRenderPassDescriptor* currentPassDescriptor;
     id<MTLRenderPipelineState> pipelineState;
     id<MTLDepthStencilState> depthStencilState;
 
