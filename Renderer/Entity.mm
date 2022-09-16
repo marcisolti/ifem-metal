@@ -10,14 +10,16 @@
 
 #include "LoadOBJ.h"
 
-void Entity::LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device)
+Entity Entity::LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device)
 {
-    mesh.geometry = LoadOBJ(filename);
-    mesh.CreateBuffers(device);
-    mesh.UploadGeometry();
+    Entity ret;
+    ret.mesh.geometry = LoadOBJ(filename);
+    ret.mesh.CreateBuffers(device);
+    ret.mesh.UploadGeometry();
+    return ret;
 }
 
-void Entity::Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix)
+void Entity::Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix) const
 {
     const simd_float4x4 MVP = matrix_multiply(viewProjectionMatrix, modelMatrix);
     [renderEncoder setVertexBytes:&MVP

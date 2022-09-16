@@ -25,7 +25,7 @@ public:
 
     void CreateBuffers(id<MTLDevice> device);
     void UploadGeometry();
-    void Draw(id<MTLRenderCommandEncoder> renderEncoder);
+    void Draw(id<MTLRenderCommandEncoder> renderEncoder) const;
 private:
     id<MTLBuffer> vertexBuffer;
     id<MTLBuffer> indexBuffer;

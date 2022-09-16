@@ -25,7 +25,7 @@ void Mesh<Geometry<Vertex, uint32_t>>::UploadGeometry()
 }
 
 template<>
-void Mesh<Geometry<Vertex, uint32_t>>::Draw(id<MTLRenderCommandEncoder> renderEncoder)
+void Mesh<Geometry<Vertex, uint32_t>>::Draw(id<MTLRenderCommandEncoder> renderEncoder) const
 {
     [renderEncoder setVertexBuffer:vertexBuffer
                             offset:0

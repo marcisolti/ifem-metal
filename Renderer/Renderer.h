@@ -14,6 +14,7 @@
 #include <MetalKit/MetalKit.h>
 
 #include <string>
+#include <map>
 
 class Renderer
 {
@@ -29,6 +30,8 @@ public:
 
     void Draw();
     void SetViewportSize(CGSize size);
+
+    void AddEntity(const std::pair<uint32_t, Entity>& entity) { entityDirectory.insert(entity); }
 
     id<MTLRenderCommandEncoder> GetRenderEncoder() const { return renderEncoder; }
     id<MTLCommandBuffer>        GetCommandBuffer() const { return commandBuffer; }
@@ -51,7 +54,7 @@ private:
     id<MTLRenderPipelineState> pipelineState;
     id<MTLDepthStencilState> depthStencilState;
 
-    Entity staticGeometry;
+    std::map<uint32_t, Entity> entityDirectory;
 
     simd_float4x4 viewProjectionMatrix;
     vector_uint2 viewportSize;

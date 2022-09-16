@@ -50,7 +50,10 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene()
 {
-    staticGeometry.LoadGeometryFromFile(std::string{"suz.obj"}, device);
+    Entity suz = Entity::LoadGeometryFromFile("suz.obj", device);
+    entityDirectory.insert({0, suz});
+    suz.modelMatrix = Matrix::Translation(0.5, 0.5, 0.5);
+    entityDirectory.insert({1, suz});
 }
 
 void Renderer::BeginFrame(MTKView* view)
@@ -79,7 +82,8 @@ void Renderer::EndFrame()
 
 void Renderer::Draw()
 {
-    staticGeometry.Draw(renderEncoder, viewProjectionMatrix);
+    for (const auto& [uid, entity] : entityDirectory)
+        entity.Draw(renderEncoder, viewProjectionMatrix);
 }
 
 void Renderer::SetViewportSize(CGSize size)
