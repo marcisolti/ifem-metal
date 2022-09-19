@@ -67,7 +67,7 @@
     g_Renderer.Draw(view, currentState, result);
 
     auto end = std::chrono::steady_clock::now();
-    std::cout << "frame time: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << " µs\n";
+    std::cout << "f: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << " µs\n";
 
 }
 

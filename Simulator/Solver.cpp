@@ -206,8 +206,13 @@ Vec Solver::Step(uint32_t selectedVert)
         SystemVec(index + 2) = 0.0;
     }
 
+    auto start = std::chrono::steady_clock::now();
+
     solver.compute(Keff);
     Vec du = solver.solve(SystemVec);
+
+    auto end = std::chrono::steady_clock::now();
+    std::cout << "s: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << " µs ";
 
     const double constant = magicConstant * h;
     du *= constant;
