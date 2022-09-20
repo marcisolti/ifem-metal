@@ -19,6 +19,7 @@ void Solver::StartUp(const Config& config)
         loadedVert      = simConfig.loadedVert;
 
 		solver.setMaxIterations(simConfig.maxCGIteration);
+        solver.setTolerance(0.1);
 
         // load mesh
 		{
@@ -78,6 +79,7 @@ void Solver::StartUp(const Config& config)
 	a.setZero(numDOFs);
 	z.setZero(numDOFs);
 	fExt.setZero(numDOFs);
+    lastDu.setZero(numDOFs);
 
 	// DmInv, dFdx, mass
 	{
@@ -209,7 +211,7 @@ Vec Solver::Step(uint32_t selectedVert)
     auto start = std::chrono::steady_clock::now();
 
     solver.compute(Keff);
-    Vec du = solver.solve(SystemVec);
+    Vec du = solver.solveWithGuess(SystemVec, lastDu);
 
     auto end = std::chrono::steady_clock::now();
     std::cout << "s: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count() << " µs ";
@@ -219,6 +221,8 @@ Vec Solver::Step(uint32_t selectedVert)
 
     u.noalias() += du;
     x.noalias() += du;
+
+    lastDu = du;
 
     return u;
 }

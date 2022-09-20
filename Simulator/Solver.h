@@ -52,6 +52,7 @@ class Solver
 	// matrices and vectors
 	SpMat Keff, M, spI;
 	Vec x_0, u, x, v, a, z, fInt, fExt;
+    Vec lastDu;
 
 	// precomputed stuff
 	std::vector<double> tetVols;
@@ -64,7 +65,7 @@ class Solver
 	std::vector<Mat12>	KelArray;
 
 	// linear solver objects
-	Eigen::ConjugateGradient<SpMat, Eigen::Lower | Eigen::Upper> solver;
+	Eigen::ConjugateGradient<SpMat, Eigen::Lower> solver;
 	//Eigen::PardisoLU<SpMat> solver;
 
 	double FTime, PTime, dPdxTime;

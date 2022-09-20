@@ -39,7 +39,7 @@
                 .magicConstant = 1.e-5,
                 .maxCGIteration = 150,
 
-                .loadStep = -50000.0,
+                .loadStep = -100000.0,
                 .loadedVert = 296,
                 .BCs = { 1, 3, 6, 8, 11, 12, 13, 15, 17, 18, 26, 29, 42, 45, 47, 49, 58, 59, 60, 247, 248, 256, 265 },
 
