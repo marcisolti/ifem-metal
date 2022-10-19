@@ -10,6 +10,12 @@
 
 #include "Math.h"
 
+#include "LoadOBJ.h"
+
+#include "ID.h"
+
+// MARK: Init
+
 void Renderer::StartUp(MTKView* view)
 {
     device = view.device;
@@ -50,11 +56,14 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene()
 {
-    Entity suz = Entity::LoadGeometryFromFile("suz.obj", device);
-    entityDirectory.insert({0, suz});
-    suz.modelMatrix = Matrix::Translation(0.5, 0.5, 0.5);
-    entityDirectory.insert({1, suz});
+    Mesh m{LoadOBJ("suz.obj")};
+    m.CreateBuffers(device);
+    m.UploadGeometry();
+
+    meshDirectory.insert({GetID(), m});
 }
+
+// MARK: Drawing
 
 void Renderer::BeginFrame(MTKView* view)
 {
@@ -80,10 +89,18 @@ void Renderer::EndFrame()
     [commandBuffer commit];
 }
 
-void Renderer::Draw()
+void Renderer::Draw(const Scene& scene)
 {
-    for (const auto& [uid, entity] : entityDirectory)
-        entity.Draw(renderEncoder, viewProjectionMatrix);
+    for (const auto& [entityID, entity] : scene.entities) {
+        const simd_float3 pos = entity.transform.position;
+        const simd_float4x4 MVP = matrix_multiply(viewProjectionMatrix, Matrix::Translation(pos[0], pos[1], pos[2]));
+        [renderEncoder setVertexBytes:&MVP
+                               length:sizeof(MVP)
+                              atIndex:VertexInputIndexMVP];
+        for (const auto& meshID : entity.meshes) {
+            meshDirectory[meshID].Draw(renderEncoder);
+        }
+    }
 }
 
 void Renderer::SetViewportSize(CGSize size)

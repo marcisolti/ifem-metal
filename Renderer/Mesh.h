@@ -9,11 +9,9 @@
 #pragma once
 
 #include "Geometry.h"
-#include "ShaderTypes.h"
 
 #include <Metal/Metal.h>
 
-template<typename Geometry>
 class Mesh
 {
 public:

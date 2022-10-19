@@ -8,8 +8,7 @@
 
 #include "Mesh.h"
 
-template<>
-void Mesh<Geometry<Vertex, uint32_t>>::CreateBuffers(id<MTLDevice> device)
+void Mesh::CreateBuffers(id<MTLDevice> device)
 {
     vertexBuffer = [device newBufferWithLength:sizeof(Vertex) * geometry.vertices.size()
                                        options:MTLResourceStorageModeShared];
@@ -17,15 +16,13 @@ void Mesh<Geometry<Vertex, uint32_t>>::CreateBuffers(id<MTLDevice> device)
                                       options:MTLResourceStorageModeShared];
 }
 
-template<>
-void Mesh<Geometry<Vertex, uint32_t>>::UploadGeometry()
+void Mesh::UploadGeometry()
 {
     memcpy(vertexBuffer.contents, geometry.vertices.data(), sizeof(Vertex) * geometry.vertices.size());
     memcpy(indexBuffer.contents, geometry.indices.data(), sizeof(uint32_t) * geometry.indices.size());
 }
 
-template<>
-void Mesh<Geometry<Vertex, uint32_t>>::Draw(id<MTLRenderCommandEncoder> renderEncoder) const
+void Mesh::Draw(id<MTLRenderCommandEncoder> renderEncoder) const
 {
     [renderEncoder setVertexBuffer:vertexBuffer
                             offset:0

@@ -10,6 +10,8 @@
 
 #include "Entity.h"
 
+#include "Mesh.h"
+
 #include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>
 
@@ -28,10 +30,10 @@ public:
     void BeginFrame(MTKView* view);
     void EndFrame();
 
-    void Draw();
+    void Draw(const Scene& scene);
     void SetViewportSize(CGSize size);
-
-    void AddEntity(const std::pair<uint32_t, Entity>& entity) { entityDirectory.insert(entity); }
+    
+    std::map<ID, Mesh>* GetMeshDirectory() { return &meshDirectory; }
 
     id<MTLRenderCommandEncoder> GetRenderEncoder() const { return renderEncoder; }
     id<MTLCommandBuffer>        GetCommandBuffer() const { return commandBuffer; }
@@ -54,7 +56,8 @@ private:
     id<MTLRenderPipelineState> pipelineState;
     id<MTLDepthStencilState> depthStencilState;
 
-    std::map<uint32_t, Entity> entityDirectory;
+    std::map<ID, Mesh> meshDirectory;
+    ID nextID = 0;
 
     simd_float4x4 viewProjectionMatrix;
     vector_uint2 viewportSize;

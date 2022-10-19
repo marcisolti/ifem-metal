@@ -8,25 +8,55 @@
 
 #pragma once
 
-#include "Mesh.h"
+#include <vector>
+#include <string>
+#include <map>
 
-#include <Metal/Metal.h>
+#include <simd/simd.h>
 
+using ID = uint32_t;
 
-
-class Entity
-{
-public:
-    Entity() : modelMatrix{matrix_identity_float4x4} { }
-//    Entity(const std::string& filename, id<MTLDevice> device) : modelMatrix{matrix_identity_float4x4}
-//    {
-//        LoadGeometryFromFile(filename, device);
-//    }
-
-    simd_float4x4 modelMatrix;
-
-    static Entity LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device);
-    void Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix) const;
-private:
-    Mesh<Geometry<Vertex, uint32_t>> mesh;
+struct Transform {
+    simd::float3 position, rotation, scale;
 };
+
+class Entity {
+public:
+    Entity(std::vector<ID> meshes)
+    : meshes{meshes} {}
+
+    Transform transform;
+    std::vector<ID> meshes;
+};
+
+struct Light {};
+
+struct Scene {
+    std::map<ID, Entity> entities;
+    std::map<ID, Light> lights;
+};
+
+//#pragma once
+//
+//#include "Mesh.h"
+//
+//#include <Metal/Metal.h>
+//
+//
+//
+//class Entity
+//{
+//public:
+//    Entity() : modelMatrix{matrix_identity_float4x4} { }
+////    Entity(const std::string& filename, id<MTLDevice> device) : modelMatrix{matrix_identity_float4x4}
+////    {
+////        LoadGeometryFromFile(filename, device);
+////    }
+//
+//    simd_float4x4 modelMatrix;
+//
+//    static Entity LoadGeometryFromFile(const std::string& filename, id<MTLDevice> device);
+//    void Draw(id<MTLRenderCommandEncoder> renderEncoder, const simd_float4x4& viewProjectionMatrix) const;
+//private:
+//    Mesh<Geometry<Vertex, uint32_t>> mesh;
+//};

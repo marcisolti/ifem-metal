@@ -18,7 +18,7 @@
 
 struct Index { uint32_t v[3], n[3], uv[3]; };
 
-Geometry<Vertex, uint32_t> LoadOBJ(const std::string& path)
+Geometry LoadOBJ(const std::string& path)
 {
     // open file
     NSString *bundlePath = [[NSBundle mainBundle] resourcePath];

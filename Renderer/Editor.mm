@@ -14,8 +14,10 @@
 #include "imgui_impl_osx.h"
 #endif
 
-void Editor::StartUp(MTKView* view, id<MTLDevice> device)
+void Editor::StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* meshDirectory)
 {
+    this->meshDirectory = meshDirectory;
+    
     // Setup Dear ImGui context
     // FIXME: This example doesn't have proper cleanup...
     IMGUI_CHECKVERSION();
@@ -52,10 +54,13 @@ void Editor::StartUp(MTKView* view, id<MTLDevice> device)
     //IM_ASSERT(font != NULL);
 }
 
+void Editor::Update(Scene& scene) {};
+
 void Editor::Draw(MTKView* view,
                   MTLRenderPassDescriptor* currentRenderPassDescriptor,
                   id<MTLRenderCommandEncoder> renderEncoder,
-                  id<MTLCommandBuffer> commandBuffer)
+                  id<MTLCommandBuffer> commandBuffer,
+                  Scene& scene)
 {
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize.x = view.bounds.size.width;
@@ -91,6 +96,13 @@ void Editor::Draw(MTKView* view,
         static int counter = 0;
 
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+                
+        for (auto& [ID, e] : scene.entities) {
+            auto& pos = e.transform.position;
+            float t[] = {pos[0], pos[1], pos[2]};
+            ImGui::SliderFloat3("slider float3", t, 0.0f, 1.0f);
+            pos = {t[0], t[1], t[2]};
+        }
 
         ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
         ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state

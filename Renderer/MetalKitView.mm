@@ -14,8 +14,12 @@
 #import "Renderer.h"
 #import "Editor.h"
 
+#include "Entity.h"
+#include "ID.h"
+
 @implementation MetalKitView
 {
+    Scene g_Scene;
     Renderer g_Renderer;
     Editor g_Editor;
 }
@@ -26,7 +30,9 @@
     if(self)
     {
         g_Renderer.StartUp(mtkView);
-        g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
+        g_Editor.StartUp(mtkView, g_Renderer.GetDevice(), g_Renderer.GetMeshDirectory());
+        Entity e({ID(0)});
+        g_Scene.entities.insert({GetID(), Entity({ID(0)})});
     }
 
     return self;
@@ -39,13 +45,12 @@
 
 - (void)drawInMTKView:(nonnull MTKView *)view
 {
+    g_Editor.Update(g_Scene);
+
     g_Renderer.BeginFrame(view);
-
-    g_Renderer.Draw();
-    g_Editor.Draw(view, g_Renderer.GetCurrentPassDescriptor(), g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());
-
+    g_Renderer.Draw(g_Scene);
+    g_Editor.Draw(view, g_Renderer.GetCurrentPassDescriptor(), g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer(), g_Scene);
     g_Renderer.EndFrame();
-    
 }
 
 @end
