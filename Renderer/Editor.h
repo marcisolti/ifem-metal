@@ -25,13 +25,13 @@ public:
     void StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* meshDirectory);
     void ShutDown();
     
-    void Update(Scene& scene);
+    void Update(World& world);
 
     void Draw(MTKView* view,
               MTLRenderPassDescriptor* currentRenderPassDescriptor,
               id<MTLRenderCommandEncoder> renderEncoder,
               id<MTLCommandBuffer> commandBuffer,
-              Scene& scene);
+              World& world);
     
 private:
     std::map<ID, Mesh>* meshDirectory = nullptr;

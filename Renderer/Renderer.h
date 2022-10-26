@@ -27,7 +27,7 @@ public:
     void StartUp(MTKView* view);
     void ShutDown();
 
-    void BeginFrame(MTKView* view);
+    void BeginFrame(MTKView* view, const Config& config);
     void EndFrame();
 
     void Draw(const Scene& scene);

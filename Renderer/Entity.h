@@ -31,9 +31,18 @@ public:
 
 struct Light {};
 
+struct Config {
+    float clearColor[3];
+};
+
 struct Scene {
     std::map<ID, Entity> entities;
     std::map<ID, Light> lights;
+};
+
+struct World {
+    Config config;
+    Scene scene;
 };
 
 //#pragma once

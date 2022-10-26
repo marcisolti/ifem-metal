@@ -8,6 +8,8 @@
 
 #include "Editor.h"
 
+#include "ID.h"
+
 #include "imgui.h"
 #include "imgui_impl_metal.h"
 #ifdef TARGET_MACOS
@@ -54,13 +56,13 @@ void Editor::StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* me
     //IM_ASSERT(font != NULL);
 }
 
-void Editor::Update(Scene& scene) {};
+void Editor::Update(World& world) {};
 
 void Editor::Draw(MTKView* view,
                   MTLRenderPassDescriptor* currentRenderPassDescriptor,
                   id<MTLRenderCommandEncoder> renderEncoder,
                   id<MTLCommandBuffer> commandBuffer,
-                  Scene& scene)
+                  World& world)
 {
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize.x = view.bounds.size.width;
@@ -84,7 +86,6 @@ void Editor::Draw(MTKView* view,
     // Our state (make them static = more or less global) as a convenience to keep the example terse.
     static bool show_demo_window = true;
     static bool show_another_window = false;
-    static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
     if (show_demo_window)
@@ -95,13 +96,19 @@ void Editor::Draw(MTKView* view,
         static float f = 0.0f;
         static int counter = 0;
 
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-                
-        for (auto& [ID, e] : scene.entities) {
-            auto& pos = e.transform.position;
-            float t[] = {pos[0], pos[1], pos[2]};
-            ImGui::SliderFloat3("slider float3", t, 0.0f, 1.0f);
-            pos = {t[0], t[1], t[2]};
+        ImGui::Begin("World Editor");                          // Create a window called "Hello, world!" and append into it.
+
+        if(ImGui::Button("Add Entity"))
+        {
+            Entity e({0});
+            world.scene.entities.insert({GetID(), e});
+        }
+
+        for (auto& [ID, e] : world.scene.entities) {
+            ImGui::PushID(int(ID));
+            ImGui::Text(std::to_string(ID).data());
+            ImGui::SliderFloat3("pos", (float*)&e.transform.position, 0.0f, 1.0f);
+            ImGui::PopID();
         }
 
         ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
@@ -109,26 +116,12 @@ void Editor::Draw(MTKView* view,
         ImGui::Checkbox("Another Window", &show_another_window);
 
         ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
+        ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor); // Edit 3 floats representing a color
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
     }
 
-    // 3. Show another simple window.
-    if (show_another_window)
-    {
-        ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-        ImGui::Text("Hello from another window!");
-        if (ImGui::Button("Close Me"))
-            show_another_window = false;
-        ImGui::End();
-    }
 
     // Rendering
     ImGui::Render();
