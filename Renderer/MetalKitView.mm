@@ -30,7 +30,7 @@
     if(self)
     {
         g_Renderer.StartUp(mtkView);
-        g_Editor.StartUp(mtkView, g_Renderer.GetDevice(), g_Renderer.GetMeshDirectory());
+        g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
         Entity e({ID(0)});
         g_World.scene.entities.insert({GetID(), Entity({ID(0)})});
     }
@@ -45,11 +45,14 @@
 
 - (void)drawInMTKView:(nonnull MTKView *)view
 {
+    g_Renderer.BeginFrame(view, g_World.config);
+    g_Editor.BeginFrame(view, g_Renderer.GetCurrentPassDescriptor());
+
     g_Editor.Update(g_World);
 
-    g_Renderer.BeginFrame(view, g_World.config);
     g_Renderer.Draw(g_World.scene);
-    g_Editor.Draw(view, g_Renderer.GetCurrentPassDescriptor(), g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer(), g_World);
+    g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());
+
     g_Renderer.EndFrame();
 }
 

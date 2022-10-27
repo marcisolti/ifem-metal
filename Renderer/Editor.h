@@ -14,7 +14,6 @@
 #include <map>
 
 #include "Entity.h"
-#include "Mesh.h"
 
 class Editor
 {
@@ -22,17 +21,10 @@ public:
     Editor() = default;
     ~Editor() = default;
 
-    void StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* meshDirectory);
+    void StartUp(MTKView* view, id<MTLDevice> device);
     void ShutDown();
     
+    void BeginFrame(MTKView* view, MTLRenderPassDescriptor* currentRenderPassDescriptor);
     void Update(World& world);
-
-    void Draw(MTKView* view,
-              MTLRenderPassDescriptor* currentRenderPassDescriptor,
-              id<MTLRenderCommandEncoder> renderEncoder,
-              id<MTLCommandBuffer> commandBuffer,
-              World& world);
-    
-private:
-    std::map<ID, Mesh>* meshDirectory = nullptr;
+    void Draw(id<MTLRenderCommandEncoder> renderEncoder, id<MTLCommandBuffer> commandBuffer);
 };

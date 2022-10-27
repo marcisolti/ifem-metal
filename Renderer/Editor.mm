@@ -16,10 +16,8 @@
 #include "imgui_impl_osx.h"
 #endif
 
-void Editor::StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* meshDirectory)
+void Editor::StartUp(MTKView* view, id<MTLDevice> device)
 {
-    this->meshDirectory = meshDirectory;
-    
     // Setup Dear ImGui context
     // FIXME: This example doesn't have proper cleanup...
     IMGUI_CHECKVERSION();
@@ -56,13 +54,7 @@ void Editor::StartUp(MTKView* view, id<MTLDevice> device, std::map<ID, Mesh>* me
     //IM_ASSERT(font != NULL);
 }
 
-void Editor::Update(World& world) {};
-
-void Editor::Draw(MTKView* view,
-                  MTLRenderPassDescriptor* currentRenderPassDescriptor,
-                  id<MTLRenderCommandEncoder> renderEncoder,
-                  id<MTLCommandBuffer> commandBuffer,
-                  World& world)
+void Editor::BeginFrame(MTKView* view, MTLRenderPassDescriptor* currentRenderPassDescriptor)
 {
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize.x = view.bounds.size.width;
@@ -82,51 +74,58 @@ void Editor::Draw(MTKView* view,
     ImGui_ImplOSX_NewFrame(view);
 #endif
     ImGui::NewFrame();
+}
 
-    // Our state (make them static = more or less global) as a convenience to keep the example terse.
-    static bool show_demo_window = true;
-    static bool show_another_window = false;
-
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
-
-    // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+namespace
+{
+    void EntityEditor(std::map<ID, Entity>& entities)
     {
-        static float f = 0.0f;
-        static int counter = 0;
-
-        ImGui::Begin("World Editor");                          // Create a window called "Hello, world!" and append into it.
-
-        if(ImGui::Button("Add Entity"))
-        {
-            Entity e({0});
-            world.scene.entities.insert({GetID(), e});
-        }
-
-        for (auto& [ID, e] : world.scene.entities) {
+        for (auto& [ID, e] : entities) {
             ImGui::PushID(int(ID));
             ImGui::Text(std::to_string(ID).data());
             ImGui::SliderFloat3("pos", (float*)&e.transform.position, 0.0f, 1.0f);
             ImGui::PopID();
         }
-
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-        ImGui::Checkbox("Another Window", &show_another_window);
-
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor); // Edit 3 floats representing a color
-
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::End();
     }
 
+    void AddEntity(std::map<ID, Entity>& entities)
+    {
+        if(ImGui::Button("Add Entity"))
+        {
+            Entity e({0});
+            entities.insert({GetID(), e});
+        }
+    }
+}
 
+void Editor::Update(World& world)
+{
+    static bool show_demo_window = true;
+    if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+
+    {
+        ImGui::Begin("World Editor");
+
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+        AddEntity(world.scene.entities);
+        
+        EntityEditor(world.scene.entities);
+
+        ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor);
+
+        ImGui::Checkbox("Demo Window", &show_demo_window);
+
+
+        ImGui::End();
+    }
+}
+
+void Editor::Draw(id<MTLRenderCommandEncoder> renderEncoder, id<MTLCommandBuffer> commandBuffer)
+{
     // Rendering
     ImGui::Render();
     ImDrawData* draw_data = ImGui::GetDrawData();
-
 
     [renderEncoder pushDebugGroup:@"Dear ImGui rendering"];
     ImGui_ImplMetal_RenderDrawData(draw_data, commandBuffer, renderEncoder);

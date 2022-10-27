@@ -12,8 +12,8 @@ simd_float4x4 Matrix::Rotation(float x, float y, float z)
 {
     simd_float4x4 result = matrix_identity_float4x4;
 
-    float cosx = cosf(x);
-    float sinx = sinf(x);
+    const float cosx = cosf(x);
+    const float sinx = sinf(x);
 
     result.columns[0][0] = cosx;
     result.columns[2][0] = sinx;

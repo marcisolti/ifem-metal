@@ -22,9 +22,6 @@
 		24940F7A283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7B283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7C283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
-		24940F80283A950400AED5FC /* Entity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F7F283A950400AED5FC /* Entity.mm */; };
-		24940F81283A950400AED5FC /* Entity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F7F283A950400AED5FC /* Entity.mm */; };
-		24940F82283A950400AED5FC /* Entity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F7F283A950400AED5FC /* Entity.mm */; };
 		24940F84283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F85283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
 		24940F86283A95AC00AED5FC /* Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F83283A95AC00AED5FC /* Mesh.mm */; };
@@ -85,9 +82,7 @@
 		24940F79283A324F00AED5FC /* Math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
 		24940F7D283A89B400AED5FC /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		24940F7E283A8DDA00AED5FC /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
-		24940F7F283A950400AED5FC /* Entity.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Entity.mm; sourceTree = "<group>"; };
 		24940F83283A95AC00AED5FC /* Mesh.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Mesh.mm; sourceTree = "<group>"; };
-		24B1521728A5976700AE34A2 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		24DBB9DF28BB648200B4927A /* imgui_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_internal.h; sourceTree = "<group>"; };
 		24DBB9E028BB648200B4927A /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
 		24DBB9E128BB648200B4927A /* imstb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imstb_truetype.h; sourceTree = "<group>"; };
@@ -214,8 +209,6 @@
 				24940F7D283A89B400AED5FC /* Mesh.h */,
 				24940F83283A95AC00AED5FC /* Mesh.mm */,
 				24940F7E283A8DDA00AED5FC /* Entity.h */,
-				24940F7F283A950400AED5FC /* Entity.mm */,
-				24B1521728A5976700AE34A2 /* Scene.h */,
 				247DD8A2290070E50097CE2D /* ID.h */,
 				247DD8A3290078C30097CE2D /* ID.cpp */,
 				24DBB9E028BB648200B4927A /* imconfig.h */,
@@ -416,7 +409,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				247DD8A5290078FE0097CE2D /* ID.cpp in Sources */,
-				24940F81283A950400AED5FC /* Entity.mm in Sources */,
 				24DBB9F828BB648200B4927A /* imgui_tables.cpp in Sources */,
 				24940F6B28391DE000AED5FC /* Renderer.mm in Sources */,
 				24DBB9FE28BB648200B4927A /* imgui_draw.cpp in Sources */,
@@ -441,7 +433,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				247DD8A6290078FF0097CE2D /* ID.cpp in Sources */,
-				24940F82283A950400AED5FC /* Entity.mm in Sources */,
 				24DBB9F928BB648200B4927A /* imgui_tables.cpp in Sources */,
 				24940F6C28391DE000AED5FC /* Renderer.mm in Sources */,
 				24DBB9FF28BB648200B4927A /* imgui_draw.cpp in Sources */,
@@ -472,7 +463,6 @@
 				24DBB9FA28BB648200B4927A /* imgui.cpp in Sources */,
 				24DBB9F428BB648200B4927A /* imgui_impl_osx.mm in Sources */,
 				24940F6A28391DE000AED5FC /* Renderer.mm in Sources */,
-				24940F80283A950400AED5FC /* Entity.mm in Sources */,
 				63E77A1A1ED205A200E1E542 /* Shaders.metal in Sources */,
 				2457FFE228BCDA96004DD4A3 /* Editor.mm in Sources */,
 				24940F7A283A324F00AED5FC /* Math.cpp in Sources */,
