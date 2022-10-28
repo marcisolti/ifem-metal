@@ -12,5 +12,7 @@
 @interface MetalKitView : NSObject<MTKViewDelegate>
 
 - (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView;
+- (void) mouseDragged:(CGPoint)touchPos;
+- (void) keyPressed:(uint)code;
 
 @end

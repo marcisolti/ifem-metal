@@ -56,6 +56,11 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene()
 {
+    eye = {0,0,4};
+    lookAt = {0,0,0};
+    up = {0,1,0};
+    viewMatrix = Matrix::View(eye, lookAt, up);
+
     Mesh m{LoadOBJ("suz.obj")};
     m.CreateBuffers(device);
     m.UploadGeometry();
@@ -94,7 +99,7 @@ void Renderer::Draw(const Scene& scene)
 {
     for (const auto& [entityID, entity] : scene.entities) {
         const simd_float3 pos = entity.transform.position;
-        const simd_float4x4 MVP = matrix_multiply(viewProjectionMatrix, Matrix::Translation(pos[0], pos[1], pos[2]));
+        const simd_float4x4 MVP = matrix_multiply(matrix_multiply(projectionMatrix, viewMatrix), Matrix::Translation(pos[0], pos[1], pos[2]));
         [renderEncoder setVertexBytes:&MVP
                                length:sizeof(MVP)
                               atIndex:VertexInputIndexMVP];
@@ -108,8 +113,42 @@ void Renderer::SetViewportSize(CGSize size)
 {
     viewportSize.x = size.width;
     viewportSize.y = size.height;
-
-    const simd_float4x4 V = Matrix::View(simd_float3{0,0,4}, simd_float3{0,0,0}, simd_float3{0,1,0});
-    const simd_float4x4 P = Matrix::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
-    viewProjectionMatrix = matrix_multiply(P, V);
+    projectionMatrix = Matrix::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
 }
+
+void Renderer::HandleMouseDragged(double deltaX, double deltaY, double deltaZ)
+{
+    const simd_float3 forward = simd_normalize(lookAt - eye);
+    const simd_float3 right = simd_normalize(simd_cross(forward, up));
+    lookAt -=  20*(deltaX / viewportSize.x) * right;
+    lookAt -=  20*(deltaY / viewportSize.y) * up;
+    viewMatrix = Matrix::View(eye, lookAt, up);
+}
+
+void Renderer::HandleKeyPressed(uint keyCode)
+{
+    const simd_float3 forward = 1 * simd_normalize(lookAt - eye);
+    const simd_float3 right = simd_normalize(simd_cross(forward, up));
+    if(keyCode == 0) // W
+    {
+        eye += forward;
+        lookAt += forward;
+    }
+    if(keyCode == 1) // A
+    {
+        eye += right;
+        lookAt += right;
+    }
+    if(keyCode == 2) // S
+    {
+        eye -= forward;
+        lookAt -= forward;
+    }
+    if(keyCode == 3) // D
+    {
+        eye -= right;
+        lookAt -= right;
+    }
+    viewMatrix = Matrix::View(eye, lookAt, up);
+}
+

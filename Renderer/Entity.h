@@ -23,7 +23,8 @@ struct Transform {
 class Entity {
 public:
     Entity(std::vector<ID> meshes)
-    : meshes{meshes} {}
+    : meshes{meshes}
+    , transform{{0,0,0}, {0,0,0}, {1,1,1}} {  }
 
     Transform transform;
     std::vector<ID> meshes;

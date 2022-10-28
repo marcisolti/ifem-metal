@@ -14,6 +14,7 @@
 // If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
+//#if 0
 #import "imgui.h"
 #import "imgui_impl_osx.h"
 #import <Cocoa/Cocoa.h>
@@ -756,3 +757,5 @@ static void ImGui_ImplOSX_AddTrackingArea(NSView* _Nonnull view)
         return event;
     }];
 }
+
+//#endif

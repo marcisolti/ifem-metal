@@ -50,10 +50,23 @@
 
     g_Editor.Update(g_World);
 
+//    NSPoint loc = [NSEvent mouseLocation];
+//    std::printf("%f,%f\n", loc.x, loc.y);
+
     g_Renderer.Draw(g_World.scene);
     g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());
 
     g_Renderer.EndFrame();
+}
+
+- (void) mouseDragged:(CGPoint)touchPos
+{
+    g_Renderer.HandleMouseDragged(touchPos.x, touchPos.y, 0.0);
+}
+
+- (void) keyPressed:(uint)code
+{
+    g_Renderer.HandleKeyPressed(code);
 }
 
 @end

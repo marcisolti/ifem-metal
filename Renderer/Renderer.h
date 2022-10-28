@@ -32,7 +32,9 @@ public:
 
     void Draw(const Scene& scene);
     void SetViewportSize(CGSize size);
-    
+    void HandleMouseDragged(double deltaX, double deltaY, double deltaZ);
+    void HandleKeyPressed(uint keyCode);
+
     std::map<ID, Mesh>* GetMeshDirectory() { return &meshDirectory; }
 
     id<MTLRenderCommandEncoder> GetRenderEncoder() const { return renderEncoder; }
@@ -57,9 +59,10 @@ private:
     id<MTLDepthStencilState> depthStencilState;
 
     std::map<ID, Mesh> meshDirectory;
-    ID nextID = 0;
 
-    simd_float4x4 viewProjectionMatrix;
+    simd_float3 eye, lookAt, up;
+    simd_float4x4 viewMatrix;
+    simd_float4x4 projectionMatrix;
     vector_uint2 viewportSize;
 
 };
