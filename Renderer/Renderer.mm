@@ -9,10 +9,15 @@
 #include "Renderer.h"
 
 #include "Math.h"
-
 #include "LoadOBJ.h"
-
 #include "ID.h"
+
+// Define these only in *one* .cc file.
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+// #define TINYGLTF_NOEXCEPTION // optional. disable exception handling.
+#include "tiny_gltf.h"
 
 // MARK: Init
 
@@ -61,11 +66,108 @@ void Renderer::LoadScene()
     up = {0,1,0};
     viewMatrix = Matrix::View(eye, lookAt, up);
 
-    Mesh m{LoadOBJ("suz.obj")};
-    m.CreateBuffers(device);
-    m.UploadGeometry();
+    tinygltf::Model model;
+    tinygltf::TinyGLTF loader;
+    std::string err;
+    std::string warn;
 
-    meshDirectory.insert({GetID(), m});
+    // open file
+    NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
+    auto path = std::string{[bundlePath UTF8String]} + std::string{"/BarramundiFish.glb"};
+    bool ret = loader.LoadBinaryFromFile(&model, &err, &warn, path); // for binary glTF(.glb)
+
+    if (!warn.empty()) {
+        printf("Warn: %s\n", warn.c_str());
+    }
+
+    if (!err.empty()) {
+        printf("Err: %s\n", err.c_str());
+    }
+
+    if (!ret) {
+        printf("Failed to parse glTF\n");
+        std::terminate();
+    }
+
+//    const tinygltf::Scene &scene = model.scenes[model.defaultScene];
+//    for (size_t i = 0; i < scene.nodes.size(); ++i)
+//    {
+//        assert((scene.nodes[i] >= 0) && (scene.nodes[i] < model.nodes.size()));
+//        const tinygltf::Node node = model.nodes[scene.nodes[i]];
+//        for (size_t j = 0; j < model.bufferViews.size(); ++j) {
+//            const tinygltf::BufferView &bufferView = model.bufferViews[j];
+//            const tinygltf::Buffer &buffer = model.buffers[bufferView.buffer];
+//        }
+//    }
+
+    std::vector<float> pos;
+    std::vector<float> normal;
+    std::vector<float> uv;
+    std::vector<int> indices;
+    std::vector<Vertex> vertices;
+    for (const auto& mesh : model.meshes) {
+        for (const auto& primitive : mesh.primitives) {
+
+            for (const auto& [attributeName, accessorIndex] : primitive.attributes) {
+                tinygltf::Accessor accessor = model.accessors[accessorIndex];
+                tinygltf::BufferView bufferView = model.bufferViews[accessor.bufferView];
+                tinygltf::Buffer buffer = model.buffers[bufferView.buffer];
+                uint8_t* first = buffer.data.data() + bufferView.byteOffset;
+                uint8_t* last = first + bufferView.byteLength;
+                if (attributeName == "POSITION") {
+                    std::copy((float*)first, (float*)last, std::back_inserter(pos));
+                } else if (attributeName == "NORMAL") {
+                    std::copy((float*)first, (float*)last, std::back_inserter(normal));
+                } else if (attributeName == "TEXCOORD_0") {
+                    std::copy((float*)first, (float*)last, std::back_inserter(uv));
+                }
+            }
+
+            tinygltf::Accessor indexAccessor = model.accessors[primitive.indices];
+            tinygltf::BufferView indexBufferView = model.bufferViews[indexAccessor.bufferView];
+            tinygltf::Buffer indexBuffer = model.buffers[indexBufferView.buffer];
+//            uint8_t* first = indexBuffer.data.data() + indexBufferView.byteOffset;
+//            uint8_t* last = first + indexBufferView.byteLength;
+//            int size = int((first - last) / indexAccessor.count);
+            const int* first = reinterpret_cast<const int*>(&indexBuffer.data[indexBufferView.byteOffset + indexAccessor.byteOffset]);
+            const int* last = reinterpret_cast<const int*>(&indexBuffer.data[indexBufferView.byteOffset + indexAccessor.byteOffset + indexAccessor.byteOffset]);
+            std::copy(first, last, std::back_inserter(indices));
+
+            assert(pos.size() % 3 == 0);
+            assert(indices.size() % 3 == 0);
+            assert(normal.size() % 3 == 0);
+            assert(uv.size() % 2 == 0);
+
+            for (size_t i = 0; i < pos.size() / 3; ++i)
+                vertices.push_back({{pos[3 * i + 0],
+                                     pos[3 * i + 1],
+                                     pos[3 * i + 2]},
+
+                                    {1,1,1}});
+//            for (const auto& index : indices)
+//            {
+//                for (int j = 0; j < 3; ++j)
+//                {
+//                    uint32_t vIndex = index.v[j] - 1;
+//                    uint32_t nIndex = index.n[j] - 1;
+//                    uint32_t uvIndex = index.uv[j] - 1;
+//
+//                    outVertices[vIndex].normal = normals[nIndex];
+//                    outIndices.emplace_back(vIndex);
+//                }
+//            }
+        }
+    }
+
+//    Mesh m{{vertices, indices}};
+//    m.CreateBuffers(device);
+//    m.UploadGeometry();
+
+//    Mesh m(LoadOBJ("suz.obj"));
+//    m.CreateBuffers(device);
+//    m.UploadGeometry();
+
+//    meshDirectory.insert({GetID(), m});
 }
 
 // MARK: Drawing

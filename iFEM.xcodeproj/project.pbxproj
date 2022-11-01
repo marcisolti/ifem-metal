@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		243458EF290C5761008BC8DC /* BarramundiFish.glb in Resources */ = {isa = PBXBuildFile; fileRef = 243458EE290C5761008BC8DC /* BarramundiFish.glb */; };
+		243458F0290C5761008BC8DC /* BarramundiFish.glb in Resources */ = {isa = PBXBuildFile; fileRef = 243458EE290C5761008BC8DC /* BarramundiFish.glb */; };
+		243458F1290C5761008BC8DC /* BarramundiFish.glb in Resources */ = {isa = PBXBuildFile; fileRef = 243458EE290C5761008BC8DC /* BarramundiFish.glb */; };
 		2457FFE228BCDA96004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
 		2457FFE328BCDA96004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
 		2457FFE428BCDA97004DD4A3 /* Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2457FFE028BCDA7E004DD4A3 /* Editor.mm */; };
@@ -69,6 +72,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		243458EA290C565B008BC8DC /* stb_image_write.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image_write.h; sourceTree = "<group>"; };
+		243458EB290C565B008BC8DC /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		243458EC290C565B008BC8DC /* tiny_gltf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_gltf.h; sourceTree = "<group>"; };
+		243458ED290C565B008BC8DC /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		243458EE290C5761008BC8DC /* BarramundiFish.glb */ = {isa = PBXFileReference; lastKnownFileType = file; path = BarramundiFish.glb; sourceTree = "<group>"; };
 		2457FFE028BCDA7E004DD4A3 /* Editor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Editor.mm; sourceTree = "<group>"; };
 		2457FFE128BCDA7E004DD4A3 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		247DD8A2290070E50097CE2D /* ID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ID.h; sourceTree = "<group>"; };
@@ -183,6 +191,7 @@
 			children = (
 				3ED283CC1EC2C6D200A23F58 /* README.md */,
 				24940F73283941AA00AED5FC /* suz.obj */,
+				243458EE290C5761008BC8DC /* BarramundiFish.glb */,
 				3A3532831E99974500C194AD /* Renderer */,
 				3A3532911E99974500C194AD /* Application */,
 				3AE289861EEA0A9100DF4C9A /* Frameworks */,
@@ -211,6 +220,10 @@
 				24940F7E283A8DDA00AED5FC /* Entity.h */,
 				247DD8A2290070E50097CE2D /* ID.h */,
 				247DD8A3290078C30097CE2D /* ID.cpp */,
+				243458EB290C565B008BC8DC /* json.hpp */,
+				243458EA290C565B008BC8DC /* stb_image_write.h */,
+				243458ED290C565B008BC8DC /* stb_image.h */,
+				243458EC290C565B008BC8DC /* tiny_gltf.h */,
 				24DBB9E028BB648200B4927A /* imconfig.h */,
 				24DBB9E428BB648200B4927A /* imgui_demo.cpp */,
 				24DBB9EA28BB648200B4927A /* imgui_draw.cpp */,
@@ -377,6 +390,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				243458F0290C5761008BC8DC /* BarramundiFish.glb in Resources */,
 				24940F75283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532A01E99974500C194AD /* Main.storyboard in Resources */,
 				3A3532A31E99974500C194AD /* LaunchScreen.storyboard in Resources */,
@@ -387,6 +401,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				243458F1290C5761008BC8DC /* BarramundiFish.glb in Resources */,
 				24940F76283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532B91E99974500C194AD /* Main.storyboard in Resources */,
 			);
@@ -396,6 +411,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				243458EF290C5761008BC8DC /* BarramundiFish.glb in Resources */,
 				24940F74283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532CC1E99974500C194AD /* Main.storyboard in Resources */,
 			);
@@ -563,10 +579,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = HelloTriangle;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -614,9 +632,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = HelloTriangle;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -736,7 +756,7 @@
 				);
 				INFOPLIST_FILE = Application/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME)${SAMPLE_CODE_DISAMBIGUATOR}";
@@ -757,7 +777,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = TARGET_MACOS;
 				INFOPLIST_FILE = Application/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.$(PRODUCT_NAME)${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = iFEM;
