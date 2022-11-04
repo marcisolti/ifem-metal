@@ -12,9 +12,22 @@
 
 typedef enum VertexInputIndex
 {
-    VertexInputIndexVertices = 0,
-    VertexInputIndexMVP      = 1,
+    VertexInputIndexVertices    = 0,
+    VertexInputIndexFrameData   = 1,
 } VertexInputIndex;
+
+typedef enum FragmentInputIndex
+{
+    FragmentInputIndexFrameData = 0,
+} FragmentInputIndex;
+
+typedef struct {
+    matrix_float4x4 MVP;
+} VertexData;
+
+typedef struct {
+    vector_float3 color;
+} FragmentData;
 
 typedef struct
 {

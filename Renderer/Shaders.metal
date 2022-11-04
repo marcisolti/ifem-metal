@@ -15,22 +15,23 @@ using namespace metal;
 struct RasterizerData
 {
     float4 position [[position]];
-    float4 color;
+    float4 normal;
 };
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
-             constant Vertex *vertices [[buffer(VertexInputIndexVertices)]],
-             constant matrix_float4x4 *MVPPointer [[buffer(VertexInputIndexMVP)]])
+             constant Vertex* vertices [[buffer(VertexInputIndexVertices)]],
+             constant VertexData* vertexData [[buffer(VertexInputIndexFrameData)]])
 {
     RasterizerData out;
-    out.position = *MVPPointer * vector_float4(vertices[vertexID].position, 1);
-    out.color = vector_float4(vertices[vertexID].normal, 1);
+    out.position = vertexData->MVP * vector_float4(vertices[vertexID].position, 1);
+    out.normal = vector_float4(vertices[vertexID].normal, 1);
     return out;
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]])
+fragment float4 fragmentShader(RasterizerData in [[stage_in]],
+                               constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
-    return in.color;
+    return in.normal * 0.5 * vector_float4(fragmentData->color, 1.f);
 }
 

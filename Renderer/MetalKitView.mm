@@ -31,8 +31,6 @@
     {
         g_Renderer.StartUp(mtkView);
         g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
-        Entity e({ID(0)});
-        g_World.scene.entities.insert({GetID(), Entity({ID(0)})});
     }
 
     return self;
@@ -50,9 +48,6 @@
 
     g_Editor.Update(g_World);
 
-//    NSPoint loc = [NSEvent mouseLocation];
-//    std::printf("%f,%f\n", loc.x, loc.y);
-
     g_Renderer.Draw(g_World.scene);
     g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());
 
@@ -61,7 +56,7 @@
 
 - (void) mouseDragged:(CGPoint)touchPos
 {
-    g_Renderer.HandleMouseDragged(touchPos.x, touchPos.y, 0.0);
+//    g_Renderer.HandleMouseDragged(touchPos.x, touchPos.y, 0.0);
 }
 
 - (void) keyPressed:(uint)code

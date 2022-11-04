@@ -82,8 +82,8 @@ namespace
     {
         for (auto& [ID, e] : entities) {
             ImGui::PushID(int(ID));
-            ImGui::Text(std::to_string(ID).data());
-            ImGui::SliderFloat3("pos", (float*)&e.transform.position, 0.0f, 1.0f);
+            ImGui::Text("%s", std::to_string(ID).data());
+            ImGui::SliderFloat3("pos", (float*)&e.transform.position, -10.0f, 10.0f);
             ImGui::PopID();
         }
     }
@@ -92,7 +92,11 @@ namespace
     {
         if(ImGui::Button("Add Entity"))
         {
-            Entity e({0});
+            ShadedMesh s {
+                .mesh = 0,
+                .material = {{1,1,1}, {1,1,1}, {1,1,1}}
+            };
+            Entity e({s});
             entities.insert({GetID(), e});
         }
     }

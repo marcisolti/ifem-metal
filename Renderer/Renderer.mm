@@ -100,11 +100,21 @@ void Renderer::Draw(const Scene& scene)
     for (const auto& [entityID, entity] : scene.entities) {
         const simd_float3 pos = entity.transform.position;
         const simd_float4x4 MVP = matrix_multiply(matrix_multiply(projectionMatrix, viewMatrix), Matrix::Translation(pos[0], pos[1], pos[2]));
-        [renderEncoder setVertexBytes:&MVP
-                               length:sizeof(MVP)
-                              atIndex:VertexInputIndexMVP];
-        for (const auto& meshID : entity.meshes) {
-            meshDirectory[meshID].Draw(renderEncoder);
+        for (const auto& shadedMesh : entity.meshes) {
+            VertexData vertexData = {
+                .MVP = MVP
+            };
+            FragmentData fragmentData = {
+                .color = shadedMesh.material.diffuse
+            };
+
+            [renderEncoder setVertexBytes:&vertexData
+                                   length:sizeof(vertexData)
+                                  atIndex:VertexInputIndexFrameData];
+            [renderEncoder setFragmentBytes:&fragmentData
+                                   length:sizeof(fragmentData)
+                                  atIndex:FragmentInputIndexFrameData];
+            meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
         }
     }
 }
