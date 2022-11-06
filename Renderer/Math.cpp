@@ -8,73 +8,110 @@
 
 #include "Math.h"
 
-simd_float4x4 Matrix::Rotation(float x, float y, float z)
+Math::Matrix4 Math::Translation(float x, float y, float z)
 {
-    simd_float4x4 result = matrix_identity_float4x4;
+    Matrix4 ret;
+    ret <<
+        1.f, 0.f, 0.f, x,
+        0.f, 1.f, 0.f, y,
+        0.f, 0.f, 1.f, z,
+        0.f, 0.f, 0.f, 1.f;
+    return ret.transpose(); // ??
+}
 
+Math::Matrix4 Math::Translation(const Math::Vector3& pos)
+{
+    return Math::Translation(pos.x(), pos.y(), pos.z());
+}
+
+Math::Matrix4 Math::Rotation(float x, float y, float z)
+{
     const float cosx = cosf(x);
     const float sinx = sinf(x);
 
-    result.columns[0][0] = cosx;
-    result.columns[2][0] = sinx;
-    result.columns[0][2] = -sinx;
-    result.columns[2][2] = cosx;
-
-    return result;
+    Matrix4 ret;
+    ret <<
+        cosx, 0.f, sinx, 0.f,
+        0.f,  1.f, 0.f,  0.f,
+       -sinx, 0.f, cosx, 0.f,
+        0.f,  0.f, 0.f,  1.f;
+    return ret;
 }
 
-simd_float4x4 Matrix::Translation(float x, float y, float z)
+Math::Matrix4 Math::Rotation(const Math::Vector3& pos)
 {
-    simd_float4x4 result = matrix_identity_float4x4;
-    result.columns[3][0] = x;
-    result.columns[3][1] = y;
-    result.columns[3][2] = z;
-    return result;
+    return Math::Rotation(pos.x(), pos.y(), pos.z());
 }
 
-simd_float4x4 Matrix::Scaling(float x, float y, float z)
+
+Math::Matrix4 Math::Scaling(float x, float y, float z)
 {
-    simd_float4x4 result;
-    result.columns[0][0] = x;
-    result.columns[1][1] = y;
-    result.columns[2][2] = z;
-    result.columns[3][3] = 1.f;
-    return result;
+    Matrix4 ret;
+    ret <<
+        x,   0.f, 0.f, 0.f,
+        0.f, y,   0.f, 0.f,
+        0.f, 0.f, z,   0.f,
+        0.f, 0.f, 0.f, 1.f;
+    return ret;
 }
 
-simd_float4x4 Matrix::Scaling(float value)
+Math::Matrix4 Math::Scaling(float value)
 {
-    simd_float4x4 result = matrix_scale(value, matrix_identity_float4x4);
-    result.columns[3][3] = 1.f;
-    return result;
+    return Scaling(value, value, value);
 }
 
-simd_float4x4 Matrix::Projection(float fovy,
-                                 float aspect,
-                                 float near,
-                                 float far)
+Math::Matrix4 Math::Projection(float fovy,
+                               float aspect,
+                               float near,
+                               float far)
 {
-    float ys = 1.f / tanf(0.5f * fovy);
-    float xs = ys / aspect;
-    float zs = far / (far-near);
-    return simd_float4x4 { simd_float4{ xs, 0,  0,       0 },
-                           simd_float4{ 0,  ys, 0,       0 },
-                           simd_float4{ 0,  0,  zs,      1 },
-                           simd_float4{ 0,  0, -near*zs, 0 }};
+    const float ys = 1.f / tanf(0.5f * fovy);
+    const float xs = ys / aspect;
+    const float zs = far / (far-near);
+
+    Matrix4 ret;
+    ret <<
+        xs,  0.f,  0.f,     0.f,
+        0.f, ys,   0.f,     0.f,
+        0.f, 0.f,  zs,      1.f,
+        0.f, 0.f, -near*zs, 0.f;
+    return ret;
 }
 
-simd_float4x4 Matrix::View(const vector_float3& eye,
-                           const vector_float3& lookAt,
-                           const vector_float3& up)
+Math::Matrix4 Math::View(const Vector3& eye,
+                         const Vector3& lookAt,
+                         const Vector3& up)
 {
-    simd_float3 z = simd_normalize(lookAt - eye);
-    simd_float3 x = simd_normalize(simd_cross(up, z));
-    simd_float3 y = simd_cross(z, x);
-    simd_float3 t = {-simd_dot(x, eye), -simd_dot(y, eye), -simd_dot(z, eye)};
-    return
-    simd_transpose(
-           simd_float4x4 { simd_float4 { x.x, x.y, x.z, t.x },
-                           simd_float4 { y.x, y.y, y.z, t.y },
-                           simd_float4 { z.x, z.y, z.z, t.z },
-                           simd_float4 { 0,   0,   0,   1   }});
+    const Vector3 z = (lookAt - eye).normalized();
+    const Vector3 x = up.cross(z).normalized();
+    const Vector3 y = z.cross(x);
+    const Vector3 t = {-x.dot(eye), -y.dot(eye), -z.dot(eye)};
+
+    Matrix4 ret;
+    ret <<
+        x.x(), x.y(), x.z(), t.x(),
+        y.x(), y.y(), y.z(), t.y(),
+        z.x(), z.y(), z.z(), t.z(),
+        0.f,   0.f,   0.f,   1.f;
+    return ret.transpose();
+}
+
+simd_float4x4 Math::ToFloat4x4(const Matrix4& m)
+{
+    return {
+        simd_float4{m(0,0),m(0,1),m(0,2),m(0,3)},
+        simd_float4{m(1,0),m(1,1),m(1,2),m(1,3)},
+        simd_float4{m(2,0),m(2,1),m(2,2),m(2,3)},
+        simd_float4{m(3,0),m(3,1),m(3,2),m(3,3)}
+    };
+}
+
+simd_float3 Math::ToFloat3(const Vector3& v)
+{
+    return {v(0), v(1), v(2)};
+}
+
+simd_float4 Math::ToFloat4(const Vector4& v)
+{
+    return {v(0), v(1), v(2), v(3)};
 }

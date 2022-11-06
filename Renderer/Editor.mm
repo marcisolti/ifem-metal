@@ -83,7 +83,26 @@ namespace
         for (auto& [ID, e] : entities) {
             ImGui::PushID(int(ID));
             ImGui::Text("%s", std::to_string(ID).data());
-            ImGui::SliderFloat3("pos", (float*)&e.transform.position, -10.0f, 10.0f);
+
+            ImGui::Text("Transforms");
+            {
+                auto& transform = e.transform;
+
+                ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
+                ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
+
+                float scale = transform.scale.x();
+                ImGui::SliderFloat("scale", &scale, 0.f, 10.f);
+                transform.scale = {scale, scale, scale};
+            }
+
+            ImGui::Text("Material");
+            {
+                auto& material = e.meshes[0].material;
+                ImGui::ColorEdit3("diffuse", material.diffuse.data());
+                ImGui::ColorEdit3("specular", material.specular.data());
+            }
+
             ImGui::PopID();
         }
     }

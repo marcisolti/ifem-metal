@@ -10,12 +10,28 @@
 
 #include <simd/simd.h>
 
-namespace Matrix
+#include <Eigen/Dense>
+
+namespace Math
 {
-    simd_float4x4 Rotation(float x = 0.f, float y = 0.f, float z = 0.f);
-    simd_float4x4 Translation(float x = 0.f, float y = 0.f, float z = 0.f);
-    simd_float4x4 Scaling(float x, float y, float z);
-    simd_float4x4 Scaling(float value);
-    simd_float4x4 Projection(float fovy, float aspect, float near, float far);
-    simd_float4x4 View(const simd_float3& eye, const simd_float3& ahead, const simd_float3& up);
+    using Matrix4 = Eigen::Matrix<float, 4, 4>;
+
+    using Vector4 = Eigen::Vector<float, 4>;
+    using Vector3 = Eigen::Vector<float, 3>;
+
+    Matrix4 Rotation(float x, float y, float z);
+    Matrix4 Rotation(const Math::Vector3& rot);
+
+    Matrix4 Translation(float x, float y, float z);
+    Matrix4 Translation(const Math::Vector3& pos);
+
+    Matrix4 Scaling(float x, float y, float z);
+    Matrix4 Scaling(float value);
+
+    Matrix4 Projection(float fovy, float aspect, float near, float far);
+    Matrix4 View(const Vector3& eye, const Vector3& ahead, const Vector3& up);
+
+    simd_float4x4 ToFloat4x4(const Matrix4& m);
+    simd_float3 ToFloat3(const Vector3& v);
+    simd_float4 ToFloat4(const Vector4& v);
 }

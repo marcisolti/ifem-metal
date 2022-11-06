@@ -10,6 +10,7 @@
 
 #include "Entity.h"
 
+#include "Math.h"
 #include "Mesh.h"
 
 #include <Metal/Metal.h>
@@ -60,9 +61,9 @@ private:
 
     std::map<ID, Mesh> meshDirectory;
 
-    simd_float3 eye, lookAt, up;
-    simd_float4x4 viewMatrix;
-    simd_float4x4 projectionMatrix;
+    Math::Vector3 eye, lookAt, up;
+    Math::Matrix4 viewMatrix;
+    Math::Matrix4 projectionMatrix;
     vector_uint2 viewportSize;
 
 };

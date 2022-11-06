@@ -12,16 +12,16 @@
 #include <string>
 #include <map>
 
-#include <simd/simd.h>
+#include "Math.h"
 
 using ID = uint32_t;
 
 struct Transform {
-    simd::float3 position, rotation, scale;
+    Math::Vector3 position, rotation, scale;
 };
 
 struct Material {
-    simd::float3 ambient, diffuse, specular;
+    Math::Vector3 ambient, diffuse, specular;
 };
 
 struct ShadedMesh {

@@ -59,7 +59,7 @@ void Renderer::LoadScene()
     eye = {0,0,4};
     lookAt = {0,0,0};
     up = {0,1,0};
-    viewMatrix = Matrix::View(eye, lookAt, up);
+    viewMatrix = Math::View(eye, lookAt, up);
 
     Mesh m{LoadOBJ("suz.obj")};
     m.CreateBuffers(device);
@@ -98,14 +98,18 @@ void Renderer::EndFrame()
 void Renderer::Draw(const Scene& scene)
 {
     for (const auto& [entityID, entity] : scene.entities) {
-        const simd_float3 pos = entity.transform.position;
-        const simd_float4x4 MVP = matrix_multiply(matrix_multiply(projectionMatrix, viewMatrix), Matrix::Translation(pos[0], pos[1], pos[2]));
         for (const auto& shadedMesh : entity.meshes) {
+
+            using namespace Math;
+            const auto& transform = entity.transform;
             VertexData vertexData = {
-                .MVP = MVP
+                .MVP = ToFloat4x4(Scaling(transform.scale.x()) *
+                                  Rotation(transform.rotation) *
+                                  Translation(transform.position) *
+                                  viewMatrix * projectionMatrix)
             };
             FragmentData fragmentData = {
-                .color = shadedMesh.material.diffuse
+                .color = ToFloat3(shadedMesh.material.diffuse)
             };
 
             [renderEncoder setVertexBytes:&vertexData
@@ -115,6 +119,7 @@ void Renderer::Draw(const Scene& scene)
                                    length:sizeof(fragmentData)
                                   atIndex:FragmentInputIndexFrameData];
             meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
+
         }
     }
 }
@@ -123,22 +128,24 @@ void Renderer::SetViewportSize(CGSize size)
 {
     viewportSize.x = size.width;
     viewportSize.y = size.height;
-    projectionMatrix = Matrix::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
+    projectionMatrix = Math::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
 }
 
 void Renderer::HandleMouseDragged(double deltaX, double deltaY, double deltaZ)
 {
-    const simd_float3 forward = simd_normalize(lookAt - eye);
-    const simd_float3 right = simd_normalize(simd_cross(forward, up));
+    using namespace Math;
+    const Vector3 forward = (lookAt - eye).normalized();
+    const Vector3 right = forward.cross(up).normalized();
     lookAt -=  20*(deltaX / viewportSize.x) * right;
     lookAt -=  20*(deltaY / viewportSize.y) * up;
-    viewMatrix = Matrix::View(eye, lookAt, up);
+    viewMatrix = View(eye, lookAt, up);
 }
 
 void Renderer::HandleKeyPressed(uint keyCode)
 {
-    const simd_float3 forward = 1 * simd_normalize(lookAt - eye);
-    const simd_float3 right = simd_normalize(simd_cross(forward, up));
+    using namespace Math;
+    const Vector3 forward = 1 * (lookAt - eye).normalized();
+    const Vector3 right = forward.cross(up).normalized();
     if(keyCode == 0) // W
     {
         eye += forward;
@@ -159,6 +166,6 @@ void Renderer::HandleKeyPressed(uint keyCode)
         eye -= right;
         lookAt -= right;
     }
-    viewMatrix = Matrix::View(eye, lookAt, up);
+    viewMatrix = View(eye, lookAt, up);
 }
 
