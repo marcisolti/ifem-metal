@@ -22,7 +22,8 @@ typedef enum FragmentInputIndex
 } FragmentInputIndex;
 
 typedef struct {
-    matrix_float4x4 MVP;
+    matrix_float4x4 modelMatrix, modelMatrixInv, viewProjMatrix;
+    vector_float3 eyePos;
 } VertexData;
 
 typedef struct {

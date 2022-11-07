@@ -102,11 +102,12 @@ void Renderer::Draw(const Scene& scene)
 
             using namespace Math;
             const auto& transform = entity.transform;
+            const auto modelMatrix = Scaling(transform.scale.x()) * Rotation(transform.rotation) * Translation(transform.position);
             VertexData vertexData = {
-                .MVP = ToFloat4x4(Scaling(transform.scale.x()) *
-                                  Rotation(transform.rotation) *
-                                  Translation(transform.position) *
-                                  viewMatrix * projectionMatrix)
+                .modelMatrix =    ToFloat4x4(modelMatrix),
+                .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
+                .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
+                .eyePos =         ToFloat3(eye)
             };
             FragmentData fragmentData = {
                 .color = ToFloat3(shadedMesh.material.diffuse)
