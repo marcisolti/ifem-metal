@@ -47,6 +47,7 @@
     g_Editor.BeginFrame(view, g_Renderer.GetCurrentPassDescriptor());
 
     g_Editor.Update(g_World);
+    g_Renderer.Update(g_World.assetPaths);
 
     g_Renderer.Draw(g_World.scene);
     g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());

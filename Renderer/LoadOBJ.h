@@ -20,9 +20,11 @@ struct Index { uint32_t v[3], n[3], uv[3]; };
 
 Geometry LoadOBJ(const std::string& path)
 {
-    // open file
-    NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
-    std::ifstream f(std::string{[bundlePath UTF8String]} + std::string{'/'} + path);
+//    // open file
+//    NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
+//    std::ifstream f(std::string{[bundlePath UTF8String]} + std::string{'/'} + path);
+
+    std::ifstream f(path);
 
     if (!f.is_open())
         std::exit(420);

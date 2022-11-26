@@ -31,6 +31,7 @@ public:
     void BeginFrame(MTKView* view, const Config& config);
     void EndFrame();
 
+    void Update(AssetPaths& assetPaths);
     void Draw(const Scene& scene);
     void SetViewportSize(CGSize size);
     void HandleMouseDragged(double deltaX, double deltaY, double deltaZ);

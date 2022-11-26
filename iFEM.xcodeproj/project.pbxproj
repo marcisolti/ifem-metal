@@ -16,9 +16,6 @@
 		24940F6A28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6B28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
 		24940F6C28391DE000AED5FC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24940F6828391DE000AED5FC /* Renderer.mm */; };
-		24940F74283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
-		24940F75283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
-		24940F76283941AA00AED5FC /* suz.obj in Resources */ = {isa = PBXBuildFile; fileRef = 24940F73283941AA00AED5FC /* suz.obj */; };
 		24940F7A283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7B283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
 		24940F7C283A324F00AED5FC /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24940F78283A324F00AED5FC /* Math.cpp */; };
@@ -78,7 +75,6 @@
 		24940F6928391DE000AED5FC /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		24940F6E2839364700AED5FC /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		24940F7228393DF300AED5FC /* LoadOBJ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadOBJ.h; sourceTree = "<group>"; };
-		24940F73283941AA00AED5FC /* suz.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = suz.obj; sourceTree = "<group>"; };
 		24940F78283A324F00AED5FC /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		24940F79283A324F00AED5FC /* Math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
 		24940F7D283A89B400AED5FC /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
@@ -183,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				3ED283CC1EC2C6D200A23F58 /* README.md */,
-				24940F73283941AA00AED5FC /* suz.obj */,
 				3A3532831E99974500C194AD /* Renderer */,
 				3A3532911E99974500C194AD /* Application */,
 				3AE289861EEA0A9100DF4C9A /* Frameworks */,
@@ -379,7 +374,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F75283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532A01E99974500C194AD /* Main.storyboard in Resources */,
 				3A3532A31E99974500C194AD /* LaunchScreen.storyboard in Resources */,
 			);
@@ -389,7 +383,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F76283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532B91E99974500C194AD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,7 +391,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24940F74283941AA00AED5FC /* suz.obj in Resources */,
 				3A3532CC1E99974500C194AD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

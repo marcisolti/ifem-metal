@@ -107,15 +107,21 @@ namespace
         }
     }
 
-    void AddEntity(std::map<ID, Entity>& entities)
+    void AddEntity(std::map<ID, Entity>& entities, AssetPaths& assetPaths)
     {
+        static char str0[1024] = "Entes asset path here";
+        ImGui::InputText("Input", str0, IM_ARRAYSIZE(str0));
+        ImGui::SameLine();
         if(ImGui::Button("Add Entity"))
         {
+            const ID meshID = GetID();
+            assetPaths.meshToLoad = {meshID, str0};
+
             ShadedMesh s {
-                .mesh = 0,
+                .mesh = meshID,
                 .material = {{1,1,1}, {1,1,1}, {1,1,1}}
             };
-            Entity e({s});
+            const Entity e({s});
             entities.insert({GetID(), e});
         }
     }
@@ -129,16 +135,14 @@ void Editor::Update(World& world)
     {
         ImGui::Begin("World Editor");
 
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-        AddEntity(world.scene.entities);
-        
+        // Manipulate entities
+        AddEntity(world.scene.entities, world.assetPaths);
         EntityEditor(world.scene.entities);
 
         ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor);
 
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Checkbox("Demo Window", &show_demo_window);
-
 
         ImGui::End();
     }

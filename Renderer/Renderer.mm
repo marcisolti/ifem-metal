@@ -61,11 +61,22 @@ void Renderer::LoadScene()
     up = {0,1,0};
     viewMatrix = Math::View(eye, lookAt, up);
 
-    Mesh m{LoadOBJ("suz.obj")};
-    m.CreateBuffers(device);
-    m.UploadGeometry();
 
-    meshDirectory.insert({GetID(), m});
+}
+
+void Renderer::Update(AssetPaths& assetPaths)
+{
+    if (assetPaths.meshToLoad.path != "") {
+        Mesh m{LoadOBJ(assetPaths.meshToLoad.path)};
+        m.CreateBuffers(device);
+        m.UploadGeometry();
+
+        auto meshID = GetID();
+        meshDirectory.insert({assetPaths.meshToLoad.Id, m});
+
+        assetPaths.meshNames.insert({meshID, assetPaths.meshToLoad.path});
+        assetPaths.meshToLoad.path = "";
+    }
 }
 
 // MARK: Drawing
@@ -86,6 +97,7 @@ void Renderer::BeginFrame(MTKView* view, const Config& config)
     [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
     [renderEncoder setRenderPipelineState:pipelineState];
     [renderEncoder setDepthStencilState:depthStencilState];
+
 }
 
 void Renderer::EndFrame()
@@ -99,7 +111,6 @@ void Renderer::Draw(const Scene& scene)
 {
     for (const auto& [entityID, entity] : scene.entities) {
         for (const auto& shadedMesh : entity.meshes) {
-
             using namespace Math;
             const auto& transform = entity.transform;
             const auto modelMatrix = Scaling(transform.scale.x()) * Rotation(transform.rotation) * Translation(transform.position);
@@ -109,6 +120,7 @@ void Renderer::Draw(const Scene& scene)
                 .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
                 .eyePos =         ToFloat3(eye)
             };
+
             FragmentData fragmentData = {
                 .color = ToFloat3(shadedMesh.material.diffuse)
             };
@@ -120,7 +132,6 @@ void Renderer::Draw(const Scene& scene)
                                    length:sizeof(fragmentData)
                                   atIndex:FragmentInputIndexFrameData];
             meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
-
         }
     }
 }
