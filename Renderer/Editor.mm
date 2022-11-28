@@ -16,6 +16,11 @@
 #include "imgui_impl_osx.h"
 #endif
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include <iostream>
+
 void Editor::StartUp(MTKView* view, id<MTLDevice> device)
 {
     // Setup Dear ImGui context
@@ -125,6 +130,61 @@ namespace
             entities.insert({GetID(), e});
         }
     }
+
+    rapidjson::Value SerializeVector3(const Math::Vector3& v, rapidjson::MemoryPoolAllocator<>& allocator) {
+        rapidjson::Value value(rapidjson::kArrayType);
+        value.Reserve(3, allocator);
+        value.PushBack(v.x(), allocator);
+        value.PushBack(v.y(), allocator);
+        value.PushBack(v.z(), allocator);
+        return value;
+    }
+
+    void SaveScene(const World& world)
+    {
+        // /Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj
+
+        using namespace rapidjson;
+        MemoryPoolAllocator<> allocator;
+
+        Value entities(kArrayType);
+        entities.Reserve(SizeType(world.scene.entities.size()), allocator);
+        for (const auto& [Id, entity] : world.scene.entities)
+        {
+            Value meshes(kArrayType);
+            meshes.Reserve(SizeType(entity.meshes.size()), allocator);
+            for (const auto& mesh : entity.meshes)
+            {
+                Value meshData(kObjectType);
+                meshData.AddMember("id", mesh.mesh, allocator);
+                meshData.AddMember("material",
+                                   Value(kObjectType)
+                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
+                                        .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
+                                        .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
+                                   allocator);
+                meshes.PushBack(meshData, allocator);
+            }
+            entities.PushBack(Value(kObjectType)
+                                .AddMember("id", Id, allocator)
+                                .AddMember("meshes", meshes, allocator)
+                              ,
+                              allocator);
+
+        }
+
+        Value scene(kObjectType);
+        scene.AddMember("entities", entities, allocator);
+
+        Document document(kObjectType);
+        document.AddMember("scene", scene, allocator);
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+        document.Accept(writer);
+        // Output {"project":"rapidjson","stars":11}
+        std::cout << buffer.GetString() << std::endl;
+    }
 }
 
 void Editor::Update(World& world)
@@ -134,6 +194,9 @@ void Editor::Update(World& world)
 
     {
         ImGui::Begin("World Editor");
+
+        if (ImGui::Button("Save scene"))
+            SaveScene(world);
 
         // Manipulate entities
         AddEntity(world.scene.entities, world.assetPaths);

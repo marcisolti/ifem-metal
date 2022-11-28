@@ -51,7 +51,7 @@ struct AssetPaths {
         ID Id;
         std::string path = "";
     } meshToLoad;
-    std::map<ID, std::string> meshNames;
+//    std::map<ID, std::string> meshNames;
 };
 
 struct Scene {

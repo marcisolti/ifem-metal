@@ -74,7 +74,7 @@ void Renderer::Update(AssetPaths& assetPaths)
         auto meshID = GetID();
         meshDirectory.insert({assetPaths.meshToLoad.Id, m});
 
-        assetPaths.meshNames.insert({meshID, assetPaths.meshToLoad.path});
+//        assetPaths.meshNames.insert({meshID, assetPaths.meshToLoad.path});
         assetPaths.meshToLoad.path = "";
     }
 }
