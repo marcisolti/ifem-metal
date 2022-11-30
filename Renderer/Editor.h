@@ -27,4 +27,13 @@ public:
     void BeginFrame(MTKView* view, MTLRenderPassDescriptor* currentRenderPassDescriptor);
     void Update(World& world);
     void Draw(id<MTLRenderCommandEncoder> renderEncoder, id<MTLCommandBuffer> commandBuffer);
+
+private:
+
+    void AddEntity(std::map<ID, Entity>& entities, MeshToLoad& meshToLoad);
+
+    void SceneSerialization(const World& world);
+    void SaveScene(const std::string& path, const World& world);
+
+    std::map<ID, std::string> assetPaths;
 };

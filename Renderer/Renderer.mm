@@ -64,18 +64,16 @@ void Renderer::LoadScene()
 
 }
 
-void Renderer::Update(AssetPaths& assetPaths)
+void Renderer::Update(MeshToLoad& meshToLoad)
 {
-    if (assetPaths.meshToLoad.path != "") {
-        Mesh m{LoadOBJ(assetPaths.meshToLoad.path)};
+    if (meshToLoad.path != "") {
+        Mesh m{LoadOBJ(meshToLoad.path)};
         m.CreateBuffers(device);
         m.UploadGeometry();
 
-        auto meshID = GetID();
-        meshDirectory.insert({assetPaths.meshToLoad.Id, m});
+        meshDirectory.insert({meshToLoad.Id, m});
 
-//        assetPaths.meshNames.insert({meshID, assetPaths.meshToLoad.path});
-        assetPaths.meshToLoad.path = "";
+        meshToLoad.path = "";
     }
 }
 

@@ -46,21 +46,18 @@ struct Config {
     float clearColor[3];
 };
 
-struct AssetPaths {
-    struct {
-        ID Id;
-        std::string path = "";
-    } meshToLoad;
-//    std::map<ID, std::string> meshNames;
-};
-
 struct Scene {
     std::map<ID, Entity> entities;
     std::map<ID, Light> lights;
 };
 
+struct MeshToLoad {
+    ID Id;
+    std::string path = "";
+};
+
 struct World {
     Config config;
     Scene scene;
-    AssetPaths assetPaths;
+    MeshToLoad meshToLoad;
 };

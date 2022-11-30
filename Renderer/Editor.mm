@@ -19,7 +19,10 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+
 #include <iostream>
+
+#include <fstream>
 
 void Editor::StartUp(MTKView* view, id<MTLDevice> device)
 {
@@ -112,25 +115,6 @@ namespace
         }
     }
 
-    void AddEntity(std::map<ID, Entity>& entities, AssetPaths& assetPaths)
-    {
-        static char str0[1024] = "Entes asset path here";
-        ImGui::InputText("Input", str0, IM_ARRAYSIZE(str0));
-        ImGui::SameLine();
-        if(ImGui::Button("Add Entity"))
-        {
-            const ID meshID = GetID();
-            assetPaths.meshToLoad = {meshID, str0};
-
-            ShadedMesh s {
-                .mesh = meshID,
-                .material = {{1,1,1}, {1,1,1}, {1,1,1}}
-            };
-            const Entity e({s});
-            entities.insert({GetID(), e});
-        }
-    }
-
     rapidjson::Value SerializeVector3(const Math::Vector3& v, rapidjson::MemoryPoolAllocator<>& allocator) {
         rapidjson::Value value(rapidjson::kArrayType);
         value.Reserve(3, allocator);
@@ -140,52 +124,136 @@ namespace
         return value;
     }
 
-    void SaveScene(const World& world)
+    void LoadScene(const std::string& path, const World& world)
     {
-        // /Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj
-
         using namespace rapidjson;
-        MemoryPoolAllocator<> allocator;
-
-        Value entities(kArrayType);
-        entities.Reserve(SizeType(world.scene.entities.size()), allocator);
-        for (const auto& [Id, entity] : world.scene.entities)
+        Document d;
         {
-            Value meshes(kArrayType);
-            meshes.Reserve(SizeType(entity.meshes.size()), allocator);
-            for (const auto& mesh : entity.meshes)
-            {
-                Value meshData(kObjectType);
-                meshData.AddMember("id", mesh.mesh, allocator);
-                meshData.AddMember("material",
-                                   Value(kObjectType)
-                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
-                                        .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
-                                        .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
-                                   allocator);
-                meshes.PushBack(meshData, allocator);
-            }
-            entities.PushBack(Value(kObjectType)
-                                .AddMember("id", Id, allocator)
-                                .AddMember("meshes", meshes, allocator)
-                              ,
-                              allocator);
+            std::ifstream file;
+            std::string content;
 
+            file.open(path);
+            file >> content;
+            file.close();
+
+            d.Parse(content.c_str());
         }
 
-        Value scene(kObjectType);
-        scene.AddMember("entities", entities, allocator);
+//        // 2. Modify it by DOM.
+//        Value& s = d["stars"];
+//        s.SetInt(s.GetInt() + 1);
+    }
 
-        Document document(kObjectType);
-        document.AddMember("scene", scene, allocator);
 
+}
+
+void Editor::SceneSerialization(const World& world)
+{
+
+    static char str0[1024] = "Path to scene to save";
+    ImGui::InputText("sceneToSave", str0, IM_ARRAYSIZE(str0));
+    ImGui::SameLine();
+    if (ImGui::Button("Save scene"))
+        SaveScene(str0, world);
+
+    static char str1[1024] = "Path to scene to load";
+    ImGui::InputText("sceneToLoad", str1, IM_ARRAYSIZE(str1));
+    ImGui::SameLine();
+    if (ImGui::Button("Load scene"))
+        LoadScene(str0, world);
+
+}
+
+void Editor::SaveScene(const std::string& path, const World& world)
+{
+    // /Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj
+
+    using namespace rapidjson;
+    Document document(kObjectType);
+    {
+        MemoryPoolAllocator<> allocator;
+
+        // Entities
+        {
+            Value entities(kArrayType);
+            entities.Reserve(SizeType(world.scene.entities.size()), allocator);
+            for (const auto& [Id, entity] : world.scene.entities)
+            {
+                Value meshes(kArrayType);
+                meshes.Reserve(SizeType(entity.meshes.size()), allocator);
+                for (const auto& mesh : entity.meshes)
+                {
+                    Value meshData(kObjectType);
+                    meshData.AddMember("id", mesh.mesh, allocator);
+                    meshData.AddMember("material",
+                                       Value(kObjectType)
+                                       .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
+                                       .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
+                                       .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
+                                       allocator);
+                    meshes.PushBack(meshData, allocator);
+                }
+                entities.PushBack(Value(kObjectType)
+                                  .AddMember("id", Id, allocator)
+                                  .AddMember("meshes", meshes, allocator)
+                                  ,
+                                  allocator);
+
+            }
+            document.AddMember("entities", entities, allocator);
+        }
+
+        // Meshes
+        {
+            Value meshes(kArrayType);
+            meshes.Reserve(SizeType(assetPaths.size()), allocator);
+            for (const auto& [Id, path] : assetPaths)
+            {
+                Value meshData(kObjectType);
+                meshData.AddMember("id", Id, allocator);
+                meshData.AddMember("path", Value().SetString(path.c_str(), SizeType(path.size())), allocator);
+                meshes.PushBack(meshData, allocator);
+            }
+            document.AddMember("meshes", meshes, allocator);
+        }
+
+    }
+
+    // Write file
+    {
         StringBuffer buffer;
         Writer<StringBuffer> writer(buffer);
         document.Accept(writer);
-        // Output {"project":"rapidjson","stars":11}
-        std::cout << buffer.GetString() << std::endl;
+
+        std::ofstream file;
+        file.open(path);
+        file << buffer.GetString();
+        file.close();
     }
 }
+
+
+void Editor::AddEntity(std::map<ID, Entity>& entities, MeshToLoad& meshToLoad)
+{
+    static char str0[1024] = "Entes asset path here";
+    ImGui::InputText("Input", str0, IM_ARRAYSIZE(str0));
+    ImGui::SameLine();
+    if(ImGui::Button("Add Entity"))
+    {
+        const ID meshID = GetID();
+        meshToLoad = {meshID, str0};
+        assetPaths.insert({meshID, str0});
+
+        ShadedMesh s {
+            .mesh = meshID,
+            .material = {{1,1,1}, {1,1,1}, {1,1,1}}
+        };
+        const Entity e({s});
+        entities.insert({GetID(), e});
+
+    }
+}
+
 
 void Editor::Update(World& world)
 {
@@ -195,11 +263,10 @@ void Editor::Update(World& world)
     {
         ImGui::Begin("World Editor");
 
-        if (ImGui::Button("Save scene"))
-            SaveScene(world);
+        SceneSerialization(world);
 
         // Manipulate entities
-        AddEntity(world.scene.entities, world.assetPaths);
+        AddEntity(world.scene.entities, world.meshToLoad);
         EntityEditor(world.scene.entities);
 
         ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor);
