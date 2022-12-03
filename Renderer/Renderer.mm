@@ -64,17 +64,17 @@ void Renderer::LoadScene()
 
 }
 
-void Renderer::Update(MeshToLoad& meshToLoad)
+void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
 {
-    if (meshToLoad.path != "") {
+    for (const auto& meshToLoad : meshesToLoad)
+    {
         Mesh m{LoadOBJ(meshToLoad.path)};
         m.CreateBuffers(device);
         m.UploadGeometry();
 
         meshDirectory.insert({meshToLoad.Id, m});
-
-        meshToLoad.path = "";
     }
+    if (!meshesToLoad.empty()) meshesToLoad.clear();
 }
 
 // MARK: Drawing

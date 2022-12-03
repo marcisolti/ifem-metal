@@ -124,7 +124,7 @@ namespace
         return value;
     }
 
-    void LoadScene(const std::string& path, const World& world)
+    void LoadScene(const std::string& path, World& world)
     {
         using namespace rapidjson;
         Document d;
@@ -139,28 +139,85 @@ namespace
             d.Parse(content.c_str());
         }
 
-//        // 2. Modify it by DOM.
-//        Value& s = d["stars"];
-//        s.SetInt(s.GetInt() + 1);
+
+        /*
+         {
+             "entities": [
+                 {
+                     "id": 1,
+                     "meshes": [
+                         {
+                             "id": 0,
+                             "material": {
+                                 "ambient": [
+                                     1.0,
+                                     1.0,
+                                     1.0
+                                 ],
+                                 "diffuse": [
+                                     1.0,
+                                     1.0,
+                                     1.0
+                                 ],
+                                 "specular": [
+                                     1.0,
+                                     1.0,
+                                     1.0
+                                 ]
+                             }
+                         }
+                     ]
+                 }
+             ],
+             "meshes": [
+                 {
+                     "id": 0,
+                     "path": "/Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj"
+                 }
+             ]
+         }
+         */
+
+        // <Parsed ID, Run-time ID>
+        std::map<ID, ID> meshMap;
+        std::map<ID, ID> entityMap;
+
+        const Value& meshArray = d["meshes"];
+        const Value& entities = d["entities"];
+        for (const auto& mesh : meshArray.GetArray())
+        {
+            ID runTimeID = GetID();
+            world.meshesToLoad.push_back({runTimeID, mesh["path"].GetString()});
+            meshMap.insert({mesh["id"].GetInt(), runTimeID});
+        }
+
+        for (const auto& entity : entities.GetArray())
+        {
+//            Material mat();
+//            ShadedMesh mesh()
+//            Entity e({});
+//            world.scene.entities<
+        }
+
     }
 
 
 }
 
-void Editor::SceneSerialization(const World& world)
+void Editor::SceneSerialization(World& world)
 {
 
-    static char str0[1024] = "Path to scene to save";
+    static char str0[1024] = "/Users/marcisolti/git/ifem-metal/Assets/scene.json";
     ImGui::InputText("sceneToSave", str0, IM_ARRAYSIZE(str0));
     ImGui::SameLine();
     if (ImGui::Button("Save scene"))
         SaveScene(str0, world);
 
-    static char str1[1024] = "Path to scene to load";
+    static char str1[1024] = "/Users/marcisolti/git/ifem-metal/Assets/scene.json";
     ImGui::InputText("sceneToLoad", str1, IM_ARRAYSIZE(str1));
     ImGui::SameLine();
     if (ImGui::Button("Load scene"))
-        LoadScene(str0, world);
+        LoadScene(str1, world);
 
 }
 
@@ -233,7 +290,7 @@ void Editor::SaveScene(const std::string& path, const World& world)
 }
 
 
-void Editor::AddEntity(std::map<ID, Entity>& entities, MeshToLoad& meshToLoad)
+void Editor::AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad)
 {
     static char str0[1024] = "Entes asset path here";
     ImGui::InputText("Input", str0, IM_ARRAYSIZE(str0));
@@ -241,7 +298,7 @@ void Editor::AddEntity(std::map<ID, Entity>& entities, MeshToLoad& meshToLoad)
     if(ImGui::Button("Add Entity"))
     {
         const ID meshID = GetID();
-        meshToLoad = {meshID, str0};
+        meshesToLoad.push_back({meshID, str0});
         assetPaths.insert({meshID, str0});
 
         ShadedMesh s {
@@ -266,7 +323,7 @@ void Editor::Update(World& world)
         SceneSerialization(world);
 
         // Manipulate entities
-        AddEntity(world.scene.entities, world.meshToLoad);
+        AddEntity(world.scene.entities, world.meshesToLoad);
         EntityEditor(world.scene.entities);
 
         ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor);

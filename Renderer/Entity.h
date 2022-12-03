@@ -25,9 +25,9 @@ struct Material {
 };
 
 struct ShadedMesh {
-    Transform transform = {{0,0,0}, {0,0,0}, {1,1,1}};
     ID mesh;
     Material material;
+    Transform transform = {{0,0,0}, {0,0,0}, {1,1,1}};
 };
 
 class Entity {
@@ -53,11 +53,11 @@ struct Scene {
 
 struct MeshToLoad {
     ID Id;
-    std::string path = "";
+    std::string path;
 };
 
 struct World {
     Config config;
     Scene scene;
-    MeshToLoad meshToLoad;
+    std::vector<MeshToLoad> meshesToLoad;
 };
