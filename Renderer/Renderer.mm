@@ -110,8 +110,11 @@ void Renderer::Draw(const Scene& scene)
     for (const auto& [entityID, entity] : scene.entities) {
         for (const auto& shadedMesh : entity.meshes) {
             using namespace Math;
-            const auto& transform = entity.transform;
-            const auto modelMatrix = Scaling(transform.scale.x()) * Rotation(transform.rotation) * Translation(transform.position);
+            const auto& rootTransform = entity.rootTransform;
+            const auto modelMatrix =
+                Scaling(rootTransform.scale.x()) *
+                Rotation(rootTransform.rotation) *
+                Translation(rootTransform.position);
             VertexData vertexData = {
                 .modelMatrix =    ToFloat4x4(modelMatrix),
                 .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),

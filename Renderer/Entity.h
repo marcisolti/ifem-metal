@@ -33,11 +33,11 @@ struct ShadedMesh {
 class Entity {
 public:
     Entity(const std::vector<ShadedMesh>& meshes,
-           const Transform& transform = {{0,0,0}, {0,0,0}, {1,1,1}})
+           const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}})
     : meshes{meshes}
-    , transform{transform} {  }
+    , rootTransform{rootTransform} {  }
 
-    Transform transform;
+    Transform rootTransform;
     std::vector<ShadedMesh> meshes;
 };
 

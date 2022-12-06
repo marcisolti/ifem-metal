@@ -94,7 +94,7 @@ namespace
 
             ImGui::Text("Transforms");
             {
-                auto& transform = e.transform;
+                auto& transform = e.rootTransform;
 
                 ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
                 ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
@@ -174,12 +174,6 @@ void Editor::SaveScene(const std::string& path, const World& world)
                 {
                     Value meshData(kObjectType);
                     meshData.AddMember("id", mesh.mesh, allocator);
-                    meshData.AddMember("transform",
-                                       Value(kObjectType)
-                                        .AddMember("position", SerializeVector3(entity.transform.position, allocator), allocator)
-                                        .AddMember("rotation", SerializeVector3(entity.transform.rotation, allocator), allocator)
-                                        .AddMember("scale", SerializeVector3(entity.transform.scale, allocator), allocator),
-                                       allocator);
                     meshData.AddMember("material",
                                        Value(kObjectType)
                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
@@ -188,8 +182,15 @@ void Editor::SaveScene(const std::string& path, const World& world)
                                        allocator);
                     meshes.PushBack(meshData, allocator);
                 }
+                Value rootTransform(kObjectType);
+                rootTransform
+                    .AddMember("position", SerializeVector3(entity.rootTransform.position, allocator), allocator)
+                    .AddMember("rotation", SerializeVector3(entity.rootTransform.rotation, allocator), allocator)
+                    .AddMember("scale", SerializeVector3(entity.rootTransform.scale, allocator), allocator);
+
                 entities.PushBack(Value(kObjectType)
                                   .AddMember("id", Id, allocator)
+                                  .AddMember("rootTransform", rootTransform, allocator)
                                   .AddMember("meshes", meshes, allocator),
                                   allocator);
 
@@ -313,7 +314,14 @@ void Editor::LoadScene(const std::string& path, World& world)
             {} // transform
         };
         ID runTimeEntityID = GetID();
-        world.scene.entities.insert({runTimeEntityID, Entity({shaded})});
+
+        const Value& rootTransform = entity["rootTransform"];
+        Transform t = {
+            DeserializeVector3(rootTransform["position"]),
+            DeserializeVector3(rootTransform["rotation"]),
+            DeserializeVector3(rootTransform["scale"])
+        };
+        world.scene.entities.insert({runTimeEntityID, Entity({shaded}, t)});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
     }
 
