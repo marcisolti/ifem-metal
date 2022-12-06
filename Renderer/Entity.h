@@ -26,15 +26,16 @@ struct Material {
 
 struct ShadedMesh {
     ID mesh;
-    Material material;
+    Material material = {{1,1,1},{1,1,1},{1,1,1}};
     Transform transform = {{0,0,0}, {0,0,0}, {1,1,1}};
 };
 
 class Entity {
 public:
-    Entity(std::vector<ShadedMesh> meshes)
+    Entity(const std::vector<ShadedMesh>& meshes,
+           const Transform& transform = {{0,0,0}, {0,0,0}, {1,1,1}})
     : meshes{meshes}
-    , transform{{0,0,0}, {0,0,0}, {1,1,1}} {  }
+    , transform{transform} {  }
 
     Transform transform;
     std::vector<ShadedMesh> meshes;

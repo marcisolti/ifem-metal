@@ -124,84 +124,16 @@ namespace
         return value;
     }
 
-    void LoadScene(const std::string& path, World& world)
-    {
-        using namespace rapidjson;
-        Document d;
-        {
-            std::ifstream file;
-            std::string content;
+    Math::Vector3 DeserializeVector3(const rapidjson::Value& value) {
+        assert(value.IsArray() || value.Size() == 3);
 
-            file.open(path);
-            file >> content;
-            file.close();
+        Math::Vector3 vector;
+        vector[0] = value[0].GetFloat();
+        vector[1] = value[1].GetFloat();
+        vector[2] = value[2].GetFloat();
 
-            d.Parse(content.c_str());
-        }
-
-
-        /*
-         {
-             "entities": [
-                 {
-                     "id": 1,
-                     "meshes": [
-                         {
-                             "id": 0,
-                             "material": {
-                                 "ambient": [
-                                     1.0,
-                                     1.0,
-                                     1.0
-                                 ],
-                                 "diffuse": [
-                                     1.0,
-                                     1.0,
-                                     1.0
-                                 ],
-                                 "specular": [
-                                     1.0,
-                                     1.0,
-                                     1.0
-                                 ]
-                             }
-                         }
-                     ]
-                 }
-             ],
-             "meshes": [
-                 {
-                     "id": 0,
-                     "path": "/Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj"
-                 }
-             ]
-         }
-         */
-
-        // <Parsed ID, Run-time ID>
-        std::map<ID, ID> meshMap;
-        std::map<ID, ID> entityMap;
-
-        const Value& meshArray = d["meshes"];
-        const Value& entities = d["entities"];
-        for (const auto& mesh : meshArray.GetArray())
-        {
-            ID runTimeID = GetID();
-            world.meshesToLoad.push_back({runTimeID, mesh["path"].GetString()});
-            meshMap.insert({mesh["id"].GetInt(), runTimeID});
-        }
-
-        for (const auto& entity : entities.GetArray())
-        {
-//            Material mat();
-//            ShadedMesh mesh()
-//            Entity e({});
-//            world.scene.entities<
-        }
-
+        return vector;
     }
-
-
 }
 
 void Editor::SceneSerialization(World& world)
@@ -242,6 +174,12 @@ void Editor::SaveScene(const std::string& path, const World& world)
                 {
                     Value meshData(kObjectType);
                     meshData.AddMember("id", mesh.mesh, allocator);
+                    meshData.AddMember("transform",
+                                       Value(kObjectType)
+                                        .AddMember("position", SerializeVector3(entity.transform.position, allocator), allocator)
+                                        .AddMember("rotation", SerializeVector3(entity.transform.rotation, allocator), allocator)
+                                        .AddMember("scale", SerializeVector3(entity.transform.scale, allocator), allocator),
+                                       allocator);
                     meshData.AddMember("material",
                                        Value(kObjectType)
                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
@@ -252,8 +190,7 @@ void Editor::SaveScene(const std::string& path, const World& world)
                 }
                 entities.PushBack(Value(kObjectType)
                                   .AddMember("id", Id, allocator)
-                                  .AddMember("meshes", meshes, allocator)
-                                  ,
+                                  .AddMember("meshes", meshes, allocator),
                                   allocator);
 
             }
@@ -289,6 +226,100 @@ void Editor::SaveScene(const std::string& path, const World& world)
     }
 }
 
+void Editor::LoadScene(const std::string& path, World& world)
+{
+    using namespace rapidjson;
+    Document d;
+    {
+        std::ifstream file;
+        std::string content;
+
+        file.open(path);
+        file >> content;
+        file.close();
+
+        d.Parse(content.c_str());
+    }
+
+
+    /*
+     {
+         "entities": [
+             {
+                 "id": 1,
+                 "meshes": [
+                     {
+                         "id": 0,
+                         "material": {
+                             "ambient": [
+                                 1.0,
+                                 1.0,
+                                 1.0
+                             ],
+                             "diffuse": [
+                                 1.0,
+                                 1.0,
+                                 1.0
+                             ],
+                             "specular": [
+                                 1.0,
+                                 1.0,
+                                 1.0
+                             ]
+                         }
+                     }
+                 ]
+             }
+         ],
+         "meshes": [
+             {
+                 "id": 0,
+                 "path": "/Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj"
+             }
+         ]
+     }
+     */
+
+    // <Parsed ID, Run-time ID>
+    std::map<ID, ID> meshMap;
+    std::map<ID, ID> entityMap;
+
+    world.scene.entities.clear();
+
+    const Value& meshArray = d["meshes"];
+    const Value& entities = d["entities"];
+    for (const auto& mesh : meshArray.GetArray())
+    {
+        ID runTimeID = GetID();
+        const auto& path = mesh["path"].GetString();
+        world.meshesToLoad.push_back({runTimeID, path});
+        assetPaths.insert({runTimeID, path});
+        meshMap.insert({mesh["id"].GetInt(), runTimeID});
+    }
+
+    for (const auto& entity : entities.GetArray())
+    {
+        const Value& mesh = entity["meshes"].GetArray()[0];
+        const Value& material = mesh["material"];
+
+        Material mat = {
+            DeserializeVector3(material["ambient"]),
+            DeserializeVector3(material["diffuse"]),
+            DeserializeVector3(material["specular"])
+        };
+        ShadedMesh shaded = {
+            meshMap.at(mesh["id"].GetInt()),
+            mat,
+            {} // transform
+        };
+        ID runTimeEntityID = GetID();
+        world.scene.entities.insert({runTimeEntityID, Entity({shaded})});
+        entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
+    }
+
+}
+
+
 
 void Editor::AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad)
 {
@@ -303,7 +334,6 @@ void Editor::AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& 
 
         ShadedMesh s {
             .mesh = meshID,
-            .material = {{1,1,1}, {1,1,1}, {1,1,1}}
         };
         const Entity e({s});
         entities.insert({GetID(), e});

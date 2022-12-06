@@ -34,6 +34,7 @@ private:
 
     void SceneSerialization(World& world);
     void SaveScene(const std::string& path, const World& world);
-
+    void LoadScene(const std::string& path, World& world);
+    
     std::map<ID, std::string> assetPaths;
 };
