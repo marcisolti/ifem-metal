@@ -104,6 +104,19 @@ namespace
                 transform.scale = {scale, scale, scale};
             }
 
+            {
+                static bool selected = false;
+                static int si = 0;
+                
+                const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
+                static int item_current = 1;
+                ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
+                
+                char label[32];
+                sprintf(label, "Item %d", item_current);
+                ImGui::Text(label);
+            }
+
             ImGui::Text("Material");
             {
                 auto& material = e.meshes[0].material;
@@ -115,7 +128,8 @@ namespace
         }
     }
 
-    rapidjson::Value SerializeVector3(const Math::Vector3& v, rapidjson::MemoryPoolAllocator<>& allocator) {
+    rapidjson::Value SerializeVector3(const Math::Vector3& v, rapidjson::MemoryPoolAllocator<>& allocator)
+    {
         rapidjson::Value value(rapidjson::kArrayType);
         value.Reserve(3, allocator);
         value.PushBack(v.x(), allocator);
@@ -124,7 +138,8 @@ namespace
         return value;
     }
 
-    Math::Vector3 DeserializeVector3(const rapidjson::Value& value) {
+    Math::Vector3 DeserializeVector3(const rapidjson::Value& value)
+    {
         assert(value.IsArray() || value.Size() == 3);
 
         Math::Vector3 vector;
@@ -134,6 +149,25 @@ namespace
 
         return vector;
     }
+
+    rapidjson::Value SerializeTransform(const Transform& t, rapidjson::MemoryPoolAllocator<>& allocator)
+    {
+        rapidjson::Value ret(rapidjson::kObjectType);
+        ret.AddMember("position", SerializeVector3(t.position, allocator), allocator)
+           .AddMember("rotation", SerializeVector3(t.rotation, allocator), allocator)
+           .AddMember("scale", SerializeVector3(t.scale, allocator), allocator);
+        return ret;
+    }
+
+    Transform DeserializeTransform(const rapidjson::Value& t)
+    {
+        return {
+            DeserializeVector3(t["position"]),
+            DeserializeVector3(t["rotation"]),
+            DeserializeVector3(t["scale"])
+        };
+    }
+
 }
 
 void Editor::SceneSerialization(World& world)
@@ -155,8 +189,6 @@ void Editor::SceneSerialization(World& world)
 
 void Editor::SaveScene(const std::string& path, const World& world)
 {
-    // /Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj
-
     using namespace rapidjson;
     Document document(kObjectType);
     {
@@ -176,24 +208,18 @@ void Editor::SaveScene(const std::string& path, const World& world)
                     meshData.AddMember("id", mesh.mesh, allocator);
                     meshData.AddMember("material",
                                        Value(kObjectType)
-                                       .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
-                                       .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
-                                       .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
+                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
+                                        .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
+                                        .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
                                        allocator);
                     meshes.PushBack(meshData, allocator);
                 }
-                Value rootTransform(kObjectType);
-                rootTransform
-                    .AddMember("position", SerializeVector3(entity.rootTransform.position, allocator), allocator)
-                    .AddMember("rotation", SerializeVector3(entity.rootTransform.rotation, allocator), allocator)
-                    .AddMember("scale", SerializeVector3(entity.rootTransform.scale, allocator), allocator);
 
                 entities.PushBack(Value(kObjectType)
-                                  .AddMember("id", Id, allocator)
-                                  .AddMember("rootTransform", rootTransform, allocator)
-                                  .AddMember("meshes", meshes, allocator),
+                                    .AddMember("id", Id, allocator)
+                                    .AddMember("rootTransform", SerializeTransform(entity.rootTransform, allocator), allocator)
+                                    .AddMember("meshes", meshes, allocator),
                                   allocator);
-
             }
             document.AddMember("entities", entities, allocator);
         }
@@ -211,7 +237,6 @@ void Editor::SaveScene(const std::string& path, const World& world)
             }
             document.AddMember("meshes", meshes, allocator);
         }
-
     }
 
     // Write file
@@ -241,45 +266,6 @@ void Editor::LoadScene(const std::string& path, World& world)
 
         d.Parse(content.c_str());
     }
-
-
-    /*
-     {
-         "entities": [
-             {
-                 "id": 1,
-                 "meshes": [
-                     {
-                         "id": 0,
-                         "material": {
-                             "ambient": [
-                                 1.0,
-                                 1.0,
-                                 1.0
-                             ],
-                             "diffuse": [
-                                 1.0,
-                                 1.0,
-                                 1.0
-                             ],
-                             "specular": [
-                                 1.0,
-                                 1.0,
-                                 1.0
-                             ]
-                         }
-                     }
-                 ]
-             }
-         ],
-         "meshes": [
-             {
-                 "id": 0,
-                 "path": "/Users/marcisolti/git/filament/out/cmake-release/samples/assets/models/monkey/monkey.obj"
-             }
-         ]
-     }
-     */
 
     // <Parsed ID, Run-time ID>
     std::map<ID, ID> meshMap;
@@ -314,14 +300,7 @@ void Editor::LoadScene(const std::string& path, World& world)
             {} // transform
         };
         ID runTimeEntityID = GetID();
-
-        const Value& rootTransform = entity["rootTransform"];
-        Transform t = {
-            DeserializeVector3(rootTransform["position"]),
-            DeserializeVector3(rootTransform["rotation"]),
-            DeserializeVector3(rootTransform["scale"])
-        };
-        world.scene.entities.insert({runTimeEntityID, Entity({shaded}, t)});
+        world.scene.entities.insert({runTimeEntityID, Entity({shaded}, DeserializeTransform(entity["rootTransform"]))});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
     }
 

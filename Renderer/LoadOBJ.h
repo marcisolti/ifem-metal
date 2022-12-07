@@ -26,8 +26,10 @@ Geometry LoadOBJ(const std::string& path)
 
     std::ifstream f(path);
 
-    if (!f.is_open())
+    if (!f.is_open()) {
+        std::printf("CANNOT OPEN FILE");
         std::exit(420);
+    }
 
     // parse OBJ
     std::vector<std::string> lines;
