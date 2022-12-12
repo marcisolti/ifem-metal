@@ -1,1 +1,50 @@
-{"entities":[{"id":1,"rootTransform":{"position":[1.2200000286102295,-0.4880000054836273,1.4290000200271606],"rotation":[5.366000175476074,0.0,0.0],"scale":[1.0,1.0,1.0]},"shadedMesh":{"id":0,"material":{"ambient":[0.0,615.0,126.0],"diffuse":[0.4117646813392639,0.48096877336502075,1.0],"specular":[129.0,541.0,110.0]}}}],"meshes":[{"id":0,"path":"/Users/marcisolti/git/three.js/examples/models/obj/cerberus/Cerberus.obj"}]}
+{
+    "entities": [
+        {
+            "id": 1,
+            "rootTransform": {
+                "position": [
+                    1.2200000286102295,
+                    -0.4880000054836273,
+                    1.4290000200271606
+                ],
+                "rotation": [
+                    5.366000175476074,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "shadedMesh": {
+                "id": 0,
+                "material": {
+                    "ambient": [
+                        0.0,
+                        615.0,
+                        126.0
+                    ],
+                    "diffuse": [
+                        0.4117646813392639,
+                        0.48096877336502075,
+                        1.0
+                    ],
+                    "specular": [
+                        129.0,
+                        541.0,
+                        110.0
+                    ]
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "id": 0,
+            "path": "/Users/marcisolti/git/three.js/examples/models/obj/cerberus/Cerberus.obj"
+        }
+    ]
+}

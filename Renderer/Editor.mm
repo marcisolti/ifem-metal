@@ -246,7 +246,9 @@ void Editor::LoadScene(const std::string& path, World& world)
         std::string content;
 
         file.open(path);
-        file >> content;
+        std::string line;                   // 👍
+        while (std::getline(file, line))    // 👍
+            content += line;                // 👍
         file.close();
 
         d.Parse(content.c_str());
@@ -259,7 +261,6 @@ void Editor::LoadScene(const std::string& path, World& world)
     world.scene.entities.clear();
 
     const Value& meshArray = d["meshes"];
-    const Value& entities = d["entities"];
     for (const auto& mesh : meshArray.GetArray())
     {
         ID runTimeID = GetID();
@@ -269,6 +270,7 @@ void Editor::LoadScene(const std::string& path, World& world)
         meshMap.insert({mesh["id"].GetInt(), runTimeID});
     }
 
+    const Value& entities = d["entities"];
     for (const auto& entity : entities.GetArray())
     {
         const Value& mesh = entity["shadedMesh"];
