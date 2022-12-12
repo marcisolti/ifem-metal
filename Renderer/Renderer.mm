@@ -107,33 +107,33 @@ void Renderer::EndFrame()
 
 void Renderer::Draw(const Scene& scene)
 {
-    for (const auto& [entityID, entity] : scene.entities) {
-        for (const auto& shadedMesh : entity.meshes) {
-            using namespace Math;
-            const auto& rootTransform = entity.rootTransform;
-            const auto modelMatrix =
-                Scaling(rootTransform.scale.x()) *
-                Rotation(rootTransform.rotation) *
-                Translation(rootTransform.position);
-            VertexData vertexData = {
-                .modelMatrix =    ToFloat4x4(modelMatrix),
-                .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
-                .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
-                .eyePos =         ToFloat3(eye)
-            };
+    for (const auto& [entityID, entity] : scene.entities)
+    {
+        using namespace Math;
+        const auto& rootTransform = entity.rootTransform;
+        const auto& shadedMesh = entity.shadedMesh;
+        const auto modelMatrix =
+            Scaling(rootTransform.scale.x()) *
+            Rotation(rootTransform.rotation) *
+            Translation(rootTransform.position);
+        VertexData vertexData = {
+            .modelMatrix =    ToFloat4x4(modelMatrix),
+            .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
+            .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
+            .eyePos =         ToFloat3(eye)
+        };
 
-            FragmentData fragmentData = {
-                .color = ToFloat3(shadedMesh.material.diffuse)
-            };
+        FragmentData fragmentData = {
+            .color = ToFloat3(shadedMesh.material.diffuse)
+        };
 
-            [renderEncoder setVertexBytes:&vertexData
-                                   length:sizeof(vertexData)
-                                  atIndex:VertexInputIndexFrameData];
-            [renderEncoder setFragmentBytes:&fragmentData
-                                   length:sizeof(fragmentData)
-                                  atIndex:FragmentInputIndexFrameData];
-            meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
-        }
+        [renderEncoder setVertexBytes:&vertexData
+                               length:sizeof(vertexData)
+                              atIndex:VertexInputIndexFrameData];
+        [renderEncoder setFragmentBytes:&fragmentData
+                               length:sizeof(fragmentData)
+                              atIndex:FragmentInputIndexFrameData];
+        meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
     }
 }
 

@@ -104,22 +104,10 @@ namespace
                 transform.scale = {scale, scale, scale};
             }
 
-            {
-                static bool selected = false;
-                static int si = 0;
-                
-                const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
-                static int item_current = 1;
-                ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
-                
-                char label[32];
-                sprintf(label, "Item %d", item_current);
-                ImGui::Text(label);
-            }
 
             ImGui::Text("Material");
             {
-                auto& material = e.meshes[0].material;
+                auto& material = e.shadedMesh.material;
                 ImGui::ColorEdit3("diffuse", material.diffuse.data());
                 ImGui::ColorEdit3("specular", material.specular.data());
             }
@@ -200,25 +188,22 @@ void Editor::SaveScene(const std::string& path, const World& world)
             entities.Reserve(SizeType(world.scene.entities.size()), allocator);
             for (const auto& [Id, entity] : world.scene.entities)
             {
-                Value meshes(kArrayType);
-                meshes.Reserve(SizeType(entity.meshes.size()), allocator);
-                for (const auto& mesh : entity.meshes)
-                {
-                    Value meshData(kObjectType);
-                    meshData.AddMember("id", mesh.mesh, allocator);
-                    meshData.AddMember("material",
-                                       Value(kObjectType)
-                                        .AddMember("ambient",  SerializeVector3(mesh.material.ambient, allocator), allocator)
-                                        .AddMember("diffuse",  SerializeVector3(mesh.material.diffuse, allocator), allocator)
-                                        .AddMember("specular", SerializeVector3(mesh.material.specular, allocator), allocator),
-                                       allocator);
-                    meshes.PushBack(meshData, allocator);
-                }
+                const auto& shadedMesh = entity.shadedMesh;
+                const auto& material = shadedMesh.material;
+
+                Value shadedMeshObject(kObjectType);
+                shadedMeshObject.AddMember("id", shadedMesh.mesh, allocator);
+                shadedMeshObject.AddMember("material",
+                                   Value(kObjectType)
+                                    .AddMember("ambient",  SerializeVector3(material.ambient, allocator), allocator)
+                                    .AddMember("diffuse",  SerializeVector3(material.diffuse, allocator), allocator)
+                                    .AddMember("specular", SerializeVector3(material.specular, allocator), allocator),
+                                   allocator);
 
                 entities.PushBack(Value(kObjectType)
                                     .AddMember("id", Id, allocator)
                                     .AddMember("rootTransform", SerializeTransform(entity.rootTransform, allocator), allocator)
-                                    .AddMember("meshes", meshes, allocator),
+                                    .AddMember("shadedMesh", shadedMeshObject, allocator),
                                   allocator);
             }
             document.AddMember("entities", entities, allocator);
@@ -286,7 +271,7 @@ void Editor::LoadScene(const std::string& path, World& world)
 
     for (const auto& entity : entities.GetArray())
     {
-        const Value& mesh = entity["meshes"].GetArray()[0];
+        const Value& mesh = entity["shadedMesh"];
         const Value& material = mesh["material"];
 
         Material mat = {
@@ -300,7 +285,7 @@ void Editor::LoadScene(const std::string& path, World& world)
             {} // transform
         };
         ID runTimeEntityID = GetID();
-        world.scene.entities.insert({runTimeEntityID, Entity({shaded}, DeserializeTransform(entity["rootTransform"]))});
+        world.scene.entities.insert({runTimeEntityID, Entity(shaded, DeserializeTransform(entity["rootTransform"]))});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
     }
 
