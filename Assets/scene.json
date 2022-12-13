@@ -46,5 +46,12 @@
             "id": 0,
             "path": "/Users/marcisolti/git/three.js/examples/models/obj/cerberus/Cerberus.obj"
         }
-    ]
+    ],
+    "config": {
+        "clearColor": [
+            1.0,
+            0.4117646813392639,
+            0.4117646813392639
+        ]
+    }
 }

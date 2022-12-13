@@ -222,6 +222,13 @@ void Editor::SaveScene(const std::string& path, const World& world)
             }
             document.AddMember("meshes", meshes, allocator);
         }
+
+        // Config
+        {
+            Value config(kObjectType);
+            config.AddMember("clearColor", SerializeVector3(world.config.clearColor, allocator), allocator);
+            document.AddMember("config", config, allocator);
+        }
     }
 
     // Write file
@@ -283,14 +290,17 @@ void Editor::LoadScene(const std::string& path, World& world)
         };
         ShadedMesh shaded = {
             meshMap.at(mesh["id"].GetInt()),
-            mat,
-            {} // transform
+            mat
         };
         ID runTimeEntityID = GetID();
         world.scene.entities.insert({runTimeEntityID, Entity(shaded, DeserializeTransform(entity["rootTransform"]))});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
     }
 
+    const Value& config = d["config"];
+    {
+        world.config.clearColor = DeserializeVector3(config["clearColor"]);
+    }
 }
 
 
@@ -330,7 +340,7 @@ void Editor::Update(World& world)
         AddEntity(world.scene.entities, world.meshesToLoad);
         EntityEditor(world.scene.entities);
 
-        ImGui::ColorEdit3("clear color", (float*)&world.config.clearColor);
+        ImGui::ColorEdit3("clear color", world.config.clearColor.data());
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Checkbox("Demo Window", &show_demo_window);

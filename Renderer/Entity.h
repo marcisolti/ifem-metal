@@ -27,7 +27,6 @@ struct Material {
 struct ShadedMesh {
     ID mesh;
     Material material = {{1,1,1},{1,1,1},{1,1,1}};
-    Transform transform = {{0,0,0}, {0,0,0}, {1,1,1}};
 };
 
 class Entity {
@@ -44,7 +43,7 @@ public:
 struct Light {};
 
 struct Config {
-    float clearColor[3];
+    Math::Vector3 clearColor;
 };
 
 struct Scene {

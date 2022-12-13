@@ -81,7 +81,7 @@ void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
 
 void Renderer::BeginFrame(MTKView* view, const Config& config)
 {
-    view.clearColor = MTLClearColorMake(config.clearColor[0], config.clearColor[1], config.clearColor[2], 1.0);
+    view.clearColor = MTLClearColorMake(config.clearColor(0), config.clearColor(1), config.clearColor(2), 1.0);
     this->view = view;
 
     commandBuffer = [commandQueue commandBuffer];
