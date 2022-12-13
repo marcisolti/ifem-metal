@@ -104,12 +104,13 @@ namespace
                 transform.scale = {scale, scale, scale};
             }
 
-
             ImGui::Text("Material");
             {
                 auto& material = e.shadedMesh.material;
-                ImGui::ColorEdit3("diffuse", material.diffuse.data());
-                ImGui::ColorEdit3("specular", material.specular.data());
+                ImGui::ColorEdit3("diffuse", material.baseColor.data());
+                ImGui::SliderFloat("smoothness", &material.smoothness, 0.f, 1.f);
+                ImGui::SliderFloat("f0", &material.f0, 0.f, 1.f);
+                ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
             }
 
             ImGui::PopID();
@@ -195,9 +196,11 @@ void Editor::SaveScene(const std::string& path, const World& world)
                 shadedMeshObject.AddMember("id", shadedMesh.mesh, allocator);
                 shadedMeshObject.AddMember("material",
                                    Value(kObjectType)
-                                    .AddMember("ambient",  SerializeVector3(material.ambient, allocator), allocator)
-                                    .AddMember("diffuse",  SerializeVector3(material.diffuse, allocator), allocator)
-                                    .AddMember("specular", SerializeVector3(material.specular, allocator), allocator),
+                                    .AddMember("baseColor",  SerializeVector3(material.baseColor, allocator), allocator)
+                                    .AddMember("smoothness",  material.smoothness, allocator)
+                                    .AddMember("f0",  material.f0, allocator)
+                                    .AddMember("f90",  material.f90, allocator)
+                                    .AddMember("isMetal",  material.isMetal, allocator),
                                    allocator);
 
                 entities.PushBack(Value(kObjectType)
@@ -284,9 +287,11 @@ void Editor::LoadScene(const std::string& path, World& world)
         const Value& material = mesh["material"];
 
         Material mat = {
-            DeserializeVector3(material["ambient"]),
-            DeserializeVector3(material["diffuse"]),
-            DeserializeVector3(material["specular"])
+            DeserializeVector3(material["baseColor"]),
+            material["smoothness"].GetFloat(),
+            material["f0"].GetFloat(),
+            material["f90"].GetFloat(),
+            material["isMetal"].GetBool(),
         };
         ShadedMesh shaded = {
             meshMap.at(mesh["id"].GetInt()),

@@ -21,12 +21,14 @@ struct Transform {
 };
 
 struct Material {
-    Math::Vector3 ambient, diffuse, specular;
+    Math::Vector3 baseColor;
+    float smoothness, f0, f90;
+    bool isMetal;
 };
 
 struct ShadedMesh {
     ID mesh;
-    Material material = {{1,1,1},{1,1,1},{1,1,1}};
+    Material material = {{1,1,1}, 0.6, 0.3, 1.0, false};
 };
 
 class Entity {

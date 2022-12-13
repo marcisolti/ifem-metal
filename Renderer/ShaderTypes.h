@@ -27,7 +27,10 @@ typedef struct {
 } VertexData;
 
 typedef struct {
-    vector_float3 color;
+    vector_float3 baseColor;
+    float smoothness;
+    float f0, f90;
+    bool isMetal;
 } FragmentData;
 
 typedef struct

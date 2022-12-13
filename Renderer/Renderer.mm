@@ -123,8 +123,13 @@ void Renderer::Draw(const Scene& scene)
             .eyePos =         ToFloat3(eye)
         };
 
+        const auto& material = shadedMesh.material;
         FragmentData fragmentData = {
-            .color = ToFloat3(shadedMesh.material.diffuse)
+            ToFloat3(material.baseColor),
+            material.smoothness,
+            material.f0,
+            material.f90,
+            material.isMetal
         };
 
         [renderEncoder setVertexBytes:&vertexData
