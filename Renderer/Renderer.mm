@@ -19,6 +19,7 @@
 void Renderer::StartUp(MTKView* view)
 {
     device = view.device;
+    view.sampleCount = 4;
 
     view.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
     view.clearDepth = 1.0;
@@ -34,6 +35,7 @@ void Renderer::StartUp(MTKView* view)
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
     pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
+    pipelineStateDescriptor.rasterSampleCount = 4;
     
     NSError *error;
     pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
