@@ -23,6 +23,7 @@
 #include <iostream>
 
 #include <fstream>
+#include <filesystem>
 
 void Editor::StartUp(MTKView* view, id<MTLDevice> device)
 {
@@ -86,37 +87,6 @@ void Editor::BeginFrame(MTKView* view, MTLRenderPassDescriptor* currentRenderPas
 
 namespace
 {
-    void EntityEditor(std::map<ID, Entity>& entities)
-    {
-        for (auto& [ID, e] : entities) {
-            ImGui::PushID(int(ID));
-            ImGui::Text("%s", std::to_string(ID).data());
-
-            ImGui::Text("Transforms");
-            {
-                auto& transform = e.rootTransform;
-
-                ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
-                ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
-
-                float scale = transform.scale.x();
-                ImGui::SliderFloat("scale", &scale, 0.f, 10.f);
-                transform.scale = {scale, scale, scale};
-            }
-
-            ImGui::Text("Material");
-            {
-                auto& material = e.shadedMesh.material;
-                ImGui::ColorEdit3("diffuse", material.baseColor.data());
-                ImGui::SliderFloat("smoothness", &material.smoothness, 0.f, 1.f);
-                ImGui::SliderFloat("f0", &material.f0, 0.f, 1.f);
-                ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
-            }
-
-            ImGui::PopID();
-        }
-    }
-
     rapidjson::Value SerializeVector3(const Math::Vector3& v, rapidjson::MemoryPoolAllocator<>& allocator)
     {
         rapidjson::Value value(rapidjson::kArrayType);
@@ -308,7 +278,51 @@ void Editor::LoadScene(const std::string& path, World& world)
     }
 }
 
+void Editor::EntityEditor(std::map<ID, Entity>& entities)
+{
+    for (auto& [ID, e] : entities) {
+        ImGui::PushID(int(ID));
+        std::string idText = std::to_string(ID);
+        if (ImGui::TreeNode(idText.data())) {
+            ImGui::Text("Transforms");
+            {
+                auto& transform = e.rootTransform;
 
+                ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
+                ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
+
+                float scale = transform.scale.x();
+                ImGui::SliderFloat("scale", &scale, 0.f, 10.f);
+                transform.scale = {scale, scale, scale};
+            }
+
+            ImGui::Text("Mesh geometry");
+            {
+                std::string accumulated;
+                for (const auto& [Id, path] : assetPaths) {
+                    accumulated += std::filesystem::path(path).filename();
+                    accumulated += '\0';
+                }
+                // Simplified one-liner Combo() API, using values packed in a single constant string
+                // This is a convenience for when the selection set is small and known at compile-time.
+                static int item_current_2 = 0;
+                ImGui::Combo("combo 2 (one-liner)", &item_current_2, accumulated.data());
+            }
+
+            ImGui::Text("Material");
+            {
+                auto& material = e.shadedMesh.material;
+                ImGui::ColorEdit3("diffuse", material.baseColor.data());
+                ImGui::SliderFloat("smoothness", &material.smoothness, 0.f, 1.f);
+                ImGui::SliderFloat("f0", &material.f0, 0.f, 1.f);
+                ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
+            }
+
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
+    }
+}
 
 void Editor::AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad)
 {
@@ -339,11 +353,15 @@ void Editor::Update(World& world)
     {
         ImGui::Begin("World Editor");
 
-        SceneSerialization(world);
 
-        // Manipulate entities
-        AddEntity(world.scene.entities, world.meshesToLoad);
-        EntityEditor(world.scene.entities);
+        if (ImGui::CollapsingHeader("Add Assets"))
+        {
+            SceneSerialization(world);
+            AddEntity(world.scene.entities, world.meshesToLoad);
+        }
+
+        if (ImGui::CollapsingHeader("Entities"))
+            EntityEditor(world.scene.entities);
 
         ImGui::ColorEdit3("clear color", world.config.clearColor.data());
 

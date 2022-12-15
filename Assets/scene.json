@@ -1,7 +1,7 @@
 {
     "entities": [
         {
-            "id": 3,
+            "id": 1,
             "rootTransform": {
                 "position": [
                     1.6579999923706055,
@@ -20,7 +20,7 @@
                 ]
             },
             "shadedMesh": {
-                "id": 2,
+                "id": 0,
                 "material": {
                     "baseColor": [
                         0.19607841968536377,
@@ -38,10 +38,6 @@
     "meshes": [
         {
             "id": 0,
-            "path": "/Users/marcisolti/git/three.js/examples/models/obj/cerberus/Cerberus.obj"
-        },
-        {
-            "id": 2,
             "path": "/Users/marcisolti/git/three.js/examples/models/obj/cerberus/Cerberus.obj"
         }
     ],

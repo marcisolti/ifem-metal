@@ -31,10 +31,11 @@ public:
 private:
 
     void AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad);
+    void EntityEditor(std::map<ID, Entity>& entities);
 
     void SceneSerialization(World& world);
     void SaveScene(const std::string& path, const World& world);
     void LoadScene(const std::string& path, World& world);
-    
+
     std::map<ID, std::string> assetPaths;
 };
