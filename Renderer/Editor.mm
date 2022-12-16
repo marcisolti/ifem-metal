@@ -239,6 +239,7 @@ void Editor::LoadScene(const std::string& path, World& world)
     std::map<ID, ID> entityMap;
 
     world.scene.entities.clear();
+    assetPaths.clear();
 
     const Value& meshArray = d["meshes"];
     for (const auto& mesh : meshArray.GetArray())
@@ -324,30 +325,22 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
     }
 }
 
-void Editor::AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad)
+void Editor::AddMesh(std::vector<MeshToLoad>& meshesToLoad)
 {
     static char str0[1024] = "Entes asset path here";
     ImGui::InputText("Input", str0, IM_ARRAYSIZE(str0));
     ImGui::SameLine();
-    if(ImGui::Button("Add Entity"))
+    if(ImGui::Button("Add Mesh Geometry"))
     {
         const ID meshID = GetID();
         meshesToLoad.push_back({meshID, str0});
         assetPaths.insert({meshID, str0});
-
-        ShadedMesh s {
-            .mesh = meshID,
-        };
-        const Entity e({s});
-        entities.insert({GetID(), e});
-
     }
 }
 
-
 void Editor::Update(World& world)
 {
-    static bool show_demo_window = true;
+    static bool show_demo_window = false;
     if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
     {
@@ -357,13 +350,26 @@ void Editor::Update(World& world)
         if (ImGui::CollapsingHeader("Add Assets"))
         {
             SceneSerialization(world);
-            AddEntity(world.scene.entities, world.meshesToLoad);
+            AddMesh(world.meshesToLoad);
         }
 
         if (ImGui::CollapsingHeader("Entities"))
+        {
+            if (ImGui::Button("Add Entity"))
+            {
+                ShadedMesh s {
+                    .mesh = (*assetPaths.begin()).first,
+                };
+                const Entity e({s});
+                world.scene.entities.insert({GetID(), e});
+            }
             EntityEditor(world.scene.entities);
+        }
 
-        ImGui::ColorEdit3("clear color", world.config.clearColor.data());
+        if (ImGui::CollapsingHeader("Config"))
+        {
+            ImGui::ColorEdit3("clear color", world.config.clearColor.data());
+        }
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Checkbox("Demo Window", &show_demo_window);

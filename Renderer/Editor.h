@@ -30,7 +30,7 @@ public:
 
 private:
 
-    void AddEntity(std::map<ID, Entity>& entities, std::vector<MeshToLoad>& meshesToLoad);
+    void AddMesh(std::vector<MeshToLoad>& meshesToLoad);
     void EntityEditor(std::map<ID, Entity>& entities);
 
     void SceneSerialization(World& world);

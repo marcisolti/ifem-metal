@@ -42,7 +42,7 @@ fragment float4
 fragmentShader(RasterizerData         in           [[stage_in]],
                constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
-    constexpr float3 lightPos{ -1, 0, 3 };
+    constexpr float3 lightPos{ 1, 0, 3 };
     constexpr float3 lightColor { 10, 10, 10 };
 
     const float roughness = pow(1.0-fragmentData->smoothness, 2);
