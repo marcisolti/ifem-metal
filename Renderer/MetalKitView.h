@@ -13,6 +13,6 @@
 
 - (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView;
 - (void) mouseDragged:(CGPoint)touchPos;
-- (void) keyPressed:(uint)code;
+- (void) keyPressed:(uint)code up:(bool)up;
 
 @end

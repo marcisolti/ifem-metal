@@ -35,7 +35,7 @@ public:
     void Draw(const Scene& scene);
     void SetViewportSize(CGSize size);
     void HandleMouseDragged(double deltaX, double deltaY, double deltaZ);
-    void HandleKeyPressed(uint keyCode);
+    void HandleKeyPressed(uint keyCode, bool keyUp);
 
     std::map<ID, Mesh>* GetMeshDirectory() { return &meshDirectory; }
 
@@ -66,5 +66,8 @@ private:
     Math::Matrix4 viewMatrix;
     Math::Matrix4 projectionMatrix;
     vector_uint2 viewportSize;
-
+    struct {
+        bool isPressed;
+        uint key;
+    } keyboardInput;
 };

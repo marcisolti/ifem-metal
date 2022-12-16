@@ -57,12 +57,14 @@
 
 - (void) mouseDragged:(CGPoint)touchPos
 {
-//    g_Renderer.HandleMouseDragged(touchPos.x, touchPos.y, 0.0);
+    if (g_World.config.isTrackpadPanning)
+        g_Renderer.HandleMouseDragged(touchPos.x, touchPos.y, 0.0);
 }
 
 - (void) keyPressed:(uint)code
+                 up:(bool)up
 {
-    g_Renderer.HandleKeyPressed(code);
+    g_Renderer.HandleKeyPressed(code, up);
 }
 
 @end

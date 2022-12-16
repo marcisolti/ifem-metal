@@ -62,12 +62,12 @@ void Renderer::LoadScene()
     lookAt = {0,0,0};
     up = {0,1,0};
     viewMatrix = Math::View(eye, lookAt, up);
-
-
 }
 
 void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
 {
+    if (meshesToLoad.empty()) return;
+
     for (const auto& meshToLoad : meshesToLoad)
     {
         Mesh m{LoadOBJ(meshToLoad.path)};
@@ -76,7 +76,7 @@ void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
 
         meshDirectory.insert({meshToLoad.Id, m});
     }
-    if (!meshesToLoad.empty()) meshesToLoad.clear();
+    meshesToLoad.clear();
 }
 
 // MARK: Drawing
@@ -109,6 +109,36 @@ void Renderer::EndFrame()
 
 void Renderer::Draw(const Scene& scene)
 {
+    if (keyboardInput.isPressed)
+    {
+        using namespace Math;
+        const Vector3 forward = 0.05f * (lookAt - eye).normalized();
+        const Vector3 right = 0.05f * forward.cross(up).normalized();
+
+        auto keyCode = keyboardInput.key;
+        if(keyCode == 0) // W
+        {
+            eye += forward;
+            lookAt += forward;
+        }
+        if(keyCode == 1) // A
+        {
+            eye += right;
+            lookAt += right;
+        }
+        if(keyCode == 2) // S
+        {
+            eye -= forward;
+            lookAt -= forward;
+        }
+        if(keyCode == 3) // D
+        {
+            eye -= right;
+            lookAt -= right;
+        }
+        viewMatrix = Math::View(eye, lookAt, up);
+    }
+
     for (const auto& [entityID, entity] : scene.entities)
     {
         using namespace Math;
@@ -118,6 +148,7 @@ void Renderer::Draw(const Scene& scene)
             Scaling(rootTransform.scale.x()) *
             Rotation(rootTransform.rotation) *
             Translation(rootTransform.position);
+
         VertexData vertexData = {
             .modelMatrix =    ToFloat4x4(modelMatrix),
             .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
@@ -148,7 +179,7 @@ void Renderer::SetViewportSize(CGSize size)
 {
     viewportSize.x = size.width;
     viewportSize.y = size.height;
-    projectionMatrix = Math::Projection(54.4f * (M_PI / 180), (float)viewportSize.x/viewportSize.y, 0.01f, 1000.f);
+    projectionMatrix = Math::Projection(54.4f * (M_PI / 180), float(viewportSize.x/viewportSize.y), 0.01f, 1000.f);
 }
 
 void Renderer::HandleMouseDragged(double deltaX, double deltaY, double deltaZ)
@@ -156,36 +187,13 @@ void Renderer::HandleMouseDragged(double deltaX, double deltaY, double deltaZ)
     using namespace Math;
     const Vector3 forward = (lookAt - eye).normalized();
     const Vector3 right = forward.cross(up).normalized();
-    lookAt -=  20*(deltaX / viewportSize.x) * right;
-    lookAt -=  20*(deltaY / viewportSize.y) * up;
+    lookAt -= 20 * (deltaX / viewportSize.x) * right;
+    lookAt -= 20 * (deltaY / viewportSize.y) * up;
     viewMatrix = View(eye, lookAt, up);
 }
 
-void Renderer::HandleKeyPressed(uint keyCode)
+void Renderer::HandleKeyPressed(uint keyCode, bool keyUp)
 {
-    using namespace Math;
-    const Vector3 forward = 1 * (lookAt - eye).normalized();
-    const Vector3 right = forward.cross(up).normalized();
-    if(keyCode == 0) // W
-    {
-        eye += forward;
-        lookAt += forward;
-    }
-    if(keyCode == 1) // A
-    {
-        eye += right;
-        lookAt += right;
-    }
-    if(keyCode == 2) // S
-    {
-        eye -= forward;
-        lookAt -= forward;
-    }
-    if(keyCode == 3) // D
-    {
-        eye -= right;
-        lookAt -= right;
-    }
-    viewMatrix = View(eye, lookAt, up);
+    keyboardInput = { !keyUp, keyCode };
 }
 

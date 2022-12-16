@@ -368,7 +368,9 @@ void Editor::Update(World& world)
 
         if (ImGui::CollapsingHeader("Config"))
         {
-            ImGui::ColorEdit3("clear color", world.config.clearColor.data());
+            auto& config = world.config;
+            ImGui::ColorEdit3("clear color", config.clearColor.data());
+            ImGui::Checkbox("trackpad panning", &config.isTrackpadPanning);
         }
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

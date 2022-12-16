@@ -66,19 +66,19 @@ Implementation of our cross-platform view controller
                 return;
             }
             if ( keyChar == 'w' || keyChar == 'W') {
-                [_renderer keyPressed:0];
+                [_renderer keyPressed:0 up:false];
                 return;
             }
             if ( keyChar == 'a' || keyChar == 'A') {
-                [_renderer keyPressed:1];
+                [_renderer keyPressed:1 up:false];
                 return;
             }
             if ( keyChar == 's' || keyChar == 'S') {
-                [_renderer keyPressed:2];
+                [_renderer keyPressed:2 up:false];
                 return;
             }
             if ( keyChar == 'd' || keyChar == 'D') {
-                [_renderer keyPressed:3];
+                [_renderer keyPressed:3 up:false];
                 return;
             }
             [super keyDown:theEvent];
@@ -86,5 +86,52 @@ Implementation of our cross-platform view controller
     }
     [super keyDown:theEvent];
 }
+
+- (void)keyUp:(NSEvent *)theEvent {
+
+    if ([theEvent modifierFlags]) { // arrow keys have this mask
+        NSString *theArrow = [theEvent charactersIgnoringModifiers];
+        unichar keyChar = 0;
+        if ( [theArrow length] == 0 )
+            return;            // reject dead keys
+        if ( [theArrow length] == 1 ) {
+            keyChar = [theArrow characterAtIndex:0];
+            if ( keyChar == NSLeftArrowFunctionKey ) {
+//                [self offsetLocationByX:-10.0 andY:0.0];
+//                [[self window] invalidateCursorRectsForView:self];
+                return;
+            }
+            if ( keyChar == NSRightArrowFunctionKey ) {
+//                [self offsetLocationByX:10.0 andY:0.0];
+//                [[self window] invalidateCursorRectsForView:self];
+                return;
+            }
+            if ( keyChar == NSUpArrowFunctionKey ) {
+//                [self offsetLocationByX:0 andY: 10.0];
+//                [[self window] invalidateCursorRectsForView:self];
+                return;
+            }
+            if ( keyChar == 'w' || keyChar == 'W') {
+                [_renderer keyPressed:0 up:true];
+                return;
+            }
+            if ( keyChar == 'a' || keyChar == 'A') {
+                [_renderer keyPressed:1 up:true];
+                return;
+            }
+            if ( keyChar == 's' || keyChar == 'S') {
+                [_renderer keyPressed:2 up:true];
+                return;
+            }
+            if ( keyChar == 'd' || keyChar == 'D') {
+                [_renderer keyPressed:3 up:true];
+                return;
+            }
+            [super keyDown:theEvent];
+        }
+    }
+    [super keyDown:theEvent];
+}
+
 
 @end

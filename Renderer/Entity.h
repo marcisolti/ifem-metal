@@ -46,6 +46,7 @@ struct Light {};
 
 struct Config {
     Math::Vector3 clearColor;
+    bool isTrackpadPanning = false;
 };
 
 struct Scene {
