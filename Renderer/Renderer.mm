@@ -139,6 +139,21 @@ void Renderer::Draw(const Scene& scene)
         viewMatrix = Math::View(eye, lookAt, up);
     }
 
+    FragmentData fragmentData;
+    fragmentData.numLights = uint32_t(scene.lights.size());
+
+    uint32_t lightCounter = 0;
+    for (const auto& [lightID, light] : scene.lights)
+    {
+        using namespace Math;
+        fragmentData.lights[lightCounter++] = {
+            .position = ToFloat3(light.position),
+            .intensity = ToFloat3(light.intensity * light.color)
+        };
+    }
+    assert(lightCounter == fragmentData.numLights);
+    assert(fragmentData.numLights <= MAX_NUM_LIGHTS);
+
     for (const auto& [entityID, entity] : scene.entities)
     {
         using namespace Math;
@@ -157,13 +172,11 @@ void Renderer::Draw(const Scene& scene)
         };
 
         const auto& material = shadedMesh.material;
-        FragmentData fragmentData = {
-            ToFloat3(material.baseColor),
-            material.smoothness,
-            material.f0,
-            material.f90,
-            material.isMetal
-        };
+        fragmentData.baseColor = ToFloat3(material.baseColor);
+        fragmentData.smoothness = material.smoothness;
+        fragmentData.f0 = material.f0;
+        fragmentData.f90 = material.f90;
+        fragmentData.isMetal = material.isMetal;
 
         [renderEncoder setVertexBytes:&vertexData
                                length:sizeof(vertexData)

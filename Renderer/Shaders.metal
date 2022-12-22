@@ -42,42 +42,47 @@ fragment float4
 fragmentShader(RasterizerData         in           [[stage_in]],
                constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
-    constexpr float3 lightPos{ 1, 0, 3 };
-    constexpr float3 lightColor { 10, 10, 10 };
+    float3 res = {0.f, 0.f, 0.f};
 
-    const float roughness = pow(1.0-fragmentData->smoothness, 2);
-    const float linearRoughness = roughness + 1e-5f;
+    float roughness = pow(1.0 - fragmentData->smoothness, 2);
+    float linearRoughness = roughness + 1e-5f;
 
     float3 N = normalize(in.normal);
     float3 V = normalize(in.eyePos - in.worldPos);
 
     float NoV = abs(dot(N, V)); // effort to avoid artifact produces artifact
 
-    float3 Lunnormalized = lightPos - in.worldPos;
-    float3 L = normalize(Lunnormalized);
-    float sqrDist = dot(Lunnormalized, Lunnormalized);
-    float illuminance = (1.f / sqrDist);
 
-    float3 H = normalize(V + L);
-    float LoH = saturate(dot(L, H));
-    float NoH = saturate(dot(N, H));
-    float NoL = saturate(dot(N, L));
+    for (uint32_t i = 0; i < fragmentData->numLights; ++i)
+    {
+        float3 Lunnormalized = fragmentData->lights[i].position - in.worldPos;
+        float3 L = normalize(Lunnormalized);
+        float sqrDist = dot(Lunnormalized, Lunnormalized);
+        float illuminance = (1.f / sqrDist);
 
-    // Specular BRDF
-    float3 F = F_Schlick(fragmentData->f0, fragmentData->f90, LoH);
-    float G = V_SmithGGXCorrelated(NoV, NoL, roughness);
-    float D = D_GGX(NoH, roughness);
-    float Fr = D * F.x * G / M_PI_F;
+        float3 H = normalize(V + L);
+        float LoH = saturate(dot(L, H));
+        float NoH = saturate(dot(N, H));
+        float NoL = saturate(dot(N, L));
 
-    // Diffuse BRDF
-    float Fd = Fr_DisneyDiffuse(NoV, NoL, LoH, linearRoughness) / M_PI_F;
+        // Specular BRDF
+        float3 F = F_Schlick(fragmentData->f0, fragmentData->f90, LoH);
+        float G = V_SmithGGXCorrelated(NoV, NoL, roughness);
+        float D = D_GGX(NoH, roughness);
+        float Fr = D * F.x * G;
 
-    float3 res =
-        illuminance *
-        NoL *
-        (
-            (Fd + Fr) * fragmentData->baseColor * lightColor
-        );
+        // Diffuse BRDF
+        float Fd = Fr_DisneyDiffuse(NoV, NoL, LoH, linearRoughness);
+
+        res +=
+            illuminance *
+            NoL *
+            (Fd + Fr)
+            * fragmentData->baseColor
+            * fragmentData->lights[i].intensity
+            / M_PI_F;
+    }
+
     return float4(saturate(res), 1);
 }
 

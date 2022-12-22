@@ -42,7 +42,10 @@ public:
     ShadedMesh shadedMesh;
 };
 
-struct Light {};
+struct Light {
+    Math::Vector3 position, color;
+    float intensity;
+};
 
 struct Config {
     Math::Vector3 clearColor;

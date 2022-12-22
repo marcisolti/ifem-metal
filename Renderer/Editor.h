@@ -32,6 +32,7 @@ private:
 
     void AddMesh(std::vector<MeshToLoad>& meshesToLoad);
     void EntityEditor(std::map<ID, Entity>& entities);
+    void LightEditor(std::map<ID, Light>& lights);
 
     void SceneSerialization(World& world);
     void SaveScene(const std::string& path, const World& world);

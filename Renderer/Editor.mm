@@ -300,14 +300,17 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
             ImGui::Text("Mesh geometry");
             {
                 std::string accumulated;
-                for (const auto& [Id, path] : assetPaths) {
+                std::map<uint32_t, int> meshIndicesInList; // putting ID instead uint32_t does not compile??????
+
+                int index = 0;
+                for (const auto& [meshID, path] : assetPaths) {
                     accumulated += std::filesystem::path(path).filename();
                     accumulated += '\0';
+
+                    meshIndicesInList.insert({meshID, index++}); // do we really need this ??
                 }
-                // Simplified one-liner Combo() API, using values packed in a single constant string
-                // This is a convenience for when the selection set is small and known at compile-time.
-                static int item_current_2 = 0;
-                ImGui::Combo("combo 2 (one-liner)", &item_current_2, accumulated.data());
+
+                ImGui::Combo("combo 2 (one-liner)", (int*)&meshIndicesInList[e.shadedMesh.mesh], accumulated.data());
             }
 
             ImGui::Text("Material");
@@ -318,6 +321,22 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
                 ImGui::SliderFloat("f0", &material.f0, 0.f, 1.f);
                 ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
             }
+
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
+    }
+}
+
+void Editor::LightEditor(std::map<ID, Light>& lights)
+{
+    for (auto& [ID, l] : lights) {
+        ImGui::PushID(int(ID));
+        std::string idText = std::to_string(ID);
+        if (ImGui::TreeNode(idText.data())) {
+            ImGui::SliderFloat3("position", l.position.data(), -10.f, 10.f);
+            ImGui::SliderFloat("intensity", &l.intensity, 0.f, 20.f);
+            ImGui::ColorEdit3("color", l.color.data());
 
             ImGui::TreePop();
         }
@@ -343,9 +362,8 @@ void Editor::Update(World& world)
     static bool show_demo_window = false;
     if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
+    ImGui::Begin("World Editor");
     {
-        ImGui::Begin("World Editor");
-
 
         if (ImGui::CollapsingHeader("Add Assets"))
         {
@@ -355,15 +373,33 @@ void Editor::Update(World& world)
 
         if (ImGui::CollapsingHeader("Entities"))
         {
+            auto& entities = world.scene.entities;
             if (ImGui::Button("Add Entity"))
             {
                 ShadedMesh s {
                     .mesh = (*assetPaths.begin()).first,
                 };
                 const Entity e({s});
-                world.scene.entities.insert({GetID(), e});
+                entities.insert({GetID(), e});
             }
-            EntityEditor(world.scene.entities);
+
+            EntityEditor(entities);
+        }
+
+        if (ImGui::CollapsingHeader("Lights"))
+        {
+            auto& lights = world.scene.lights;
+            if (ImGui::Button("Add Light"))
+            {
+                const Light l {
+                    .position = { 0.f, 0.f, 0.f },
+                    .color = { 1.f, 1.f, 1.f },
+                    .intensity = 10.f
+                };
+                lights.insert({GetID(), l});
+            }
+
+            LightEditor(lights);
         }
 
         if (ImGui::CollapsingHeader("Config"))
@@ -376,8 +412,8 @@ void Editor::Update(World& world)
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Checkbox("Demo Window", &show_demo_window);
 
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void Editor::Draw(id<MTLRenderCommandEncoder> renderEncoder, id<MTLCommandBuffer> commandBuffer)

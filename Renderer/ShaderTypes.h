@@ -27,10 +27,19 @@ typedef struct {
 } VertexData;
 
 typedef struct {
+    vector_float3 position;
+    vector_float3 intensity;
+} LightData;
+
+#define MAX_NUM_LIGHTS 32
+
+typedef struct {
     vector_float3 baseColor;
     float smoothness;
     float f0, f90;
     bool isMetal;
+    uint32_t numLights;
+    LightData lights[MAX_NUM_LIGHTS];
 } FragmentData;
 
 typedef struct
