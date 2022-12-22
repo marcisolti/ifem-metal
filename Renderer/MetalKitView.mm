@@ -31,10 +31,6 @@
     {
         g_Renderer.StartUp(mtkView);
         g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
-        g_World.scene.lights.insert({GetID(), {
-            .position = { 1, 0, 3 },
-            .color = { 1, 1, 1 },
-            .intensity = 10.f}});
     }
 
     return self;

@@ -182,6 +182,23 @@ void Editor::SaveScene(const std::string& path, const World& world)
             document.AddMember("entities", entities, allocator);
         }
 
+        // Lights
+        {
+            Value lights(kArrayType);
+            lights.Reserve(SizeType(world.scene.lights.size()), allocator);
+
+            for (const auto& [Id, light] : world.scene.lights)
+            {
+                lights.PushBack(Value(kObjectType)
+                                    .AddMember("id", Id, allocator)
+                                    .AddMember("position", SerializeVector3(light.position, allocator), allocator)
+                                    .AddMember("intensity", light.intensity, allocator)
+                                    .AddMember("color", SerializeVector3(light.color, allocator), allocator),
+                                  allocator);
+            }
+            document.AddMember("lights", lights, allocator);
+        }
+
         // Meshes
         {
             Value meshes(kArrayType);
@@ -222,24 +239,27 @@ void Editor::LoadScene(const std::string& path, World& world)
     using namespace rapidjson;
     Document d;
     {
-        std::ifstream file;
         std::string content;
+        {
+            std::ifstream file;
 
-        file.open(path);
-        std::string line;                   // 👍
-        while (std::getline(file, line))    // 👍
-            content += line;                // 👍
-        file.close();
+            file.open(path);
+            std::string line;
+            while (std::getline(file, line))
+                content += line;
+            file.close();
+        }
 
         d.Parse(content.c_str());
     }
 
+    world.scene.entities.clear();
+    world.scene.lights.clear();
+    assetPaths.clear();
+
     // <Parsed ID, Run-time ID>
     std::map<ID, ID> meshMap;
     std::map<ID, ID> entityMap;
-
-    world.scene.entities.clear();
-    assetPaths.clear();
 
     const Value& meshArray = d["meshes"];
     for (const auto& mesh : meshArray.GetArray())
@@ -271,6 +291,17 @@ void Editor::LoadScene(const std::string& path, World& world)
         ID runTimeEntityID = GetID();
         world.scene.entities.insert({runTimeEntityID, Entity(shaded, DeserializeTransform(entity["rootTransform"]))});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
+    }
+
+    const Value& lights = d["lights"];
+    for (const auto& light : lights.GetArray())
+    {
+        const Light l = {
+            .position = DeserializeVector3(light["position"]),
+            .color = DeserializeVector3(light["color"]),
+            .intensity = light["intensity"].GetFloat()
+        };
+        world.scene.lights.insert({GetID(), l});
     }
 
     const Value& config = d["config"];
