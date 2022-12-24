@@ -1,5 +1,5 @@
 //
-//  Shaders.metal
+//  PBR.metal
 //  iFEM
 //
 //  Created by Marci Solti on 2022. 05. 21..
@@ -24,9 +24,9 @@ struct RasterizerData
 // MARK: Vertex shader
 
 vertex RasterizerData
-vertexShader(uint                 vertexID   [[vertex_id]],
-             constant Vertex*     vertices   [[buffer(VertexInputIndexVertices)]],
-             constant VertexData* vertexData [[buffer(VertexInputIndexFrameData)]])
+PBRVertexShader(uint                 vertexID   [[vertex_id]],
+                constant Vertex*     vertices   [[buffer(VertexInputIndexVertices)]],
+                constant VertexData* vertexData [[buffer(VertexInputIndexFrameData)]])
 {
     RasterizerData out;
     out.worldPos = (vertexData->modelMatrix * float4(vertices[vertexID].position, 1)).xyz;
@@ -39,8 +39,8 @@ vertexShader(uint                 vertexID   [[vertex_id]],
 // MARK: Fragment shader
 
 fragment float4
-fragmentShader(RasterizerData         in           [[stage_in]],
-               constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
+PBRFragmentShader(RasterizerData         in           [[stage_in]],
+                  constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
     float3 res = {0.f, 0.f, 0.f};
 

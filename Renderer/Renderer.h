@@ -63,6 +63,7 @@ private:
     std::map<ID, Mesh> meshDirectory;
     struct {
         Mesh lightGeometry;
+        id<MTLRenderPipelineState> lightGeometryPipelineState;
     } debug;
 
     Math::Vector3 eye, lookAt, up;

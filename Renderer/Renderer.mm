@@ -26,21 +26,44 @@ void Renderer::StartUp(MTKView* view)
 
     id<MTLLibrary> defaultLibrary = [device newDefaultLibrary];
 
-    id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
-    id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"fragmentShader"];
+    // pipeline state
+    {
+        id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"PBRVertexShader"];
+        id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"PBRFragmentShader"];
 
-    MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
-    pipelineStateDescriptor.label = @"Simple Pipeline";
-    pipelineStateDescriptor.vertexFunction = vertexFunction;
-    pipelineStateDescriptor.fragmentFunction = fragmentFunction;
-    pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
-    pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
-    pipelineStateDescriptor.rasterSampleCount = 4;
-    
-    NSError *error;
-    pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
-                                                             error:&error];
-    assert(pipelineState);
+        MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+        pipelineStateDescriptor.label = @"Simple Pipeline";
+        pipelineStateDescriptor.vertexFunction = vertexFunction;
+        pipelineStateDescriptor.fragmentFunction = fragmentFunction;
+        pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
+        pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
+        pipelineStateDescriptor.rasterSampleCount = 4;
+
+        NSError *error;
+        pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
+                                                               error:&error];
+        assert(pipelineState);
+    }
+
+    // debug light pipeline state
+    {
+        id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"DebugLightVertexShader"];
+        id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"DebugLightFragmentShader"];
+
+        MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+        pipelineStateDescriptor.label = @"Simple Pipeline";
+        pipelineStateDescriptor.vertexFunction = vertexFunction;
+        pipelineStateDescriptor.fragmentFunction = fragmentFunction;
+        pipelineStateDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
+        pipelineStateDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat;
+        pipelineStateDescriptor.rasterSampleCount = 4;
+
+        NSError *error;
+        debug.lightGeometryPipelineState = [device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
+                                                                                  error:&error];
+        assert(debug.lightGeometryPipelineState);
+    }
+
 
     MTLDepthStencilDescriptor *depthDescriptor = [MTLDepthStencilDescriptor new];
     depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
@@ -65,14 +88,14 @@ void Renderer::LoadScene()
 
     debug.lightGeometry = Mesh({
         .vertices = {
-            {{1, 1, -1}, {0, 0, -1}},
-            {{1, -1, -1}, {0, 0, -1}},
-            {{1, 1, 1}, {1, 0, 0}},
-            {{1, -1, 1}, {1, 0, 0}},
-            {{-1, 1, -1}, {0, 0, -1}},
-            {{-1, -1, -1}, {-1, 0, 0}},
-            {{-1, 1, 1}, {-1, 0, 0}},
-            {{-1, -1, 1}, {0, -1, 0}}
+            {{1, 1, -1},    {0, 0, -1}},
+            {{1, -1, -1},   {0, 0, -1}},
+            {{1, 1, 1},     {1, 0, 0}},
+            {{1, -1, 1},    {1, 0, 0}},
+            {{-1, 1, -1},   {0, 0, -1}},
+            {{-1, -1, -1},  {-1, 0, 0}},
+            {{-1, 1, 1},    {-1, 0, 0}},
+            {{-1, -1, 1},   {0, -1, 0}}
         },
         .indices = {
             4, 2, 0, 2, 7, 3, 6, 5, 7, 1, 7, 5, 0, 3, 1, 4, 1, 5, 4, 6, 2, 2, 6, 7, 6, 4, 5, 1, 3, 7, 0, 2, 3, 4, 0, 1
@@ -113,7 +136,6 @@ void Renderer::BeginFrame(MTKView* view, const Config& config)
     renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:currentPassDescriptor];
     renderEncoder.label = @"MyRenderEncoder";
     [renderEncoder setViewport:(MTLViewport){0.0, 0.0, double(viewportSize.x), double(viewportSize.y), 0.0, 1.0 }];
-    [renderEncoder setRenderPipelineState:pipelineState];
     [renderEncoder setDepthStencilState:depthStencilState];
 
 }
@@ -172,6 +194,7 @@ void Renderer::Draw(const Scene& scene)
     assert(lightCounter == fragmentData.numLights);
     assert(fragmentData.numLights <= MAX_NUM_LIGHTS);
 
+    [renderEncoder setRenderPipelineState:pipelineState];
     for (const auto& [entityID, entity] : scene.entities)
     {
         using namespace Math;
@@ -205,6 +228,7 @@ void Renderer::Draw(const Scene& scene)
         meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
     }
 
+    [renderEncoder setRenderPipelineState:debug.lightGeometryPipelineState];
     for (const auto& [lightID, light] : scene.lights)
     {
         using namespace Math;
@@ -212,24 +236,14 @@ void Renderer::Draw(const Scene& scene)
             Scaling(0.2f) *
             Translation(light.position);
 
-        VertexData vertexData = {
-            .modelMatrix =    ToFloat4x4(modelMatrix),
-            .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
-            .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
-            .eyePos =         ToFloat3(eye)
-        };
+        const auto MVP = ToFloat4x4(modelMatrix * viewMatrix * projectionMatrix);
+        const auto color = ToFloat3(light.color);
 
-        fragmentData.baseColor = ToFloat3(light.color);
-        fragmentData.smoothness = 0.3f;
-        fragmentData.f0 = 0.f;
-        fragmentData.f90 = 0.f;
-        fragmentData.isMetal = false;
-
-        [renderEncoder setVertexBytes:&vertexData
-                               length:sizeof(vertexData)
+        [renderEncoder setVertexBytes:&MVP
+                               length:sizeof(MVP)
                               atIndex:VertexInputIndexFrameData];
-        [renderEncoder setFragmentBytes:&fragmentData
-                               length:sizeof(fragmentData)
+        [renderEncoder setFragmentBytes:&color
+                               length:sizeof(color)
                               atIndex:FragmentInputIndexFrameData];
         debug.lightGeometry.Draw(renderEncoder);
     }
