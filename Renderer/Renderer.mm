@@ -62,6 +62,24 @@ void Renderer::LoadScene()
     lookAt = {0,0,0};
     up = {0,1,0};
     viewMatrix = Math::View(eye, lookAt, up);
+
+    debug.lightGeometry = Mesh({
+        .vertices = {
+            {{1, 1, -1}, {0, 0, -1}},
+            {{1, -1, -1}, {0, 0, -1}},
+            {{1, 1, 1}, {1, 0, 0}},
+            {{1, -1, 1}, {1, 0, 0}},
+            {{-1, 1, -1}, {0, 0, -1}},
+            {{-1, -1, -1}, {-1, 0, 0}},
+            {{-1, 1, 1}, {-1, 0, 0}},
+            {{-1, -1, 1}, {0, -1, 0}}
+        },
+        .indices = {
+            4, 2, 0, 2, 7, 3, 6, 5, 7, 1, 7, 5, 0, 3, 1, 4, 1, 5, 4, 6, 2, 2, 6, 7, 6, 4, 5, 1, 3, 7, 0, 2, 3, 4, 0, 1
+        }
+    });
+    debug.lightGeometry.CreateBuffers(device);
+    debug.lightGeometry.UploadGeometry();
 }
 
 void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
@@ -186,6 +204,35 @@ void Renderer::Draw(const Scene& scene)
                               atIndex:FragmentInputIndexFrameData];
         meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
     }
+
+    for (const auto& [lightID, light] : scene.lights)
+    {
+        using namespace Math;
+        const auto modelMatrix =
+            Scaling(0.2f) *
+            Translation(light.position);
+
+        VertexData vertexData = {
+            .modelMatrix =    ToFloat4x4(modelMatrix),
+            .modelMatrixInv = ToFloat4x4(modelMatrix.inverse()),
+            .viewProjMatrix = ToFloat4x4(viewMatrix * projectionMatrix),
+            .eyePos =         ToFloat3(eye)
+        };
+
+        fragmentData.baseColor = ToFloat3(light.color);
+        fragmentData.smoothness = 0.3f;
+        fragmentData.f0 = 0.f;
+        fragmentData.f90 = 0.f;
+        fragmentData.isMetal = false;
+
+        [renderEncoder setVertexBytes:&vertexData
+                               length:sizeof(vertexData)
+                              atIndex:VertexInputIndexFrameData];
+        [renderEncoder setFragmentBytes:&fragmentData
+                               length:sizeof(fragmentData)
+                              atIndex:FragmentInputIndexFrameData];
+        debug.lightGeometry.Draw(renderEncoder);
+    }
 }
 
 void Renderer::SetViewportSize(CGSize size)
@@ -209,4 +256,3 @@ void Renderer::HandleKeyPressed(uint keyCode, bool keyUp)
 {
     keyboardInput = { !keyUp, keyCode };
 }
-

@@ -61,6 +61,9 @@ private:
     id<MTLDepthStencilState> depthStencilState;
 
     std::map<ID, Mesh> meshDirectory;
+    struct {
+        Mesh lightGeometry;
+    } debug;
 
     Math::Vector3 eye, lookAt, up;
     Math::Matrix4 viewMatrix;
