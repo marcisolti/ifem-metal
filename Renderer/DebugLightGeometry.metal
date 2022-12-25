@@ -20,9 +20,9 @@ struct RasterizerData
 // MARK: Vertex shader
 
 vertex RasterizerData
-DebugLightVertexShader(uint                      vertexID [[vertex_id]],
-                       constant Vertex*          vertices [[buffer(VertexInputIndexVertices)]],
-                       constant float4x4* MVP      [[buffer(VertexInputIndexFrameData)]])
+DebugLightVertexShader(uint                   vertexID [[vertex_id]],
+                       constant Vertex*       vertices [[buffer(VertexInputIndexVertices)]],
+                       constant float4x4* MVP [[buffer(VertexInputIndexFrameData)]])
 {
     RasterizerData out;
     out.position = (*MVP * float4(vertices[vertexID].position, 1.f));
@@ -32,7 +32,7 @@ DebugLightVertexShader(uint                      vertexID [[vertex_id]],
 // MARK: Fragment shader
 
 fragment float4
-DebugLightFragmentShader(RasterizerData          in    [[stage_in]],
+DebugLightFragmentShader(RasterizerData   in    [[stage_in]],
                          constant float3* color [[buffer(FragmentInputIndexFrameData)]])
 {
     return float4(*color, 1.f);

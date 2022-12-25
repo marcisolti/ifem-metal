@@ -96,6 +96,7 @@ Geometry LoadOBJ(const std::string& path)
             uint32_t uvIndex = index.uv[j] - 1;
 
             outVertices[vIndex].normal = normals[nIndex];
+            outVertices[vIndex].uv = uvs[uvIndex];
             outIndices.emplace_back(vIndex);
         }
     }

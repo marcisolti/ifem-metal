@@ -16,8 +16,9 @@ using namespace metal;
 struct RasterizerData
 {
     float4 position [[position]];
-    float3 worldPos;
     float3 normal;
+    float2 uv;
+    float3 worldPos;
     float3 eyePos;
 };
 
@@ -33,6 +34,7 @@ PBRVertexShader(uint                 vertexID   [[vertex_id]],
     out.position = vertexData->viewProjMatrix * float4(out.worldPos, 1);
     out.normal = (vector_float4(vertices[vertexID].normal, 1) * vertexData->modelMatrixInv).xyz;
     out.eyePos = vertexData->eyePos;
+    out.uv = vertices[vertexID].uv;
     return out;
 }
 
@@ -42,6 +44,7 @@ fragment float4
 PBRFragmentShader(RasterizerData         in           [[stage_in]],
                   constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
+    return float4(in.uv[0], 0.f, in.uv[1], 1.f);
     float3 res = {0.f, 0.f, 0.f};
 
     float roughness = pow(1.0 - fragmentData->smoothness, 2);
