@@ -17,6 +17,8 @@
 #include "Entity.h"
 #include "ID.h"
 
+#include "Physics.h"
+
 @implementation MetalKitView
 {
     World g_World;
@@ -32,6 +34,8 @@
         g_Renderer.StartUp(mtkView);
         g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
     }
+
+    DoPhysics();
 
     return self;
 }
