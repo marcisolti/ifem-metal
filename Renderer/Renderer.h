@@ -66,6 +66,8 @@ private:
         id<MTLRenderPipelineState> lightGeometryPipelineState;
     } debug;
 
+    id<MTLTexture> texture;
+
     Math::Vector3 eye, lookAt, up;
     Math::Matrix4 viewMatrix;
     Math::Matrix4 projectionMatrix;

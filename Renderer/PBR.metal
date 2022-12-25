@@ -42,9 +42,15 @@ PBRVertexShader(uint                 vertexID   [[vertex_id]],
 
 fragment float4
 PBRFragmentShader(RasterizerData         in           [[stage_in]],
+                  texture2d<half>        colorTexture [[texture(0)]],
                   constant FragmentData* fragmentData [[buffer(FragmentInputIndexFrameData)]])
 {
-    return float4(in.uv[0], 0.f, in.uv[1], 1.f);
+//    return float4(in.uv[0], 0.f, in.uv[1], 1.f);
+
+    constexpr sampler textureSampler(mag_filter::nearest,
+                                     min_filter::nearest);
+    return float4(colorTexture.sample(textureSampler, in.uv));
+
     float3 res = {0.f, 0.f, 0.f};
 
     float roughness = pow(1.0 - fragmentData->smoothness, 2);

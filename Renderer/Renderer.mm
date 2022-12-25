@@ -81,28 +81,61 @@ void Renderer::ShutDown()
 
 void Renderer::LoadScene()
 {
-    eye = {0,0,4};
-    lookAt = {0,0,0};
-    up = {0,1,0};
-    viewMatrix = Math::View(eye, lookAt, up);
+    // camera matrices
+    {
+        eye = {0,0,4};
+        lookAt = {0,0,0};
+        up = {0,1,0};
+        viewMatrix = Math::View(eye, lookAt, up);
+    }
 
-    debug.lightGeometry = Mesh({
-        .vertices = {
-            {{1, 1, -1},    {0, 0, -1}, {0,0}},
-            {{1, -1, -1},   {0, 0, -1}, {0,0}},
-            {{1, 1, 1},     {1, 0, 0}, {0,0}},
-            {{1, -1, 1},    {1, 0, 0}, {0,0}},
-            {{-1, 1, -1},   {0, 0, -1}, {0,0}},
-            {{-1, -1, -1},  {-1, 0, 0}, {0,0}},
-            {{-1, 1, 1},    {-1, 0, 0}, {0,0}},
-            {{-1, -1, 1},   {0, -1, 0}, {0,0}},
-        },
-        .indices = {
-            4, 2, 0, 2, 7, 3, 6, 5, 7, 1, 7, 5, 0, 3, 1, 4, 1, 5, 4, 6, 2, 2, 6, 7, 6, 4, 5, 1, 3, 7, 0, 2, 3, 4, 0, 1
-        }
-    });
-    debug.lightGeometry.CreateBuffers(device);
-    debug.lightGeometry.UploadGeometry();
+    // debug light geometry
+    {
+        debug.lightGeometry = Mesh({
+            .vertices = {
+                {{1, 1, -1},   {0, 0, -1}, {}},
+                {{1, -1, -1},  {0, 0, -1}, {}},
+                {{1, 1, 1},    {1, 0, 0},  {}},
+                {{1, -1, 1},   {1, 0, 0},  {}},
+                {{-1, 1, -1},  {0, 0, -1}, {}},
+                {{-1, -1, -1}, {-1, 0, 0}, {}},
+                {{-1, 1, 1},   {-1, 0, 0}, {}},
+                {{-1, -1, 1},  {0, -1, 0}, {}}
+            },
+            .indices = {
+                4, 2, 0, 2, 7, 3, 6, 5, 7, 1, 7, 5, 0, 3, 1, 4, 1, 5, 4, 6, 2, 2, 6, 7, 6, 4, 5, 1, 3, 7, 0, 2, 3, 4, 0, 1
+            }
+        });
+        debug.lightGeometry.CreateBuffers(device);
+        debug.lightGeometry.UploadGeometry();
+    }
+
+    {
+        const size_t size = 64;
+        std::vector<uint32_t> pixels;
+
+        pixels.reserve(64 * 64);
+        for (size_t i = 0; i < size * size; ++i)
+            pixels.emplace_back(i % 2 == 0 ? 0xFF000000 : 0xFFFFFFFF);
+
+        MTLTextureDescriptor *textureDescriptor = [[MTLTextureDescriptor alloc] init];
+        textureDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
+        textureDescriptor.width = size;
+        textureDescriptor.height = size;
+
+        texture = [device newTextureWithDescriptor:textureDescriptor];
+
+        NSUInteger bytesPerRow = 4 * size;
+        MTLRegion region = {
+            { 0,    0,    0 }, // MTLOrigin
+            { size, size, 1 }  // MTLSize
+        };
+
+        [texture replaceRegion:region
+                    mipmapLevel:0
+                      withBytes:pixels.data()
+                    bytesPerRow:bytesPerRow];
+    }
 }
 
 void Renderer::Update(std::vector<MeshToLoad>& meshesToLoad)
@@ -222,9 +255,13 @@ void Renderer::Draw(const Scene& scene)
         [renderEncoder setVertexBytes:&vertexData
                                length:sizeof(vertexData)
                               atIndex:VertexInputIndexFrameData];
+
+        [renderEncoder setFragmentTexture:texture
+                                  atIndex:0];
         [renderEncoder setFragmentBytes:&fragmentData
                                length:sizeof(fragmentData)
                               atIndex:FragmentInputIndexFrameData];
+
         meshDirectory[shadedMesh.mesh].Draw(renderEncoder);
     }
 
