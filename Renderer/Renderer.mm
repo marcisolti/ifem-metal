@@ -290,7 +290,7 @@ void Renderer::SetViewportSize(CGSize size)
 {
     viewportSize.x = size.width;
     viewportSize.y = size.height;
-    projectionMatrix = Math::Projection(54.4f * (M_PI / 180), float(viewportSize.x/viewportSize.y), 0.01f, 1000.f);
+    projectionMatrix = Math::Projection(54.4f * (M_PI / 180), float(viewportSize.x)/viewportSize.y, 0.01f, 1000.f);
 }
 
 void Renderer::HandleMouseDragged(double deltaX, double deltaY, double deltaZ)
