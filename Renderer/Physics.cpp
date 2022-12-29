@@ -212,6 +212,10 @@ MyBodyActivationListener body_activation_listener;
 // Registering one is entirely optional.
 MyContactListener contact_listener;
 
+// Create mapping table from object layer to broadphase layer
+// Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
+BPLayerInterfaceImpl broad_phase_layer_interface;
+
 
 void Physics::Startup()
 {
@@ -245,10 +249,6 @@ void Physics::Startup()
     // number then these contacts will be ignored and bodies will start interpenetrating / fall through the world.
     // Note: This value is low because this is a simple test. For a real project use something in the order of 10240.
     const uint cMaxContactConstraints = 1024;
-
-    // Create mapping table from object layer to broadphase layer
-    // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
-    BPLayerInterfaceImpl broad_phase_layer_interface;
 
     // Now we can create the actual physics system.
     physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface, MyBroadPhaseCanCollide, MyObjectCanCollide);
@@ -318,8 +318,9 @@ void Physics::RebuildPhysics(const Scene& scene)
             case ::Sphere: {
                 // Now create a dynamic body to bounce on the floor
                 // Note that this uses the shorthand version of creating and adding a body to the world
-                BodyCreationSettings sphere_settings(new SphereShape(0.5f),
-                                                     RVec3(0.0_r, 2.0_r, 0.0_r),
+                const auto& pos = entity.rootTransform.position;
+                BodyCreationSettings sphere_settings(new SphereShape(entity.rootTransform.scale.x()),
+                                                     RVec3(pos.x(), pos.y(), pos.z()),
                                                      Quat::sIdentity(),
                                                      type,
                                                      layer);
@@ -329,15 +330,17 @@ void Physics::RebuildPhysics(const Scene& scene)
                 // Next we can create a rigid body to serve as the floor, we make a large box
                 // Create the settings for the collision volume (the shape).
                 // Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
-                BoxShapeSettings floor_shape_settings(Vec3(100.0f, 1.0f, 100.0f));
+                const auto& scale = entity.rootTransform.scale;
+                BoxShapeSettings floor_shape_settings(Vec3(scale.x(), scale.y(), scale.z()));
 
                 // Create the shape
                 ShapeSettings::ShapeResult floor_shape_result = floor_shape_settings.Create();
                 ShapeRefC floor_shape = floor_shape_result.Get(); // We don't expect an error here, but you can check floor_shape_result for HasError() / GetError()
 
                 // Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+                const auto& pos = entity.rootTransform.position;
                 BodyCreationSettings floor_settings(floor_shape,
-                                                    RVec3(0.0_r, -1.0_r, 0.0_r),
+                                                    RVec3(pos.x(), pos.y(), pos.z()),
                                                     Quat::sIdentity(),
                                                     type,
                                                     layer);

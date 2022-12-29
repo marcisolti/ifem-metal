@@ -236,7 +236,7 @@ void Renderer::Draw(const Scene& scene)
         const auto modelMatrix =
             Scaling(rootTransform.scale.x()) *
             Rotation(rootTransform.rotation) *
-            Translation(rootTransform.position);
+            Translation(entity.physicsComponent.currentTransform.position);
 
         VertexData vertexData = {
             .modelMatrix =    ToFloat4x4(modelMatrix),

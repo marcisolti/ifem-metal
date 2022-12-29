@@ -181,27 +181,35 @@ void Editor::SaveScene(const std::string& path, const World& world)
                 {
                     const auto& component = entity.physicsComponent;
 
-                    std::string shape;
-                    switch (component.shape) {
-                        case ::Sphere: {
-                            shape = "sphere";
-                        } break;
-                        case ::Box: {
-                            shape = "box";
-                        } break;
+                    {
+                        std::string shapeString;
+                        switch (component.shape) {
+                            case ::Sphere: {
+                                shapeString = "sphere";
+                            } break;
+                            case ::Box: {
+                                shapeString = "box";
+                            } break;
+                        }
+                        Value shapeStringObject(kStringType);
+                        shapeStringObject.SetString(shapeString.c_str(), SizeType(shapeString.size()), allocator);
+                        physicsObject.AddMember("shape", shapeStringObject, allocator);
                     }
-                    physicsObject.AddMember("shape", Value().SetString(shape.c_str(), SizeType(shape.size())), allocator);
 
-                    std::string type;
-                    switch (component.type) {
-                        case ::Static: {
-                            type = "static";
-                        } break;
-                        case ::Dynamic: {
-                            type = "dynamic";
-                        } break;
+                    {
+                        std::string typeString;
+                        switch (component.type) {
+                            case ::Static: {
+                                typeString = "static";
+                            } break;
+                            case ::Dynamic: {
+                                typeString = "dynamic";
+                            } break;
+                        }
+                        Value typeStringObject(kStringType);
+                        typeStringObject.SetString(typeString.c_str(), SizeType(typeString.size()), allocator);
+                        physicsObject.AddMember("type", typeStringObject, allocator);
                     }
-                    physicsObject.AddMember("type", Value().SetString(type.c_str(), SizeType(type.size())), allocator);
                 }
 
                 entities.PushBack(Value(kObjectType)
@@ -405,7 +413,13 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
                     meshIndicesInList.insert({meshID, index++}); // do we really need this ??
                 }
 
-                ImGui::Combo("combo 2 (one-liner)", (int*)&meshIndicesInList[e.shadedMesh.mesh], accumulated.data());
+                int currentIndex = meshIndicesInList[e.shadedMesh.mesh];
+                ImGui::Combo("combo 2 (one-liner)", &currentIndex, accumulated.data());
+
+                auto it = meshIndicesInList.begin();
+                for(int i = 0; i < currentIndex; i++)
+                    it++;
+                e.shadedMesh.mesh = it->first;
             }
 
             ImGui::Text("Material");
@@ -420,8 +434,16 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
             ImGui::Text("Physics");
             {
                 auto& component = e.physicsComponent;
-                ImGui::Combo("shape", (int*)component.shape, "sphere\0sphere\0\0", 2);
-                ImGui::Combo("type", (int*)component.type, "static\0dynamic\0\0", 2);
+
+                PhysicsShape shapes[] = {::Sphere, ::Box};
+                int shapeIndex = int(component.shape);
+                ImGui::Combo("shape", &shapeIndex, "sphere\0box\0\0", 2);
+                component.shape = shapes[shapeIndex];
+
+                PhysicsType types[] = {::Static, ::Dynamic};
+                int typeIndex = int(component.type);
+                ImGui::Combo("type", &typeIndex, "static\0dynamic\0\0", 2);
+                component.type = types[typeIndex];
             }
 
             ImGui::TreePop();
@@ -481,7 +503,7 @@ void Editor::Update(World& world)
                 ShadedMesh s {
                     .mesh = (*assetPaths.begin()).first,
                 };
-                const Entity e({s});
+                const Entity e(s);
                 entities.insert({GetID(), e});
             }
 
