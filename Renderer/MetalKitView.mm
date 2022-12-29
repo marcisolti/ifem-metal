@@ -23,6 +23,7 @@
 {
     World g_World;
     Renderer g_Renderer;
+    Physics g_Physics;
     Editor g_Editor;
 }
 
@@ -33,10 +34,8 @@
     {
         g_Renderer.StartUp(mtkView);
         g_Editor.StartUp(mtkView, g_Renderer.GetDevice());
+        g_Physics.Startup();
     }
-
-    DoPhysics();
-
     return self;
 }
 
@@ -51,6 +50,7 @@
     g_Editor.BeginFrame(view, g_Renderer.GetCurrentPassDescriptor());
 
     g_Editor.Update(g_World);
+    g_Physics.Update();
     g_Renderer.Update(g_World.meshesToLoad);
 
     g_Renderer.Draw(g_World.scene);

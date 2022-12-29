@@ -31,15 +31,21 @@ struct ShadedMesh {
     Material material = {{1,1,1}, 0.6, 0.3, 1.0, false};
 };
 
+enum PhysicsShape { Sphere, Box };
+
 class Entity {
 public:
     Entity(const ShadedMesh& shadedMesh,
-           const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}})
+           const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}},
+           PhysicsShape shape = Sphere)
     : shadedMesh{shadedMesh}
-    , rootTransform{rootTransform} {  }
+    , rootTransform{rootTransform}
+    , shape{shape}
+    {  }
 
     Transform rootTransform;
     ShadedMesh shadedMesh;
+    PhysicsShape shape;
 };
 
 struct Light {
