@@ -8,11 +8,11 @@
 
 #pragma once
 
+#include "Math.h"
+
 #include <vector>
 #include <string>
 #include <map>
-
-#include "Math.h"
 
 using ID = uint32_t;
 
@@ -32,20 +32,27 @@ struct ShadedMesh {
 };
 
 enum PhysicsShape { Sphere, Box };
+enum PhysicsType { Static, Dynamic };
+
+struct PhysicsComponent {
+    PhysicsShape shape;
+    PhysicsType type;
+    Transform currentTransform;
+};
 
 class Entity {
 public:
     Entity(const ShadedMesh& shadedMesh,
            const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}},
-           PhysicsShape shape = Sphere)
+           PhysicsComponent physicsComponent = {Sphere, Static, {{0,0,0}, {0,0,0}, {1,1,1}}})
     : shadedMesh{shadedMesh}
     , rootTransform{rootTransform}
-    , shape{shape}
+    , physicsComponent{physicsComponent}
     {  }
 
     Transform rootTransform;
     ShadedMesh shadedMesh;
-    PhysicsShape shape;
+    PhysicsComponent physicsComponent;
 };
 
 struct Light {
@@ -56,6 +63,7 @@ struct Light {
 struct Config {
     Math::Vector3 clearColor;
     bool isTrackpadPanning = false;
+    bool rebuildPhysics = false;
 };
 
 struct Scene {

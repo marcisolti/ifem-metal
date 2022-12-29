@@ -141,8 +141,10 @@ void Editor::SceneSerialization(World& world)
     static char str1[1024] = "/Users/marcisolti/git/ifem-metal/Assets/scene.json";
     ImGui::InputText("sceneToLoad", str1, IM_ARRAYSIZE(str1));
     ImGui::SameLine();
-    if (ImGui::Button("Load scene"))
+    if (ImGui::Button("Load scene")) {
         LoadScene(str1, world);
+        world.config.rebuildPhysics = true;
+    }
 
 }
 
@@ -159,24 +161,54 @@ void Editor::SaveScene(const std::string& path, const World& world)
             entities.Reserve(SizeType(world.scene.entities.size()), allocator);
             for (const auto& [Id, entity] : world.scene.entities)
             {
-                const auto& shadedMesh = entity.shadedMesh;
-                const auto& material = shadedMesh.material;
 
                 Value shadedMeshObject(kObjectType);
-                shadedMeshObject.AddMember("id", shadedMesh.mesh, allocator);
-                shadedMeshObject.AddMember("material",
-                                   Value(kObjectType)
-                                    .AddMember("baseColor",  SerializeVector3(material.baseColor, allocator), allocator)
-                                    .AddMember("smoothness",  material.smoothness, allocator)
-                                    .AddMember("f0",  material.f0, allocator)
-                                    .AddMember("f90",  material.f90, allocator)
-                                    .AddMember("isMetal",  material.isMetal, allocator),
-                                   allocator);
+                {
+                    const auto& shadedMesh = entity.shadedMesh;
+                    const auto& material = shadedMesh.material;
+                    shadedMeshObject.AddMember("id", shadedMesh.mesh, allocator);
+                    shadedMeshObject.AddMember("material",
+                                               Value(kObjectType)
+                                               .AddMember("baseColor",  SerializeVector3(material.baseColor, allocator), allocator)
+                                               .AddMember("smoothness",  material.smoothness, allocator)
+                                               .AddMember("f0",  material.f0, allocator)
+                                               .AddMember("f90",  material.f90, allocator)
+                                               .AddMember("isMetal",  material.isMetal, allocator),
+                                               allocator);
+                }
+
+                Value physicsObject(kObjectType);
+                {
+                    const auto& component = entity.physicsComponent;
+
+                    std::string shape;
+                    switch (component.shape) {
+                        case ::Sphere: {
+                            shape = "sphere";
+                        } break;
+                        case ::Box: {
+                            shape = "box";
+                        } break;
+                    }
+                    physicsObject.AddMember("shape", Value().SetString(shape.c_str(), SizeType(shape.size())), allocator);
+
+                    std::string type;
+                    switch (component.type) {
+                        case ::Static: {
+                            type = "static";
+                        } break;
+                        case ::Dynamic: {
+                            type = "dynamic";
+                        } break;
+                    }
+                    physicsObject.AddMember("type", Value().SetString(type.c_str(), SizeType(type.size())), allocator);
+                }
 
                 entities.PushBack(Value(kObjectType)
                                     .AddMember("id", Id, allocator)
                                     .AddMember("rootTransform", SerializeTransform(entity.rootTransform, allocator), allocator)
-                                    .AddMember("shadedMesh", shadedMeshObject, allocator),
+                                    .AddMember("shadedMesh", shadedMeshObject, allocator)
+                                    .AddMember("physicsComponent", physicsObject, allocator),
                                   allocator);
             }
             document.AddMember("entities", entities, allocator);
@@ -288,9 +320,41 @@ void Editor::LoadScene(const std::string& path, World& world)
             meshMap.at(mesh["id"].GetInt()),
             mat
         };
+
+        const Value& component = entity["physicsComponent"];
+
+        PhysicsShape shape;
+        {
+            std::string shapeString = component["shape"].GetString();
+            if (shapeString == "sphere") {
+                shape = ::Sphere;
+            } else if (shapeString == "box") {
+                shape = ::Box;
+            } else {
+                assert(false);
+            }
+        }
+
+        PhysicsType type;
+        {
+            std::string typeString = component["type"].GetString();
+            if (typeString == "static") {
+                type = ::Static;
+            } else if (typeString == "dynamic") {
+                type = ::Dynamic;
+            } else {
+                assert(false);
+            }
+        }
+
+        Entity e(shaded,
+                 DeserializeTransform(entity["rootTransform"]),
+                 {.shape = shape, .type = type, {}});
+
         ID runTimeEntityID = GetID();
-        world.scene.entities.insert({runTimeEntityID, Entity(shaded, DeserializeTransform(entity["rootTransform"]))});
+        world.scene.entities.insert({runTimeEntityID, e});
         entityMap.insert({entity["id"].GetInt(), runTimeEntityID});
+
     }
 
     const Value& lights = d["lights"];
@@ -351,6 +415,13 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
                 ImGui::SliderFloat("smoothness", &material.smoothness, 0.f, 1.f);
                 ImGui::SliderFloat("f0", &material.f0, 0.f, 1.f);
                 ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
+            }
+
+            ImGui::Text("Physics");
+            {
+                auto& component = e.physicsComponent;
+                ImGui::Combo("shape", (int*)component.shape, "sphere\0sphere\0\0", 2);
+                ImGui::Combo("type", (int*)component.type, "static\0dynamic\0\0", 2);
             }
 
             ImGui::TreePop();
@@ -438,6 +509,8 @@ void Editor::Update(World& world)
             auto& config = world.config;
             ImGui::ColorEdit3("clear color", config.clearColor.data());
             ImGui::Checkbox("trackpad panning", &config.isTrackpadPanning);
+            if (ImGui::Button("rebuild physics"))
+                config.rebuildPhysics = true;
         }
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

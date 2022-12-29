@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "Entity.h"
+
 // The Jolt headers don't include Jolt.h. Always include Jolt.h before including any other Jolt header.
 // You can use Jolt.h in your precompiled header to speed up compilation.
 #include <Jolt/Jolt.h>
@@ -29,13 +31,13 @@ public:
     void Startup();
     void Shutdown();
 
-    void Update();
+    void RebuildPhysics(const Scene& scene);
+    void Step(Scene& scene);
 
 private:
     JPH::PhysicsSystem physics_system;
 
-    JPH::Body *floor;
-    JPH::BodyID sphere_id;
+    std::map<ID, JPH::BodyID> bodyMap;
 
     // We need a temp allocator for temporary allocations during the physics update. We're
     // pre-allocating 10 MB to avoid having to do allocations during the physics update.
