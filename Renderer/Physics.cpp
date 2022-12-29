@@ -8,8 +8,7 @@
 
 #include "Physics.h"
 
-// SPDX-FileCopyrightText: 2021 Jorrit Rouwe
-// SPDX-License-Identifier: MIT
+#include "Entity.h"
 
 // Jolt includes
 #include <Jolt/RegisterTypes.h>
@@ -31,12 +30,7 @@ JPH_SUPPRESS_WARNINGS
 
 // All Jolt symbols are in the JPH namespace
 using namespace JPH;
-
-// If you want your code to compile using single or double precision write 0.0_r to get a Real value that compiles to double or float depending if JPH_DOUBLE_PRECISION is set or not.
 using namespace JPH::literals;
-
-// We're also using STL classes in this example
-using namespace std;
 
 // Callback for traces, connect this to your own trace function if you have one
 static void TraceImpl(const char *inFMT, ...)
@@ -49,7 +43,7 @@ static void TraceImpl(const char *inFMT, ...)
     va_end(list);
 
     // Print to the TTY
-    cout << buffer << endl;
+    std::cout << buffer << std::endl;
 }
 
 #ifdef JPH_ENABLE_ASSERTS
@@ -58,7 +52,7 @@ static void TraceImpl(const char *inFMT, ...)
 static bool AssertFailedImpl(const char *inExpression, const char *inMessage, const char *inFile, uint inLine)
 {
     // Print to the TTY
-    cout << inFile << ":" << inLine << ": (" << inExpression << ") " << (inMessage != nullptr? inMessage : "") << endl;
+    std::cout << inFile << ":" << inLine << ": (" << inExpression << ") " << (inMessage != nullptr? inMessage : "") << std::endl;
 
     // Breakpoint
     return true;
@@ -165,7 +159,7 @@ public:
     // See: ContactListener
     virtual ValidateResult    OnContactValidate(const Body &inBody1, const Body &inBody2, RVec3Arg inBaseOffset, const CollideShapeResult &inCollisionResult) override
     {
-        cout << "Contact validate callback" << endl;
+        std::cout << "Contact validate callback" << std::endl;
 
         // Allows you to ignore a contact before it is created (using layers to not make objects collide is cheaper!)
         return ValidateResult::AcceptAllContactsForThisBodyPair;
@@ -173,17 +167,17 @@ public:
 
     virtual void            OnContactAdded(const Body &inBody1, const Body &inBody2, const ContactManifold &inManifold, ContactSettings &ioSettings) override
     {
-        cout << "A contact was added" << endl;
+        std::cout << "A contact was added" << std::endl;
     }
 
     virtual void            OnContactPersisted(const Body &inBody1, const Body &inBody2, const ContactManifold &inManifold, ContactSettings &ioSettings) override
     {
-        cout << "A contact was persisted" << endl;
+        std::cout << "A contact was persisted" << std::endl;
     }
 
     virtual void            OnContactRemoved(const SubShapeIDPair &inSubShapePair) override
     {
-        cout << "A contact was removed" << endl;
+        std::cout << "A contact was removed" << std::endl;
     }
 };
 
@@ -193,12 +187,12 @@ class MyBodyActivationListener : public BodyActivationListener
 public:
     virtual void        OnBodyActivated(const BodyID &inBodyID, uint64 inBodyUserData) override
     {
-        cout << "A body got activated" << endl;
+        std::cout << "A body got activated" << std::endl;
     }
 
     virtual void        OnBodyDeactivated(const BodyID &inBodyID, uint64 inBodyUserData) override
     {
-        cout << "A body went to sleep" << endl;
+        std::cout << "A body went to sleep" << std::endl;
     }
 };
 
@@ -255,43 +249,6 @@ void Physics::Startup()
 
     physics_system.SetBodyActivationListener(&body_activation_listener);
     physics_system.SetContactListener(&contact_listener);
-
-
-    // Next we can create a rigid body to serve as the floor, we make a large box
-    // Create the settings for the collision volume (the shape).
-    // Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
-    BoxShapeSettings floor_shape_settings(Vec3(100.0f, 1.0f, 100.0f));
-
-    // Create the shape
-    ShapeSettings::ShapeResult floor_shape_result = floor_shape_settings.Create();
-    ShapeRefC floor_shape = floor_shape_result.Get(); // We don't expect an error here, but you can check floor_shape_result for HasError() / GetError()
-
-    // Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-    BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -1.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
-
-    // The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
-    // variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
-    BodyInterface &body_interface = physics_system.GetBodyInterface();
-
-    // Create the actual rigid body
-    floor = body_interface.CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
-
-    // Add it to the world
-    body_interface.AddBody(floor->GetID(), EActivation::DontActivate);
-
-    // Now create a dynamic body to bounce on the floor
-    // Note that this uses the shorthand version of creating and adding a body to the world
-    BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 2.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
-    sphere_id = body_interface.CreateAndAddBody(sphere_settings, EActivation::Activate);
-
-    // Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-    // (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-    body_interface.SetLinearVelocity(sphere_id, Vec3(0.0f, -5.0f, 0.0f));
-
-    // Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
-    // You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
-    // Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
-    physics_system.OptimizeBroadPhase();
 }
 
 void Physics::Shutdown()
@@ -300,22 +257,77 @@ void Physics::Shutdown()
     // variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
     BodyInterface &body_interface = physics_system.GetBodyInterface();
 
-    // Remove the sphere from the physics system. Note that the sphere itself keeps all of its state and can be re-added at any time.
-    body_interface.RemoveBody(sphere_id);
+    for (const auto& bodyID : bodies)
+    {
+        // Remove the sphere from the physics system. Note that the sphere itself keeps all of its state and can be re-added at any time.
+        body_interface.RemoveBody(bodyID);
 
-    // Destroy the sphere. After this the sphere ID is no longer valid.
-    body_interface.DestroyBody(sphere_id);
+        // Destroy the sphere. After this the sphere ID is no longer valid.
+        body_interface.DestroyBody(bodyID);
+    }
 
-    // Remove and destroy the floor
-    body_interface.RemoveBody(floor->GetID());
-    body_interface.DestroyBody(floor->GetID());
+//    // Remove and destroy the floor
+//    body_interface.RemoveBody(floor->GetID());
+//    body_interface.DestroyBody(floor->GetID());
 
     // Destroy the factory
     delete Factory::sInstance;
     Factory::sInstance = nullptr;
 }
 
-void Physics::Update()
+void Physics::Update(std::vector<PhysicsComponentAdded>& componentsAdded)
+{
+    // The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
+    // variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
+    BodyInterface &body_interface = physics_system.GetBodyInterface();
+    for (const auto& component : componentsAdded)
+    {
+        BodyID bodyID;
+        switch (component.shape) {
+            case ::Sphere: {
+                // Now create a dynamic body to bounce on the floor
+                // Note that this uses the shorthand version of creating and adding a body to the world
+                BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 2.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+                bodyID = body_interface.CreateAndAddBody(sphere_settings, EActivation::Activate);
+            } break;
+            case ::Box: {
+                // Next we can create a rigid body to serve as the floor, we make a large box
+                // Create the settings for the collision volume (the shape).
+                // Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
+                BoxShapeSettings floor_shape_settings(Vec3(100.0f, 1.0f, 100.0f));
+
+                // Create the shape
+                ShapeSettings::ShapeResult floor_shape_result = floor_shape_settings.Create();
+                ShapeRefC floor_shape = floor_shape_result.Get(); // We don't expect an error here, but you can check floor_shape_result for HasError() / GetError()
+
+                // Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+                BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -1.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
+
+                // Create the actual rigid body
+                Body* floor = body_interface.CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
+                bodyID = floor->GetID();
+                body_interface.AddBody(bodyID, EActivation::DontActivate);
+            } break;
+            default:
+                assert(false);
+                break;
+        }
+        bodies.push_back(bodyID);
+
+        // Now you can interact with the dynamic body, in this case we're going to give it a velocity.
+        // (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
+        body_interface.SetLinearVelocity(bodyID, Vec3(0.0f, -5.0f, 0.0f));
+    }
+
+
+
+    // Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
+    // You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
+    // Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
+    physics_system.OptimizeBroadPhase();
+}
+
+void Physics::StepAndPackage(World& world)
 {
     // Now we're ready to simulate the body, keep simulating until it goes to sleep
 
@@ -323,16 +335,16 @@ void Physics::Update()
     // variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
     BodyInterface &body_interface = physics_system.GetBodyInterface();
 
-//    if(!body_interface.IsActive(sphere_id))
-//        return;
+    //    if(!body_interface.IsActive(sphere_id))
+    //        return;
 
     // Next step
     ++step;
 
-    // Output current position and velocity of the sphere
-    RVec3 position = body_interface.GetCenterOfMassPosition(sphere_id);
-    Vec3 velocity = body_interface.GetLinearVelocity(sphere_id);
-    cout << "Step " << step << ": Position = (" << position.GetX() << ", " << position.GetY() << ", " << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", " << velocity.GetZ() << ")" << endl;
+//    // Output current position and velocity of the sphere
+//    RVec3 position = body_interface.GetCenterOfMassPosition(sphere_id);
+//    Vec3 velocity = body_interface.GetLinearVelocity(sphere_id);
+//    std::cout << "Step " << step << ": Position = (" << position.GetX() << ", " << position.GetY() << ", " << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", " << velocity.GetZ() << ")" << std::endl;
 
     // If you take larger steps than 1 / 60th of a second you need to do multiple collision steps in order to keep the simulation stable. Do 1 collision step per 1 / 60th of a second (round up).
     const int cCollisionSteps = 1;

@@ -50,8 +50,10 @@
     g_Editor.BeginFrame(view, g_Renderer.GetCurrentPassDescriptor());
 
     g_Editor.Update(g_World);
-    g_Physics.Update();
+    g_Physics.Update(g_World.physicsComponentAdded);
     g_Renderer.Update(g_World.meshesToLoad);
+
+    g_Physics.StepAndPackage(g_World);
 
     g_Renderer.Draw(g_World.scene);
     g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());

@@ -18,6 +18,9 @@
 
 #include <thread>
 
+struct World;
+struct PhysicsComponentAdded;
+
 class Physics {
 public:
     Physics()
@@ -29,13 +32,13 @@ public:
     void Startup();
     void Shutdown();
 
-    void Update();
+    void Update(std::vector<PhysicsComponentAdded>& componentsAdded);
+    void StepAndPackage(World& world);
 
 private:
     JPH::PhysicsSystem physics_system;
 
-    JPH::Body *floor;
-    JPH::BodyID sphere_id;
+    std::vector<JPH::BodyID> bodies;
 
     // We need a temp allocator for temporary allocations during the physics update. We're
     // pre-allocating 10 MB to avoid having to do allocations during the physics update.
