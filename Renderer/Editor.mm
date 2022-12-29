@@ -353,6 +353,36 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
                 ImGui::SliderFloat("f90", &material.f90, 0.f, 1.f);
             }
 
+            ImGui::Text("PhysicsComponent");
+            {
+                auto& data = e.physicsComponent.data;
+
+                if (ImGui::Button("update")) data.updated = true;
+
+                ImGui::Combo("combo 2 (one-liner)",
+                             (int*)data.shape,
+                             "sphere\0box\0\0");
+                ImGui::Combo("combo 2 (one-liner)",
+                             (int*)data.type,
+                             "static\0dynamic\0\0");
+
+                ImGui::Text("initTransform");
+                {
+                    auto& transform = data.initTransform;
+
+                    ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
+                    ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
+
+                    float scale = transform.scale.x();
+                    ImGui::SliderFloat("scale", &scale, 0.f, 10.f);
+                    transform.scale = {scale, scale, scale};
+                }
+
+                ImGui::SliderFloat3("initVelocity", data.initVelocity.data(), -10.0f, 10.0f);
+
+            }
+
+
             ImGui::TreePop();
         }
         ImGui::PopID();

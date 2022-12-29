@@ -31,15 +31,27 @@ struct ShadedMesh {
     Material material = {{1,1,1}, 0.6, 0.3, 1.0, false};
 };
 
+enum PhysicsShape { Sphere, Box };
+enum PhysicsType { Static, Dynamic };
+
 struct PhysicsComponent {
     Transform currentTransform;
+
+    struct {
+        bool updated;
+        PhysicsShape shape;
+        PhysicsType type;
+
+        Transform initTransform;
+        Math::Vector3 initVelocity;
+    } data;
 };
 
 class Entity {
 public:
     Entity(const ShadedMesh& shadedMesh,
            const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}},
-           PhysicsComponent physicsComponent = {{{0,0,0}, {0,0,0}, {1,1,1}}})
+           PhysicsComponent physicsComponent = { {}, { true, Sphere, Static, {{0,0,0}, {0,0,0}, {1,1,1}}, {} } })
     : shadedMesh{shadedMesh}
     , rootTransform{rootTransform}
     , physicsComponent{physicsComponent}
@@ -70,16 +82,8 @@ struct MeshToLoad {
     std::string path;
 };
 
-enum PhysicsShape { Sphere, Box };
-enum PhysicsType { Static, Dynamic };
-
 struct PhysicsComponentAdded {
     ID Id;
-    PhysicsShape shape;
-    PhysicsType type;
-
-    Transform initTransform;
-    Math::Vector3 initVelocity;
 };
 
 struct World {
