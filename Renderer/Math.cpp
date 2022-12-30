@@ -43,6 +43,10 @@ Math::Matrix4 Math::Rotation(const Math::Vector3& pos)
     return Math::Rotation(pos.x(), pos.y(), pos.z());
 }
 
+Math::Matrix4 Math::Scaling(const Math::Vector3& scale)
+{
+    return Math::Scaling(scale.x(), scale.y(), scale.z());
+}
 
 Math::Matrix4 Math::Scaling(float x, float y, float z)
 {

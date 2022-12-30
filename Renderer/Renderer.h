@@ -32,7 +32,7 @@ public:
     void EndFrame();
 
     void Update(std::vector<MeshToLoad>& meshesToLoad);
-    void Draw(const Scene& scene);
+    void Draw(const Scene& scene, bool simulationRunning);
     void SetViewportSize(CGSize size);
     void HandleMouseDragged(double deltaX, double deltaY, double deltaZ);
     void HandleKeyPressed(uint keyCode, bool keyUp);

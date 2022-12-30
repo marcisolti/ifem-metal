@@ -324,6 +324,7 @@ void Physics::RebuildPhysics(const Scene& scene)
                                                      Quat::sIdentity(),
                                                      type,
                                                      layer);
+                sphere_settings.mRestitution = 0.5f;
                 bodyID = body_interface.CreateAndAddBody(sphere_settings, EActivation::Activate);
             } break;
             case ::Box: {
@@ -344,7 +345,7 @@ void Physics::RebuildPhysics(const Scene& scene)
                                                     Quat::sIdentity(),
                                                     type,
                                                     layer);
-
+                floor_settings.mRestitution = 0.5f;
                 // The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
                 // variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
                 BodyInterface &body_interface = physics_system.GetBodyInterface();

@@ -64,6 +64,7 @@ struct Config {
     Math::Vector3 clearColor;
     bool isTrackpadPanning = false;
     bool rebuildPhysics = false;
+    bool simulationRunning = false;
 };
 
 struct Scene {

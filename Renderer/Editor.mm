@@ -394,10 +394,7 @@ void Editor::EntityEditor(std::map<ID, Entity>& entities)
 
                 ImGui::SliderFloat3("pos", transform.position.data(), -10.0f, 10.0f);
                 ImGui::SliderFloat3("rotation", transform.rotation.data(), -10.0f, 10.0f);
-
-                float scale = transform.scale.x();
-                ImGui::SliderFloat("scale", &scale, 0.f, 10.f);
-                transform.scale = {scale, scale, scale};
+                ImGui::InputFloat3("scale", transform.scale.data());
             }
 
             ImGui::Text("Mesh geometry");
@@ -531,8 +528,15 @@ void Editor::Update(World& world)
             auto& config = world.config;
             ImGui::ColorEdit3("clear color", config.clearColor.data());
             ImGui::Checkbox("trackpad panning", &config.isTrackpadPanning);
-            if (ImGui::Button("rebuild physics"))
-                config.rebuildPhysics = true;
+            if (config.simulationRunning) {
+                if (ImGui::Button("stop sim"))
+                    config.simulationRunning = false;
+            } else {
+                if (ImGui::Button("start sim")) {
+                    config.simulationRunning = true;
+                    config.rebuildPhysics = true;
+                }
+            }
         }
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

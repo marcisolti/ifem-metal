@@ -180,7 +180,7 @@ void Renderer::EndFrame()
     [commandBuffer commit];
 }
 
-void Renderer::Draw(const Scene& scene)
+void Renderer::Draw(const Scene& scene, bool simulationRunning)
 {
     if (keyboardInput.isPressed)
     {
@@ -232,11 +232,13 @@ void Renderer::Draw(const Scene& scene)
     {
         using namespace Math;
         const auto& rootTransform = entity.rootTransform;
-        const auto& shadedMesh = entity.shadedMesh;
-        const auto modelMatrix =
-            Scaling(rootTransform.scale.x()) *
+        const Matrix4 translation = Translation(simulationRunning
+                                                ? entity.physicsComponent.currentTransform.position
+                                                : rootTransform.position);
+        const Matrix4 modelMatrix =
+            Scaling(rootTransform.scale) *
             Rotation(rootTransform.rotation) *
-            Translation(entity.physicsComponent.currentTransform.position);
+            translation;
 
         VertexData vertexData = {
             .modelMatrix =    ToFloat4x4(modelMatrix),
@@ -245,6 +247,7 @@ void Renderer::Draw(const Scene& scene)
             .eyePos =         ToFloat3(eye)
         };
 
+        const auto& shadedMesh = entity.shadedMesh;
         const auto& material = shadedMesh.material;
         fragmentData.baseColor = ToFloat3(material.baseColor);
         fragmentData.smoothness = material.smoothness;

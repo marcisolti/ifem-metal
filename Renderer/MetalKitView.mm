@@ -58,7 +58,7 @@
     }
     g_Physics.Step(g_World.scene);
 
-    g_Renderer.Draw(g_World.scene);
+    g_Renderer.Draw(g_World.scene, g_World.config.simulationRunning);
     g_Editor.Draw(g_Renderer.GetRenderEncoder(), g_Renderer.GetCommandBuffer());
 
     g_Renderer.EndFrame();

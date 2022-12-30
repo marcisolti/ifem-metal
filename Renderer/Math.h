@@ -26,6 +26,7 @@ namespace Math
     Matrix4 Translation(const Math::Vector3& pos);
 
     Matrix4 Scaling(float x, float y, float z);
+    Matrix4 Scaling(const Math::Vector3& scale);
     Matrix4 Scaling(float value);
 
     Matrix4 Projection(float fovy, float aspect, float near, float far);

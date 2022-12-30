@@ -1,1 +1,113 @@
-{"entities":[{"id":2,"rootTransform":{"position":[0.0,3.880000114440918,0.0],"rotation":[0.0,0.0,0.0],"scale":[1.0570000410079956,1.0570000410079956,1.0570000410079956]},"shadedMesh":{"id":0,"material":{"baseColor":[1.0,1.0,1.0],"smoothness":0.17100000381469727,"f0":0.30000001192092896,"f90":1.0,"isMetal":false}},"physicsComponent":{"shape":"sphere","type":"dynamic"}},{"id":3,"rootTransform":{"position":[0.0,0.0,0.0],"rotation":[0.0,0.0,0.0],"scale":[1.0,1.0,1.0]},"shadedMesh":{"id":1,"material":{"baseColor":[1.0,1.0,1.0],"smoothness":0.6000000238418579,"f0":0.30000001192092896,"f90":1.0,"isMetal":false}},"physicsComponent":{"shape":"box","type":"static"}}],"lights":[{"id":4,"position":[5.145999908447266,2.5239999294281006,0.0],"intensity":19.284000396728516,"color":[1.0,1.0,1.0]}],"meshes":[{"id":0,"path":"/Users/marcisolti/git/ifem-metal/Assets/sphere.obj"},{"id":1,"path":"/Users/marcisolti/git/ifem-metal/Assets/cube.obj"}],"config":{"clearColor":[1.0,0.5441176891326904,0.5441176891326904]}}
+{
+    "entities": [
+        {
+            "id": 17,
+            "rootTransform": {
+                "position": [
+                    0.0,
+                    3.880000114440918,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "shadedMesh": {
+                "id": 15,
+                "material": {
+                    "baseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "smoothness": 0.39500001072883606,
+                    "f0": 0.30000001192092896,
+                    "f90": 1.0,
+                    "isMetal": false
+                }
+            },
+            "physicsComponent": {
+                "shape": "sphere",
+                "type": "dynamic"
+            }
+        },
+        {
+            "id": 18,
+            "rootTransform": {
+                "position": [
+                    0.0,
+                    -0.9679999947547913,
+                    1.875
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    10.0,
+                    0.5,
+                    10.0
+                ]
+            },
+            "shadedMesh": {
+                "id": 16,
+                "material": {
+                    "baseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "smoothness": 0.11699999868869781,
+                    "f0": 0.30000001192092896,
+                    "f90": 1.0,
+                    "isMetal": false
+                }
+            },
+            "physicsComponent": {
+                "shape": "box",
+                "type": "static"
+            }
+        }
+    ],
+    "lights": [
+        {
+            "id": 19,
+            "position": [
+                2.940999984741211,
+                2.1489999294281006,
+                2.2890000343322754
+            ],
+            "intensity": 19.722999572753906,
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "meshes": [
+        {
+            "id": 15,
+            "path": "/Users/marcisolti/git/ifem-metal/Assets/sphere.obj"
+        },
+        {
+            "id": 16,
+            "path": "/Users/marcisolti/git/ifem-metal/Assets/cube.obj"
+        }
+    ],
+    "config": {
+        "clearColor": [
+            1.0,
+            0.5441176891326904,
+            0.5441176891326904
+        ]
+    }
+}
