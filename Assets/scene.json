@@ -1,7 +1,7 @@
 {
     "entities": [
         {
-            "id": 17,
+            "id": 2,
             "rootTransform": {
                 "position": [
                     0.0,
@@ -20,14 +20,14 @@
                 ]
             },
             "shadedMesh": {
-                "id": 15,
+                "id": 0,
                 "material": {
                     "baseColor": [
+                        0.7166955471038818,
                         1.0,
-                        1.0,
-                        1.0
+                        0.35784316062927246
                     ],
-                    "smoothness": 0.39500001072883606,
+                    "smoothness": 0.5059999823570251,
                     "f0": 0.30000001192092896,
                     "f90": 1.0,
                     "isMetal": false
@@ -39,7 +39,7 @@
             }
         },
         {
-            "id": 18,
+            "id": 3,
             "rootTransform": {
                 "position": [
                     0.0,
@@ -58,7 +58,7 @@
                 ]
             },
             "shadedMesh": {
-                "id": 16,
+                "id": 1,
                 "material": {
                     "baseColor": [
                         1.0,
@@ -75,31 +75,159 @@
                 "shape": "box",
                 "type": "static"
             }
+        },
+        {
+            "id": 4,
+            "rootTransform": {
+                "position": [
+                    0.8889999985694885,
+                    1.3329999446868896,
+                    0.0
+                ],
+                "rotation": [
+                    -0.22200000286102295,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "shadedMesh": {
+                "id": 0,
+                "material": {
+                    "baseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "smoothness": 0.6000000238418579,
+                    "f0": 0.30000001192092896,
+                    "f90": 1.0,
+                    "isMetal": false
+                }
+            },
+            "physicsComponent": {
+                "shape": "sphere",
+                "type": "static"
+            }
+        },
+        {
+            "id": 5,
+            "rootTransform": {
+                "position": [
+                    -2.000999927520752,
+                    0.22200000286102295,
+                    -0.8700000047683716
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "shadedMesh": {
+                "id": 0,
+                "material": {
+                    "baseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "smoothness": 0.6000000238418579,
+                    "f0": 0.30000001192092896,
+                    "f90": 1.0,
+                    "isMetal": false
+                }
+            },
+            "physicsComponent": {
+                "shape": "sphere",
+                "type": "static"
+            }
+        },
+        {
+            "id": 6,
+            "rootTransform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "shadedMesh": {
+                "id": 0,
+                "material": {
+                    "baseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "smoothness": 0.6000000238418579,
+                    "f0": 0.30000001192092896,
+                    "f90": 1.0,
+                    "isMetal": false
+                }
+            },
+            "physicsComponent": {
+                "shape": "sphere",
+                "type": "static"
+            }
         }
     ],
     "lights": [
         {
-            "id": 19,
+            "id": 7,
             "position": [
-                2.940999984741211,
+                3.2920000553131104,
                 2.1489999294281006,
                 2.2890000343322754
             ],
             "intensity": 19.722999572753906,
             "color": [
-                1.0,
-                1.0,
+                0.529411792755127,
+                0.529411792755127,
                 1.0
+            ]
+        },
+        {
+            "id": 8,
+            "position": [
+                -4.560999870300293,
+                3.1579999923706055,
+                0.0
+            ],
+            "intensity": 10.0,
+            "color": [
+                1.0,
+                0.343137264251709,
+                0.343137264251709
             ]
         }
     ],
     "meshes": [
         {
-            "id": 15,
+            "id": 0,
             "path": "/Users/marcisolti/git/ifem-metal/Assets/sphere.obj"
         },
         {
-            "id": 16,
+            "id": 1,
             "path": "/Users/marcisolti/git/ifem-metal/Assets/cube.obj"
         }
     ],

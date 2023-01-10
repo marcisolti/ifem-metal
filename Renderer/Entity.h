@@ -37,6 +37,7 @@ enum PhysicsType { Static, Dynamic };
 struct PhysicsComponent {
     PhysicsShape shape;
     PhysicsType type;
+    float restitution, friction;
     Transform currentTransform;
 };
 
@@ -44,7 +45,7 @@ class Entity {
 public:
     Entity(const ShadedMesh& shadedMesh,
            const Transform& rootTransform = {{0,0,0}, {0,0,0}, {1,1,1}},
-           PhysicsComponent physicsComponent = {Sphere, Static, {{0,0,0}, {0,0,0}, {1,1,1}}})
+           PhysicsComponent physicsComponent = {Sphere, Static, 0.5f, 0.5f, {}})
     : shadedMesh{shadedMesh}
     , rootTransform{rootTransform}
     , physicsComponent{physicsComponent}

@@ -281,6 +281,8 @@ void Physics::RebuildPhysics(const Scene& scene)
 
     for (const auto& [entityID, bodyID] : bodyMap)
     {
+        if (bodyID.GetIndexAndSequenceNumber() == BodyID::cInvalidBodyID)
+            continue;
         body_interface.RemoveBody(bodyID);
         body_interface.DestroyBody(bodyID);
     }
